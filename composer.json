@@ -1,0 +1,19 @@
+{
+    "name": "oc/blog",
+    "description": "P5 : blog PHP",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Oc\\Blog\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Djazaanti M'SA",
+            "email": "alidjazaanti1@gmail.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.3"
+    }
+}
