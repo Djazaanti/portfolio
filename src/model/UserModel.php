@@ -42,7 +42,8 @@ class UserModel
         try {
             $db = new PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
             return $db;
-        } catch (\PDOException $e) {
+        } 
+        catch (\PDOException $e) {
             echo $e->getMessage();
             return null;
         }
