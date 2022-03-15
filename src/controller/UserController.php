@@ -8,6 +8,7 @@ use Oc\Blog\model\UserModel;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use Oc\Blog\controller\TwigService;
 
 class UserController
 {
@@ -39,8 +40,8 @@ class UserController
                 'pseudo' => 'Djazaanti'
             ],
         ];*/
-        $this->twig->getTwig()->render('home.html.twig', [$users]);
         var_dump($this->twig);
+        $this->twig->getTwig()->render('home.html.twig', [$users]);
     }
 
 }
