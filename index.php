@@ -1,22 +1,17 @@
 <?php
+declare(strict_types=1);
+
+// On charge l'autoloader de composer afin d'avoir accès aux dépendances du projet comme Twig
 require_once('vendor/autoload.php');
+
 use Oc\Blog\controller\UserController;
-use Oc\Blog\model\UserModel;
-use Oc\Blog\controller\TwigService;
+use Oc\Blog\service\TwigService;
 
-$controller = new UserController($TwigService);
-$TwigService = new TwigService(); 
+// On instancie Twig
+$twigService = new TwigService();
 
-// On veut afficher les utilisateurs
+// On instancie le User Controller en lui passant en paramètre twig
+$controller = new UserController($twigService);
+
+// On affiche les sutilisateurs
 $controller->showUsers();
-
-//$controller->displayText();
-
-//$UserModel = new UserModel();
-//$UserModel->listPosts();
-//$users = $UserModel->getUsers();
-//
-//$i = 0;
-//foreach($users as $user){
-//    echo "$user[pseudo]";
-//}

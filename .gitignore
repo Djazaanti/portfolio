@@ -1,5 +1,10 @@
 ### Composer ###
 composer.phar
 /vendor/
+
+### Symfony CLI
 .php-version
+/public/index.php
+
+### Php Storm
 .idea

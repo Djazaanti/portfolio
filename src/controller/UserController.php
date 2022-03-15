@@ -4,44 +4,74 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
-use Oc\Blog\model\UserModel;
-use Twig\Environment;
-use Twig\Extension\DebugExtension;
-use Twig\Loader\FilesystemLoader;
-use Oc\Blog\controller\TwigService;
+use Oc\Blog\service\TwigService;
 
+/**
+ * @UserController Le controller permettant de gérer l'utilisateur
+ */
 class UserController
 {
-    private TwigService $twig;
+    /**
+     * @var TwigService Twig
+     */
+    private TwigService $twigService;
 
-    public function _construct(TwigService $twig)
+    /**
+     * Le constructeur de la classe UserController.
+     * Il attend en paramètre twig pour afficher les vues
+     * @param TwigService $twig Le service twig
+     */
+    public function __construct(TwigService $twig)
     {
-        // Je stock la configuration twig dans notre variable twig du controller
-        $this->twig = $twig;
-    }
-    
-
-    public function displayText(){
-        printf("hello de UserController() \n ");
-        $this->twig->getTwig()->render('home.twig');
+        // Je stock la configuration du service twig dans notre variable twig du controller
+        $this->twigService = $twig;
     }
 
     /**
+     * Fonction test pour d'afficher la home page
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function displayText()
+    {
+        // On affiche le template twig home.html.twig
+        echo $this->twigService->get()->render('home.html.twig');
+    }
+
+    /**
+     * Fonction pour :
      * - récupérer les informations des utilisateurs
      * - afficher les utilisateurs
      */
     public function showUsers()
     {
-        $userModel = new UserModel();
-        $users = $userModel->getUsers();
-        /*$users = [
+//        $userModel = new UserModel();
+//        $users = $userModel->getUsers();
+        // On récupère des faux utilisateurs
+        $users = $this->mockUsers();
+
+        // On affiche les utilisateurs dans le template twig home.html.twig
+        echo $this->twigService->get()->render('home.html.twig', ['users' => $users]);
+    }
+
+    /**
+     * Fonction qui permet de créer des faux utilisateurs.
+     * @return array[]
+     */
+    private function mockUsers() : array
+    {
+        return [
             [
                 'id' => 1,
                 'pseudo' => 'Djazaanti'
             ],
-        ];*/
-        var_dump($this->twig);
-        $this->twig->getTwig()->render('home.html.twig', [$users]);
+            [
+                'id' => 2,
+                'pseudo' => 'Toto'
+            ]
+        ];
     }
 
 }
