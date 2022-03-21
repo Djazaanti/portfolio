@@ -1,11 +1,15 @@
 <?php
 declare(strict_types=1);
 namespace Oc\Blog\controller;
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Loader\FilesystemLoader;
+
 class TwigService{
 
     private Environment $twig;
 
-    public function _construct()
+    public function __construct()
     {
         // On créé le systeme de fichier Twig pour retrouver les vues (html)
         $loader = new FilesystemLoader('src/view');

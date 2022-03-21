@@ -14,7 +14,7 @@ class UserController
 {
     private TwigService $twig;
 
-    public function _construct(TwigService $twig)
+    public function __construct(TwigService $twig)
     {
         // Je stock la configuration twig dans notre variable twig du controller
         $this->twig = $twig;
@@ -40,8 +40,9 @@ class UserController
                 'pseudo' => 'Djazaanti'
             ],
         ];*/
-        var_dump($this->twig);
+    
         $this->twig->getTwig()->render('home.html.twig', [$users]);
+        return $users;
     }
 
 }

@@ -4,19 +4,11 @@ use Oc\Blog\controller\UserController;
 use Oc\Blog\model\UserModel;
 use Oc\Blog\controller\TwigService;
 
-$controller = new UserController($TwigService);
-$TwigService = new TwigService(); 
+$twigService = new TwigService(); 
+$controller = new UserController($twigService);
 
 // On veut afficher les utilisateurs
-$controller->showUsers();
-
-//$controller->displayText();
-
-//$UserModel = new UserModel();
-//$UserModel->listPosts();
-//$users = $UserModel->getUsers();
-//
-//$i = 0;
-//foreach($users as $user){
-//    echo "$user[pseudo]";
-//}
+$users = $controller->showUsers();
+foreach($users as $user){
+echo "$user[pseudo]";
+}
