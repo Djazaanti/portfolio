@@ -1,32 +1,23 @@
-{#<?php#}
-{#use Oc\Blog\model\UserModel;#}
-{#?>#}
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <title></title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link href="C:\xampp\htdocs\projectsOC\blog_portfolio\startbootstrap-freelancer-gh-pages">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
     <h1>Page home</h1>
     <section>
         <div>
             <p>Contenu de home</p>
+{#            Permet de debugger #}
+{#            {{ dump(users) }}#}
             <ul>
                 {% for user in users %}
                     <li>{{ user.pseudo }}</li>
                 {% endfor %}
             </ul>
-{#            <?php  $UserModel = new UserModel();#}
-{#                $row = $UserModel->getusers();#}
-{#                var_dump($row);#}
-{#                foreach($user as $row){#}
-{#                    print_r($user);#}
-{#                ?><p> les users devraient s'afficher juste ci-après </br>#}
-{#                <?php //echo $user['id']; echo $user['pseudo'];#}
-{#                } ?></p>#}
         </div>
     </section>
 </body>

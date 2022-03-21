@@ -1,20 +1,26 @@
 <?php
 
-declare(strict_types=1);
+namespace Oc\Blog\service;
 
-namespace Oc\Blog\controller;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
-class TwigService{
-
+/**
+ * @TwigService Classe qui permet d'instancier Twig
+ */
+class TwigService
+{
+    /** @var Environment Twig environment to display */
     private Environment $twig;
 
+    /**
+     * le constructeur de la classe
+     */
     public function __construct()
     {
         // On créé le systeme de fichier Twig pour retrouver les vues (html)
-        $loader = new FilesystemLoader('src/view');
+        $loader = new FilesystemLoader('../src/view');
 
         // On configure twig (on ajoute le mode "debug" et on supprime le "cache")
         $twig = new Environment($loader, [
@@ -29,9 +35,14 @@ class TwigService{
         $this->twig = $twig;
     }
 
-    public function getTwig(): Environment
-{
-    return $this->twig;
-}
+    /**
+     * On permet d'accéder à l'attribut twig via le getter
+     * @see https://www.bgmp.fr/la-programmation-orientee-objet-en-php/
+     * @return Environment
+     */
+    public function get(): Environment
+    {
+        return $this->twig;
+    }
 
 }
