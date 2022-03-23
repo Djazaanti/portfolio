@@ -13,14 +13,30 @@ class TwigService
 {
     /** @var Environment Twig environment to display */
     private Environment $twig;
+    private static ?TwigService $_instance;
+
+    /**
+     * Permet d'instancier la classe une seule fois pour tout le projet (Singleton Pattern).
+     * @see https://grafikart.fr/tutoriels/singleton-569
+     * @return TwigService
+     */
+    public static function getInstance(): TwigService
+    {
+        if (!isset(self::$_instance)) {
+            self::$_instance = new TwigService();
+        }
+
+        return self::$_instance;
+    }
 
     /**
      * le constructeur de la classe
      */
-    public function __construct()
+    private function __construct()
     {
-        // On créé le systeme de fichier Twig pour retrouver les vues (html)
-        $loader = new FilesystemLoader('../src/view');
+        // On créé le systeme de fichier Twig pour retrouver les vues (html) qui seront dans le dossier '../src/view'
+        $templatesPath =  dirname(__DIR__) . DIRECTORY_SEPARATOR .'view';
+        $loader = new FilesystemLoader($templatesPath);
 
         // On configure twig (on ajoute le mode "debug" et on supprime le "cache")
         $twig = new Environment($loader, [
