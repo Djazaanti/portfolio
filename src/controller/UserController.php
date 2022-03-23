@@ -41,7 +41,7 @@ class UserController
     public function displayText()
     {
         // On affiche le template twig home.html.twig
-        echo $this->twigService->get()->render('home.html.twig');
+        echo $this->twigService->get()->render('user.html.twig');
     }
 
     /**
@@ -59,7 +59,7 @@ class UserController
         $users = $this->mockUsers();
 
         // On affiche les utilisateurs dans le template twig home.html.twig
-        echo $this->twigService->get()->render('home.html.twig', ['users' => $users]);
+        echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
     }
 
     /**
