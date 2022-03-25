@@ -1,28 +1,69 @@
+{% include 'templates/base.html.twig' %}
+<!--
+1- j'ai déplacé le dossier du theme startbootstrap-freelancer-gh-pages dans le dossier public.
+2- J'ai copier coller le contenu startbootstrap-freelancer-gh-pages/index.html dans le template twig home.html.twig.
+3- J'ai modifié les liens vers les ressources (par exemple les href="" ou src="") en y indiquant le nouveau chemin.
+/!\ Twig à deux chemins qu'il faut connaitre:
+- le chemin des templates twig :
+    - src/view
+    - c'est ce chemin qui sera utilisé dans la fonction render dans tes controller
+        -> exemple : $this->twigService->get()->render('home.html.twig');
+        -> Twig va chercher le template dans le chemin src/view/home.html.twig
+- le chemin principal
+    - public/
+    - C'est ce chemin qui sera utilisé pour utiliser les ressources css, javascript, les images...
+        -> exemple : <link href="startbootstrap-freelancer-gh-pages/css/styles.css" rel="stylesheet" />
+        -> Twig va charger le fichier dans le chemin public/startbootstrap-freelancer-gh-pages/css/styles.css
+-->
+
+<body id="page-top">
+<!-- Navigation-->
+{% include 'templates/navigation.html.twig' %}
+<!-- Masthead-->
 {% include 'templates/header.html.twig' %}
-{% include 'templates/menu.html.twig' %}
-<body>
-    <h1>Page home</h1>
-    <section>
-        <div>
-            <p>Contenu de home</p>
-            <div class = bio>
-                <p>M'SA Djazaanti</p> 
-                <img src="img.gpg">
-                <p>M'SA Djazaanti, développeuse PHP/SYMFONY, persévérante et ambitieuse</p>
-                <a href="CV.pdf">Consulter mon CV</a>
-                <a href="lien github">logo github</a>
-                <a href="lien linkedIn">logo linkedIn</a>
-                <div><form name="contact"> Prenons contact</form></div>
-            </div>
-{#            Permet de debugger #}
-{#            {{ dump(users) }}#}
-            <ul>
-                {% for user in users %}
-                    <li>{{ user.pseudo }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </section>
+
+<!-- Portfolio Section-->
+{% include 'templates/portfolioSection.html.twig' %}
+
+<!-- About Section-->
+{% include 'templates/aboutSection.html.twig' %}
+
+<!-- Contact Section-->
+{% include 'templates/contactSection.html.twig' %}
+
+<!-- Footer-->
+{% include 'templates/footerSection.html.twig' %}
+
+<!-- Copyright Section-->
+{% include 'templates/copyrightSection.html.twig' %}
+
+<!-- Portfolio Modals-->
+{% include 'templates/portfolioModal1.html.twig' %}
+
+<!-- Portfolio Modal 2-->
+{% include 'templates/portfolioModal2.html.twig' %}
+
+<!-- Portfolio Modal 3-->
+{% include 'templates/portfolioModal3.html.twig' %}
+
+<!-- Portfolio Modal 4-->
+{% include 'templates/portfolioModal4.html.twig' %}
+
+<!-- Portfolio Modal 5-->
+{% include 'templates/portfolioModal5.html.twig' %}
+
+<!-- Portfolio Modal 6-->
+{% include 'templates/portfolioModal6.html.twig' %}
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="startbootstrap-freelancer-gh-pages/js/scripts.js"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 </body>
-{% include 'templates/footer.html.twig'%}
+{% include 'templates/footerSection.html.twig'%}
 </html>

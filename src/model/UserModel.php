@@ -4,12 +4,39 @@ declare(strict_types=1);
 
 namespace Oc\Blog\model;
 
-class UserModel
+class UserModel extends Model
 {
 
-    public function listPosts()
+    /**
+     * @return [type]
+     * récupère tous les posts
+     */
+    public function getPostsPosts()
     {
-        printf('ici affichage des posts :');
+        if(null === $db){
+            return[];
+        }
+        $req = $db->prepare('SELECT * FROM article');
+        $req->execute();
+
+        return $req->fetchAll();
+    }
+
+    /**
+     * récupère un post avec id donné
+     * @param mixed $id
+     * 
+     * @return [type]
+     * 
+     */
+    public function getPost($id)
+    {
+
+    }
+    
+    public function getComments($id)
+    {
+
     }
 
     /**
@@ -19,7 +46,7 @@ class UserModel
      */
     public function getUsers(): array
     {
-        $db = $this->dbConnect();
+        //$db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
@@ -30,20 +57,9 @@ class UserModel
         return $req->fetchAll();
     }
 
-    /**
-     * - Se connecter à la base de données.
-     *
-     * @return \PDO|null la connexion
-     */
-    public function dbConnect(): ?\PDO
+    public function getUser($id)
     {
-        try {
-            $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
-            return $db;
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
-            return null;
-        }
+
     }
 
 

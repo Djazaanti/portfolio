@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
-use Oc\Blog\controller\TwigService;
+
+use Oc\Blog\service\TwigService;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * @UserController Le controller permettant de gérer l'utilisateur
@@ -21,7 +25,6 @@ class UserController
      * Il attend en paramètre twig pour afficher les vues
      * @param TwigService $twig Le service twig
      */
-
     public function __construct(TwigService $twig)
     {
         // Je stock la configuration du service twig dans notre variable twig du controller
@@ -31,14 +34,14 @@ class UserController
     /**
      * Fonction test pour d'afficher la home page
      * @return void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function displayText()
     {
         // On affiche le template twig home.html.twig
-        echo $this->twigService->get()->render('home.html.twig');
+        echo $this->twigService->get()->render('user.html.twig');
     }
 
     /**
@@ -50,11 +53,13 @@ class UserController
     {
 //        $userModel = new UserModel();
 //        $users = $userModel->getUsers();
-        // On récupère des faux utilisateurs
+        // On récupère des faux utilisateurs, une fois le UserModel fonctionnel
+        // Tu peux remplacer la ligne ci-dessous par les lignes 51 et 52.
+        // La fonction mockUsers() est just pour tester sans la base de données.
         $users = $this->mockUsers();
 
         // On affiche les utilisateurs dans le template twig home.html.twig
-        echo $this->twigService->get()->render('home.html.twig', ['users' => $users]);
+        echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
     }
 
     /**
@@ -68,14 +73,11 @@ class UserController
                 'id' => 1,
                 'pseudo' => 'Djazaanti'
             ],
-        ];
-    
-        $this->twig->getTwig()->render('home.html.twig', [$users]);
-        return $users;
             [
                 'id' => 2,
                 'pseudo' => 'Toto'
-            ];
+            ]
+        ];
     }
 
 }
