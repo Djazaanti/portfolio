@@ -13,7 +13,7 @@ $controller = new UserController($twigService);
 // On veut afficher les utilisateurs
 $users = $controller->showUsers();
 foreach($users as $user){
-echo "$user[pseudo]";
+echo "$user[pseudo], \n";
 }
 
 // On instancie Twig

@@ -1,4 +1,5 @@
 <?php
+namespace Oc\Blog\controller;
 
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
