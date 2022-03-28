@@ -37,7 +37,8 @@ class TwigService
         // On créé le systeme de fichier Twig pour retrouver les vues (html) qui seront dans le dossier '../src/view'
         $templatesPath =  dirname(__DIR__) . DIRECTORY_SEPARATOR .'view';
         $loader = new FilesystemLoader($templatesPath);
-        $rootPath = getcwd().DIRECTORY_SEPARATOR;
+        $rootPath = getcwd().DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR;
+        \var_dump($rootPath);
         // On configure twig (on ajoute le mode "debug" et on supprime le "cache")
         $twig = new Environment($loader, [
             'debug' => true,

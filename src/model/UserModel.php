@@ -31,12 +31,25 @@ class UserModel extends Model
      */
     public function getPost($id)
     {
+        if(null === $db){
+            return[];
+        }
+        
+        $req = $db->prepare('SELECT * FROM article where id = ?');
+        $posts = $req->execute($id);
 
+        return $posts;
     }
     
     public function getComments($id)
     {
+        if(null === $db){
+            return[];
+        }
+        $req = $db->prepare('SELECT id, content, isValidate, createdAt, User_id, Article_id FROM comments WHERE Article_id = ?');
+        $comments = $req->execute($id);
 
+        return $comments;
     }
 
     /**
@@ -59,7 +72,14 @@ class UserModel extends Model
 
     public function getUser($id)
     {
+        if(null === $db){
+            return[];
+        }
+        
+        $req = $db->prepare('SELECT * FROM user where id = ?');
+        $user = $req->execute($id);
 
+        return $user;
     }
 
 
