@@ -6,6 +6,9 @@ namespace Oc\Blog\model;
 
 class UserModel extends Model
 {
+    public function __construct(){
+        $this->db = $db;
+    }
 
     /**
      * @return [type]
@@ -16,10 +19,10 @@ class UserModel extends Model
         if(null === $db){
             return[];
         }
-        $req = $db->prepare('SELECT * FROM article');
-        $req->execute();
+        $posts = $db->prepare('SELECT * FROM article');
+        $posts->execute();
 
-        return $req->fetchAll();
+        return $posts->fetchAll();
     }
 
     /**
@@ -36,9 +39,9 @@ class UserModel extends Model
         }
         
         $req = $db->prepare('SELECT * FROM article where id = ?');
-        $posts = $req->execute($id);
+        $post = $req->execute($id);
 
-        return $posts;
+        return $post;
     }
     
     public function getComments($id)
@@ -49,7 +52,7 @@ class UserModel extends Model
         $req = $db->prepare('SELECT id, content, isValidate, createdAt, User_id, Article_id FROM comments WHERE Article_id = ?');
         $comments = $req->execute($id);
 
-        return $comments;
+        return $comments->fetchAll();
     }
 
     /**
@@ -64,10 +67,10 @@ class UserModel extends Model
             return [];
         }
 
-        $req = $db->prepare('SELECT pseudo FROM user');
-        $req->execute();
+        $users = $db->prepare('SELECT pseudo FROM user');
+        $users->execute();
 
-        return $req->fetchAll();
+        return $users->fetchAll();
     }
 
     public function getUser($id)

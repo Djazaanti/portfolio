@@ -38,7 +38,7 @@ class TwigService
         $templatesPath =  dirname(__DIR__) . DIRECTORY_SEPARATOR .'view';
         $loader = new FilesystemLoader($templatesPath);
         $rootPath = getcwd().DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR;
-        \var_dump($rootPath);
+
         // On configure twig (on ajoute le mode "debug" et on supprime le "cache")
         $twig = new Environment($loader, [
             'debug' => true,

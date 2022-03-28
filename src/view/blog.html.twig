@@ -1,0 +1,10 @@
+# Test affichage Twig dans le navigateur #
+{{'coucou'}};
+{% set for user in users  %}
+{{ user.pseudo }}
+{% endfor %}
+{% endset %}
+            <h1>Le blog</h1>
+    <section>
+        <div>
+            <p>Ici on affichera les articles et un lien vers les commentaires de l'article correspondant</p>

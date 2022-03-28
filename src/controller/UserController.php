@@ -10,6 +10,8 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+use Oc\Blog\model\UserModel;
+
 /**
  * @UserController Le controller permettant de gérer l'utilisateur
  */
@@ -19,6 +21,7 @@ class UserController
      * @var TwigService Twig
      */
     private TwigService $twigService;
+    protected UserModel  $userModel;
 
     /**
      * Le constructeur de la classe UserController.
@@ -29,6 +32,21 @@ class UserController
     {
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
+    }
+
+    public function showPosts(){
+        $users = $userModel->getUsers();
+        echo $this->twigService->get()->render('blog.html.twig'); // il faudra que je pointe vers le menu portfolio
+    }
+
+    public function showPost($id){
+        $post = $userModel->getPost($id);
+        $comments = $userModel->getComments($id);
+        foreach($comment as $comments){
+            if($comment['isValidate'] == 1){
+                echo $this->twigService->get()->render('post.html.twig');
+            }
+        }
     }
 
     /**
@@ -58,7 +76,7 @@ class UserController
         // La fonction mockUsers() est just pour tester sans la base de données.
         $users = $this->mockUsers();
 
-        // On affiche les utilisateurs dans le template twig home.html.twig
+        // On affiche les utilisateurs dans le template twig user.html.twig
         echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
     }
 
