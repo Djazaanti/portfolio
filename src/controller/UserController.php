@@ -34,9 +34,23 @@ class UserController
         $this->twigService = $twig;
     }
 
-    public function showPosts(){
+    public function showUsers()
+    {
+        $userModel = new UserModel();
         $users = $userModel->getUsers();
-        echo $this->twigService->get()->render('blog.html.twig'); // il faudra que je pointe vers le menu portfolio
+        // On récupère des faux utilisateurs, une fois le UserModel fonctionnel
+        // Tu peux remplacer la ligne ci-dessous par les lignes 51 et 52.
+        // La fonction mockUsers() est just pour tester sans la base de données.
+        //$users = $this->mockUsers();
+
+        // On affiche les utilisateurs dans le template twig user.html.twig
+        echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
+    }
+
+    public function showPosts(){
+        $posts = $userModel->getPosts();
+        //echo $this->twigService->get()->render('blog.html.twig'); // il faudra que je pointe vers le menu portfolio
+        require('viewAll.php');
     }
 
     public function showPost($id){
@@ -44,7 +58,8 @@ class UserController
         $comments = $userModel->getComments($id);
         foreach($comment as $comments){
             if($comment['isValidate'] == 1){
-                echo $this->twigService->get()->render('post.html.twig');
+                //echo $this->twigService->get()->render('post.html.twig');
+                echo $this->twigService->get()->render('viewAll.php');
             }
         }
     }
@@ -59,7 +74,7 @@ class UserController
     public function displayText()
     {
         // On affiche le template twig home.html.twig
-        echo $this->twigService->get()->render('user.html.twig');
+        echo $this->twigService->get()->render('home.html.twig');
     }
 
     /**
@@ -67,18 +82,7 @@ class UserController
      * - récupérer les informations des utilisateurs
      * - afficher les utilisateurs
      */
-    public function showUsers()
-    {
-//        $userModel = new UserModel();
-//        $users = $userModel->getUsers();
-        // On récupère des faux utilisateurs, une fois le UserModel fonctionnel
-        // Tu peux remplacer la ligne ci-dessous par les lignes 51 et 52.
-        // La fonction mockUsers() est just pour tester sans la base de données.
-        $users = $this->mockUsers();
 
-        // On affiche les utilisateurs dans le template twig user.html.twig
-        echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
-    }
 
     /**
      * Fonction qui permet de créer des faux utilisateurs.

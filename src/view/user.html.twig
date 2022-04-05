@@ -6,7 +6,7 @@
 {#            Permet de debugger #}
 {#            {{ dump(users) }}#}
             <ul>
-                {% foreach user in users %}
+                {% for user in users %}
                     <li>{{ user.pseudo }}</li>
                 {% endfor %}
             </ul>

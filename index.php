@@ -7,9 +7,17 @@ require_once('vendor/autoload.php');
 use Oc\Blog\controller\HomeController;
 use Oc\Blog\controller\UserController;
 use Oc\Blog\service\TwigService;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-$controller = new UserController(TwigService::getInstance());
+$userController = new UserController(TwigService::getInstance());
 
+if(isset ($_GET['action']) == 'users'){
+    // récupère les users
+    $userController->showUsers();
+    $userController->get()->render('user.html.twig');
+}
 // On veut afficher les utilisateurs
 /*$users = $controller->showUsers();
 foreach($users as $user)
