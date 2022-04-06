@@ -33,7 +33,7 @@ class UserController
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
     }
-
+    
     public function showUsers()
     {
         $userModel = new UserModel();
@@ -48,24 +48,23 @@ class UserController
     }
 
     public function showPosts(){
+        $userModel = new UserModel();
         $posts = $userModel->getPosts();
-        //echo $this->twigService->get()->render('blog.html.twig'); // il faudra que je pointe vers le menu portfolio
-        require('viewAll.php');
+        // il faudra que je pointe vers le menu portfolio
+        echo $this->twigService->get()->render('posts.html.twig', ['posts' => $posts]); 
     }
 
-    public function showPost($id){
+    public function showPostAndComments($id){
+        $userModel = new UserModel();
         $post = $userModel->getPost($id);
         $comments = $userModel->getComments($id);
-        foreach($comment as $comments){
-            if($comment['isValidate'] == 1){
-                //echo $this->twigService->get()->render('post.html.twig');
-                echo $this->twigService->get()->render('viewAll.php');
-            }
-        }
+       // var_dump($post); die;
+        echo $this->twigService->get()->render('post.html.twig', [ 'comments' => $comments, 'post' => $post]);
     }
 
+
     /**
-     * Fonction test pour d'afficher la home page
+     * Fonction test pour afficher la home page
      * @return void
      * @throws LoaderError
      * @throws RuntimeError

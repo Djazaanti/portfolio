@@ -1,0 +1,7 @@
+<h1>Les derniers posts ici</h1>
+{% for post in posts  %}
+{#{ post.chapo }#}
+<p>{{post.content}}</p>
+
+<a href="index.php?action=post&id={{post.id}}"><p><i>commentaires</i></p></a>
+{% endfor %}

@@ -45,12 +45,13 @@ class UserModel
      * @return [type]
      * récupère tous les posts
      */
-    public function getPostsPosts()
+    public function getPosts()
     {
-        if(null === $this->db){
+        $db = $this->dbConnect();
+        if(null === $db){
             return[];
         }
-        $posts = $this->db->prepare('SELECT * FROM article');
+        $posts = $db->prepare('SELECT * FROM post');
         $posts->execute();
 
         return $posts->fetchAll();
@@ -63,41 +64,39 @@ class UserModel
      * @return [type]
      * 
      */
-    public function getPost($id)
+    public function getPost($id): array
     {
-        if(null === $this->db){
+        $db = $this->dbConnect();
+        if(null === $db){
             return[];
         }
         
-        $req = $this->db->prepare('SELECT * FROM article where id = ?');
-        $post = $req->execute($id);
-
-        return $post;
+        $req = $db->prepare('SELECT * FROM post where id = ?');
+        $req->execute(array($id));
+        return $post = $req->fetchAll();
     }
     
     public function getComments($id)
     {
-        if(null === $this->db){
+        $db = $this->dbConnect();
+        if(null === $db){
             return[];
         }
-        $req = $this->db->prepare('SELECT id, content, isValidate, createdAt, User_id, Article_id FROM comments WHERE Article_id = ?');
-        $comments = $req->execute($id);
-
-        return $comments->fetchAll();
+        $req = $db->prepare('SELECT id, content, isValidate, updatedAt, user_id, post_id FROM comment WHERE post_id = ?');
+        $req->execute(array($id));
+        return $comments = $req->fetchAll();
     }
 
    
     public function getUser($id)
     {
-        if(null === $this->db){
+        $db = $this->dbConnect();
+        if(null === $db){
             return[];
         }
         
-        $req = $this->db->prepare('SELECT * FROM user where id = ?');
-        $user = $req->execute($id);
-
-        return $user;
+        $req = $db->prepare('SELECT * FROM user where id = ?');
+        $req->execute(array($id));
+        return $user = $req->fetchAll();
     }
-
-
 }

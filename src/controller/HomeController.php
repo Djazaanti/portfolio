@@ -1,6 +1,4 @@
 <?php
-namespace Oc\Blog\controller;
-
 // On ajoute le namespace grâce à composer
 // https://grafikart.fr/tutoriels/autoload-561
 // https://grafikart.fr/tutoriels/namespaces-563

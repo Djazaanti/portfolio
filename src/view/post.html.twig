@@ -1,4 +1,12 @@
-{{ post }}
-{% set for comment in comments %}
-    {{comment.content}}
-{% endset %}
+<pre>
+    {{ dump(post) }}
+</pre>
+ 
+{% for ContentPost in post %}
+    <li>{{ContentPost.content}}</li>
+{% endfor %}
+
+{% for comment in comments %}
+    <li>{{comment.content}}</li>
+    <li>{{comment.updatedAt}}</li>
+{% endfor %}

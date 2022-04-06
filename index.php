@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-
+session_start();
 // On charge l'autoloader de composer afin d'avoir accès aux dépendances du projet comme Twig
 require_once('vendor/autoload.php');
 
@@ -12,21 +12,31 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 $userController = new UserController(TwigService::getInstance());
+//print_r($userController);
 
-if(isset ($_GET['action']) == 'users'){
-    // récupère les users
-    $userController->showUsers();
-    $userController->get()->render('user.html.twig');
-}
-// On veut afficher les utilisateurs
-/*$users = $controller->showUsers();
-foreach($users as $user)
+if(isset ($_GET['action']))
 {
-echo "$user[pseudo], \n";
-}*/
 
-// On affiche les sutilisateurs
-//$userController->showUsers();
+    // show users 
+    if ($_GET['action'] == 'users'){
+        $userController->showUsers();
+    }
+
+    // show posts
+    elseif($_GET['action'] == 'posts')
+    {
+    $userController->showPosts();
+    }  
+
+    // show selected post ans his comments 
+    elseif($_GET['action'] == 'post')
+    {
+    $id = $_GET['id'];
+    $userController->showPostAndComments($id);
+    } 
+
+}
+
 
 // instancie le Home Controller en lui passant en paramètre Twig Service
 $homeController = new HomeController(TwigService::getInstance());
