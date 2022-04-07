@@ -51,7 +51,7 @@ class UserModel
         if(null === $db){
             return[];
         }
-        $posts = $db->prepare('SELECT * FROM post');
+        $posts = $db->prepare('SELECT * FROM post ORDER BY id DESC');
         $posts->execute();
 
         return $posts->fetchAll();
