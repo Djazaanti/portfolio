@@ -15,7 +15,7 @@ class UserModel
     public function dbConnect(): ?\PDO
     {
         try {
-            $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
+            $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=portfolio;charset=UTF8', 'root', '');
             return $db;
         } catch (\PDOException $e) {
             echo $e->getMessage();
