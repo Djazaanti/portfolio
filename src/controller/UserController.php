@@ -47,10 +47,17 @@ class UserController
         echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
     }
 
+    public function showPostsHome(){
+        $userModel = new UserModel();
+        $postsHome = $userModel->getPostsHome();
+        // il faudra que je pointe vers le menu portfolio
+        echo $this->twigService->get()->render('portfolioSection.html.twig', ['postsHome' => $postsHome]); 
+    }
+
     public function showPosts(){
         $userModel = new UserModel();
         $posts = $userModel->getPosts();
-        // il faudra que je pointe vers le menu portfolio
+        // pointe vers la page listant tous les posts : à mettre le CSS
         echo $this->twigService->get()->render('posts.html.twig', ['posts' => $posts]); 
     }
 

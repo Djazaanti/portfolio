@@ -17,15 +17,15 @@ $userController = new UserController(TwigService::getInstance());
 if(isset ($_GET['action']))
 {
 
-    // show users 
+    /* show users 
     if ($_GET['action'] == 'users'){
         $userController->showUsers();
-    }
+    }*/
 
     // show posts
-    elseif($_GET['action'] == 'posts')
+    if($_GET['action'] == 'posts')
     {
-    $userController->showPosts();
+    $userController->showPostsHome();
     }  
 
     // show selected post ans his comments 
