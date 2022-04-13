@@ -40,31 +40,13 @@ class UserModel
         return $req->fetchAll();
     }
 
-    
-    /**
-     * Get 3 last posts from newest to oldest
-     * il faudrait récupérer uninquement l'image et l'id des posts
-     * @return [type]
-     */
-    public function getPostsHome()
-    {
-        $db = $this->dbConnect();
-        if(null === $db){
-            return[];
-        }
-        $postsHome = $db->prepare('SELECT id, media FROM post ORDER BY id DESC limit 3');
-        $postsHome->execute();
-
-        return $posts->fetchAll();
-    }
-
     public function getPosts()
     {
         $db = $this->dbConnect();
         if(null === $db){
             return[];
         }
-        $posts = $db->prepare('SELECT id, title, updatedAt, chapo, FROM post ORDER BY id DESC');
+        $posts = $db->prepare('SELECT id, title, content, updatedAt, chapo,media  FROM post ORDER BY id DESC');
         $posts->execute();
 
         return $posts->fetchAll();

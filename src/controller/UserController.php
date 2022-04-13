@@ -47,12 +47,6 @@ class UserController
         echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
     }
 
-    public function showPostsHome(){
-        $userModel = new UserModel();
-        $postsHome = $userModel->getPostsHome();
-        // il faudra que je pointe vers le menu portfolio
-        echo $this->twigService->get()->render('portfolioSection.html.twig', ['postsHome' => $postsHome]); 
-    }
 
     public function showPosts(){
         $userModel = new UserModel();

@@ -9,6 +9,8 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+use Oc\Blog\model\UserModel;
+
 class HomeController
 {
     /**
@@ -38,7 +40,9 @@ class HomeController
     public function showHome(): void
     {
         $twig = $this->twigService->get();
+        $userModel = new UserModel();
+        $posts = $userModel->getPosts();
 
-        echo $twig->render('home.html.twig');
+        echo $twig->render('home.html.twig', ['posts' => $posts]);
     }
 }
