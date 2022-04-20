@@ -40,6 +40,19 @@ class UserModel
         return $req->fetchAll();
     }
 
+    public function getPostsHome()
+    {
+        $db = $this->dbConnect();
+        if(null === $db){
+            return[];
+        }
+        $posts = $db->prepare('SELECT  id, title, content, updatedAt, chapo,media  FROM post ORDER BY  id DESC limit 3');
+        $posts->execute();
+
+        return $posts->fetchAll();
+    }
+
+
     public function getPosts()
     {
         $db = $this->dbConnect();

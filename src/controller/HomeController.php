@@ -41,7 +41,7 @@ class HomeController
     {
         $twig = $this->twigService->get();
         $userModel = new UserModel();
-        $posts = $userModel->getPosts();
+        $posts = $userModel->getPostsHome();
 
         echo $twig->render('home.html.twig', ['posts' => $posts]);
     }
