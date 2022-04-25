@@ -33,7 +33,17 @@ class UserController
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
     }
-    
+    public function submitFormContact($name, $lastname, $email, $message){
+        $submitContact = $contactModel->insertFormContact($name, $lastname, $email, $message);
+        if ($submitContact === false) {
+            // die('Impossible d\'enregistrer ce formulaire de contact !');
+            $this->twigService->get()->render('contactSection.html.Twig', "impossible d\'enregistrer ce formulaire de contact ! ");
+        }
+        else {
+            
+            echo $this->twigService->get()->render('contactSection.html.Twig', ['emailcontact' => $email] );
+        }
+    }
     public function showUsers()
     {
         $userModel = new UserModel();
