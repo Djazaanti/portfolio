@@ -1,0 +1,12 @@
+{# https://getbootstrap.com/docs/4.2/components/alerts/ #}
+{% if session.flash == "success" %}
+    <div class="alert alert-success" role="alert">
+        {{ session.flash_message }}
+    </div>
+{% endif %}
+
+{% if session.flash == "error" %}
+    <div class="alert alert-danger" role="alert">
+        {{ session.flash_message }}
+    </div>
+{% endif %}

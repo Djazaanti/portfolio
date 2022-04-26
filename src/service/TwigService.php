@@ -15,14 +15,14 @@ class TwigService
     private Environment $twig;
     private static ?TwigService $_instance;
 
-      /**
+    /**
      * le constructeur de la classe
      */
     private function __construct()
     {
         // On créé le systeme de fichier Twig pour retrouver les vues (html) qui seront dans le dossier '../src/view'
-        $templatesPath =  dirname(__DIR__) . DIRECTORY_SEPARATOR .'view';
-        $rootPath = dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR;
+        $templatesPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'view';
+        $rootPath = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR;
         $loader = new FilesystemLoader($templatesPath, $rootPath);
 
         // On configure twig (on ajoute le mode "debug" et on supprime le "cache")
@@ -33,6 +33,7 @@ class TwigService
 
         // On active le var_dump() de twig pour debugger
         $twig->addExtension(new DebugExtension());
+        $twig->addGlobal('session', $_SESSION);
 
         // Je stock la configuration twig dans notre variable twig du controller
         $this->twig = $twig;

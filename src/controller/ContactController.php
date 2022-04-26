@@ -3,40 +3,51 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
-
 use Oc\Blog\service\TwigService;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Oc\Blog\model\ContactModel;
 
-class ContactController{
-     /**
+class ContactController
+{
+    /**
      * @var TwigService Twig
      */
     private TwigService $twigService;
-    protected ContactModel  $contactModel;
 
     /**
-     * Le constructeur de la classe UserController.
+     * @var ContactModel The contact model to make request
+     */
+    private ContactModel $contactModel;
+
+    /**
+     * Le constructeur de la classe ContactController.
      * Il attend en paramètre twig pour afficher les vues
-     * @param TwigService $twig Le service twig
+     * @param TwigService $twigService
      */
     public function __construct(TwigService $twigService)
     {
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twigService;
     }
-    public function submitFormContact($name, $lastname, $email, $message){
-        $submitContact = $contactModel->insertFormContact($name, $lastname, $email, $message);
-        if ($submitContact === false) {
-            // die('Impossible d\'enregistrer ce formulaire de contact !');
-            $this->twigService->get()->render('contactSection.html.Twig', "impossible d\'enregistrer ce formulaire de contact ! ");
+
+    public function submitFormContact($name, $lastname, $email, $message)
+    {
+        // TODO: delete => no need to register contact
+        // $submitContact = $this->contactModel->insertFormContact($name, $lastname, $email, $message);
+
+        // check email format. If not valid we send error message
+        if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['flash'] = 'error';
+            $_SESSION['flash_message'] = 'Une erreur est survenue. Veuillez vérifier votre email.';
         }
-        else {
-            
-            echo $this->twigService->get()->render('contactSection.html.Twig', ['emailcontact' => $email] );
-        }
+
+        // TODO: send email
+
+        // After send email we send success message
+        $_SESSION['flash'] = 'error';
+        $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
+
+        // After sending email we redirect to homepage with contact anchor
+        header('Location: /#contact');
     }
 
 }

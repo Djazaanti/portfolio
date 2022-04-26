@@ -11,58 +11,38 @@
         <!-- Contact Section Form-->
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-7">
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- * * SB Forms Contact Form * *-->
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- This form is pre-integrated with SB Forms.-->
-                <!-- To make this form functional, sign up at-->
-                <!-- https://startbootstrap.com/solution/contact-forms-->
-                <!-- to get an API token!-->
-                <form id="contactForm" data-sb-form-api-token="9bc26587-df8f-49e0-9662-bdefa8029ad0" method="post" action="/contact">
+                <form id="contactForm" method="post" action="/contact">
                     <!-- Name input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Dupont" data-sb-validations="required" />
+                        <input class="form-control" name="name" id="name" type="text" placeholder="Dupont" required/>
                         <label for="name">Nom</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">Renseignez un nom SVP.</div>
                     </div>
-                     <!-- last name input-->
+                    <!-- last name input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="lastname" type="text" placeholder="Jean" data-sb-validations="required" />
+                        <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Jean"
+                               required/>
                         <label for="lastname">Prénom</label>
-                        <div class="invalid-feedback" data-sb-feedback="lastname:required">Renseignez un prénom SVP.</div>
                     </div>
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="nom@example.com" data-sb-validations="required,email" />
+                        <input class="form-control" id="email" type="email" name="email" placeholder="nom@example.com"
+                               required/>
                         <label for="email">Adresse e-mail</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">Renseignez un e-mail SVP.</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">L'e-mail n'est pas valide .</div>
                     </div>
                     <!-- Message input-->
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Entez votre message ici" style="height: 10rem" data-sb-validations="required"></textarea>
+                        <textarea class="form-control" id="message" name="message" type="text"
+                                  placeholder="Entez votre message ici" style="height: 10rem" required></textarea>
                         <label for="message">Message</label>
-                        <div class="invalid-feedback" data-sb-feedback="message:required">Le message est vide.</div>
                     </div>
-                    <!-- Submit success message-->
-                    <!---->
-                    <!-- This is what your users will see when the form-->
-                    <!-- has successfully submitted-->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Message envoyé avec succès!</div>
-                            <br />
-                            {# <a href="https://startbootstrap.com/solution/contact-forms"></a> #}
-                        </div>
-                    </div>
-                    <!-- Submit error message-->
-                    <!---->
-                    <!-- This is what your users will see when there is-->
-                    <!-- an error submitting the form-->
-                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Erreur  lors de l'envoi du message!</div></div>
+
                     <!-- Submit Button-->
-                    <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Envoyer</button>
+                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Envoyer</button>
+
                 </form>
+
+                {% include '/src/view/templates/message.html.twig' %}
+
             </div>
         </div>
     </div>
