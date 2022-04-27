@@ -11,7 +11,7 @@
         <!-- Contact Section Form-->
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-7">
-                <form id="contactForm" method="post" action="/contact">
+                <form id="contactForm" method="post" action="index.php/contact">
                     <!-- Name input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" name="name" id="name" type="text" placeholder="Dupont" required/>
@@ -41,7 +41,7 @@
 
                 </form>
                 {# {% include 'message.html.twig' %} #}
-                {# penser à activer la ligne ci-dessus et régler le problème FilesystemLoader #}
+                {# TO DO : penser à activer la ligne ci-dessus et régler le problème FilesystemLoader #}
                 {# https://getbootstrap.com/docs/4.2/components/alerts/ #}
                 {% if session.flash == "success" %}
                     <div class="alert alert-success" role="alert">

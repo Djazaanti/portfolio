@@ -31,9 +31,6 @@ class ContactController
 
     public function submitFormContact($name, $lastname, $email, $message)
     {
-        // TODO: delete => no need to register contact
-        // $submitContact = $this->contactModel->insertFormContact($name, $lastname, $email, $message);
-
         // check email format. If not valid we send error message
         if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['flash'] = 'error';
@@ -47,7 +44,8 @@ class ContactController
         $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
 
         // After sending email we redirect to homepage with contact anchor
-        header('Location: /#contact');
+        // header('Location: /#contact');
+        header('Location: ../');
     }
 
 }
