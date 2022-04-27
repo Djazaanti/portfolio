@@ -14,6 +14,11 @@ session_start();
 $userController = new UserController(TwigService::getInstance());
 $homeController = new HomeController(TwigService::getInstance());
 
+$blogPath = substr("/projectsOC/blog_portfolio/posts", -5, 5);
+$Uri = substr($_SERVER['REQUEST_URI'], -5, 5);
+// var_dump($blogUri);
+var_dump($_GET['action']);
+
 switch (true) {
     // If nothing in url we load the home page and reset session variable
     case !isset($_SERVER['PATH_INFO']) :
@@ -21,8 +26,11 @@ switch (true) {
         unset($_SESSION['flash_message']);
         $homeController->showHome();
         break;
-    case $_SERVER['PATH_INFO'] == '/posts':
+    case $_SERVER['PATH_INFO'] = 'posts' :
         $userController->showPosts();
+        break;
+    case $_GET['action'] = 'post' :
+        $userController->showPostAndComments($_GET['id']);
         break;
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] == 'POST' :

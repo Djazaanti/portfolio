@@ -45,4 +45,9 @@ class HomeController
 
         echo $twig->render('home.html.twig', ['posts' => $posts]);
     }
+
+    public function display(): string
+    {
+        echo 'hello';
+    }
 }

@@ -1,7 +1,7 @@
 <section class="page-section" id="contact">
     <div class="container">
         <!-- Contact Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contactez-moi</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Me contacter</h2>
         <!-- Icon Divider-->
         <div class="divider-custom">
             <div class="divider-custom-line"></div>
@@ -40,8 +40,20 @@
                     <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Envoyer</button>
 
                 </form>
+                {# {% include 'message.html.twig' %} #}
+                {# penser à activer la ligne ci-dessus et régler le problème FilesystemLoader #}
+                {# https://getbootstrap.com/docs/4.2/components/alerts/ #}
+                {% if session.flash == "success" %}
+                    <div class="alert alert-success" role="alert">
+                        {{ session.flash_message }}
+                    </div>
+                {% endif %}
 
-                {% include '/src/view/templates/message.html.twig' %}
+                {% if session.flash == "error" %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ session.flash_message }}
+                    </div>
+                {% endif %}
 
             </div>
         </div>
