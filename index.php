@@ -13,7 +13,8 @@ session_start();
 
 $userController = new UserController(TwigService::getInstance());
 $homeController = new HomeController(TwigService::getInstance());
-
+var_dump($_SERVER['REQUEST_METHOD']);
+var_dump($_POST);
 switch (true) {
     // If nothing in url we load the home page and reset session variable
     case !isset($_SERVER['PATH_INFO']) :
@@ -24,15 +25,16 @@ switch (true) {
     
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] = 'POST' :
+        
         // if url is equals to /contact or /#contact
         if (($_SERVER['PATH_INFO'] = '/contact' || $_SERVER['PATH_INFO'] = '/#contact')) {
             // echo 'hello de contact formular';
             $contactController = new ContactController(TwigService::getInstance());
             $contactController->submitFormContact(
-                $_POST['name'],
-                $_POST['lastname'],
-                $_POST['email'],
-                $_POST['message'],
+                htmlspecialchars($_POST['name']),
+                htmlspecialchars($_POST['lastname']),
+                filter_var($_POST['email'], FILTER_VALIDATE_EMAIL),
+                htmlspecialchars($_POST['message'])
             );
         }
         break;

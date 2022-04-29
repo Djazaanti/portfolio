@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
+
+session_start();
+
 use Oc\Blog\service\TwigService;
 use Oc\Blog\model\ContactModel;
 
@@ -32,20 +35,25 @@ class ContactController
     public function submitFormContact($name, $lastname, $email, $message)
     {
         // check email format. If not valid we send error message
-        if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // if (false === filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (false === $email ) {
             $_SESSION['flash'] = 'error';
             $_SESSION['flash_message'] = 'Une erreur est survenue. Veuillez vérifier votre email.';
         }
 
         // TODO: send email
+        $headers = 'FROM : '.$email ;
+        mail('alidjazaanti1@gmail.com', 'Formulaire de contact', $message, $headers);
 
         // After send email we send success message
         $_SESSION['flash'] = 'error';
         $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
 
         // After sending email we redirect to homepage with contact anchor
-        // header('Location: /#contact');
-        header('Location: ../');
+        header('Location: /#contact');
+        // header('Location: ../');
+
+        // unset flash_message
     }
 
 }
