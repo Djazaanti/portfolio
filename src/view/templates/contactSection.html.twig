@@ -11,7 +11,7 @@
         <!-- Contact Section Form-->
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-7">
-                <form id="contactForm" method="post" action="index.php/contact">
+                <form method="post" action="index.php/contact">
                     <!-- Name input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" name="name" id="name" type="text" placeholder="Dupont" required/>
@@ -38,23 +38,11 @@
 
                     <!-- Submit Button-->
                     <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Envoyer</button>
-
+                    {# {{ dump(session.flash_message) }}    #}
                 </form>
-                {# {% include 'message.html.twig' %} #}
-                {# TO DO : penser à activer la ligne ci-dessus et régler le problème FilesystemLoader #}
+                
+                {% include 'templates/message.html.twig' %}
                 {# https://getbootstrap.com/docs/4.2/components/alerts/ #}
-                {% if session.flash == "success" %}
-                    <div class="alert alert-success" role="alert">
-                        {{ session.flash_message }}
-                    </div>
-                {% endif %}
-
-                {% if session.flash == "error" %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ session.flash_message }}
-                    </div>
-                {% endif %}
-
             </div>
         </div>
     </div>
