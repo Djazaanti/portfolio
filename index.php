@@ -11,17 +11,10 @@ use Oc\Blog\service\TwigService;
 
 session_start();
 
-<<<<<<< HEAD
 // var_dump($_SERVER);
 
 // var_dump($_SERVER['PHP_SELF']);
 
-=======
-$userController = new UserController(TwigService::getInstance());
-$homeController = new HomeController(TwigService::getInstance());
-var_dump($_SERVER['REQUEST_METHOD']);
-var_dump($_POST);
->>>>>>> 22bd2f8442a04a527823ea7a5957e75d642db37f
 switch (true) {
     // If nothing in url we load the home page and reset session variable
     case !isset($_SERVER['PATH_INFO']) :
@@ -32,28 +25,17 @@ switch (true) {
         break;
     
     // Manage POST form
-<<<<<<< HEAD
     case $_SERVER['REQUEST_METHOD'] == 'POST' :
-=======
-    case $_SERVER['REQUEST_METHOD'] = 'POST' :
->>>>>>> 22bd2f8442a04a527823ea7a5957e75d642db37f
         
         // if url is equals to /contact or /#contact
         if (($_SERVER['PATH_INFO'] == '/contact' || $_SERVER['PATH_INFO'] == '/#contact')) {
             // echo 'Bonjour'.$_POST['name'];
             $contactController = new ContactController(TwigService::getInstance());
             $contactController->submitFormContact(
-<<<<<<< HEAD
-                $_POST['name'],
-                $_POST['lastname'],
-                $_POST['email'],
-                $_POST['message']
-=======
                 htmlspecialchars($_POST['name']),
                 htmlspecialchars($_POST['lastname']),
                 filter_var($_POST['email'], FILTER_VALIDATE_EMAIL),
                 htmlspecialchars($_POST['message'])
->>>>>>> 22bd2f8442a04a527823ea7a5957e75d642db37f
             );
         }
         break;
