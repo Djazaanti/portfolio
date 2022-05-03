@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
-
-session_start();
-
 use Oc\Blog\service\TwigService;
 use Oc\Blog\model\ContactModel;
 
@@ -42,18 +39,27 @@ class ContactController
         }
 
         // TODO: send email
-        $recever = 'alidjazaanti1@gmail.com';
-        $subject = 'Formulaire de contact';
-        $headers = 'FROM : '.$email ;
-        mail($recever, $subject, $message, $headers);
+        $to = "alidjazaanti1@gmail.com";
+        $subject = "Formulaire de contact";
+        $headers = "Content-type: text/plain; charset=utf-8\r\n";
+        $headers .= 'FROM : '.$email.'\r\n' ;
+        // mail($recever, $subject, $message, $headers);
+
+        // check sendmail
+        if( mail($to, $subject, $message, $headers)){
+                echo 'mail envoyé à '.$to;
+        }
+        else{
+                echo 'mail echoué';
+        }
 
         // After send email we send success message
         $_SESSION['flash'] = 'success';
         $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
-        // echo 'formulaire soummis';
+        // echo 'formulaire soummis'.$name.$message;
         
         // After sending email we redirect to homepage with contact anchor
-        header('Location: /#contact');
+        // header('Location: /#contact');
         // var_dump($_SESSION);
         exit;
     }
