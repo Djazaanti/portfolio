@@ -11,18 +11,18 @@ use Oc\Blog\service\TwigService;
 
 session_start();
 
-// var_dump($_SERVER);
-
-// var_dump($_SERVER['PHP_SELF']);
+// var_dump(getenv("SCRIPT_NAME"));
+var_dump($_SERVER);
+// var_dump($_SERVER['REQUEST_URI']);
 
 switch (true) {
     // If nothing in url we load the home page and reset session variable
-    case !isset($_SERVER['PATH_INFO']) :
-        unset($_SESSION['flash']);
-        unset($_SESSION['flash_message']);
-        $homeController = new HomeController(TwigService::getInstance());
-        $homeController->showHome();
-        break;
+    // case !isset($_SERVER['PATH_INFO']) :
+    //     // unset($_SESSION['flash']);
+    //     // unset($_SESSION['flash_message']);
+    //     $homeController = new HomeController(TwigService::getInstance());
+    //     $homeController->showHome();
+    //     break;
     
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] == 'POST' :
@@ -31,12 +31,13 @@ switch (true) {
         if (($_SERVER['PATH_INFO'] == '/contact' || $_SERVER['PATH_INFO'] == '/#contact')) {
             // echo 'Bonjour'.$_POST['name'];
             $contactController = new ContactController(TwigService::getInstance());
-            $contactController->submitFormContact(
-                htmlspecialchars($_POST['name']),
-                htmlspecialchars($_POST['lastname']),
-                filter_var($_POST['email'], FILTER_VALIDATE_EMAIL),
-                htmlspecialchars($_POST['message'])
-            );
+            // check inputs format
+            $name = htmlspecialchars($_POST['name']);
+            $lastname =  htmlspecialchars($_POST['lastname']);
+            $email = $_POST['email'];
+            $message =  htmlspecialchars($_POST['message']);
+
+            $contactController->submitFormContact($name, $lastname, $email, $message);
         }
         break;
     case $_SERVER['PATH_INFO'] == '/posts' :
@@ -51,6 +52,8 @@ switch (true) {
         break;
     // If any case is found
     default:
-    $homeController = new HomeController(TwigService::getInstance());
+        unset($_SESSION['flash']);
+        unset($_SESSION['flash_message']);
+        $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
 }
