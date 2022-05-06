@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Oc\Blog\controller;
 
 use Oc\Blog\service\TwigService;
-use Oc\Blog\model\ContactModel;
+use Oc\Blog\controller\UserController;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -101,24 +101,10 @@ class ContactController
             $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         }
 
-        // // TODO: send email
-        // $to = "alidjazaanti1@gmail.com";
-        // $subject = "Formulaire de contact";
-        // $headers = "Content-type: text/plain; charset=utf-8\r\n";
-        // $headers .= 'FROM : '.$email.'\r\n' ;
-        // // mail($recever, $subject, $message, $headers);
-
-        // // check sendmail
-        // if( mail($to, $subject, $message, $headers)){
-        //         echo 'mail envoyé à '.$to;
-        // }
-        // else{
-        //         echo 'mail echoué';
-        // }
-
         // After sending email we redirect to homepage with contact anchor
-        header('Location: /#contact');
+        echo $this->twigService->get()->render('templates/message.html.twig');
 
+        header('Location: ../index.php?contact');
+        exit();
     }
-
 }

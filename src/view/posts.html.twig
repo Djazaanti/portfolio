@@ -1,11 +1,44 @@
 
+{% include 'templates/base.html.twig' %}
+
+<body id="page-blog">
+
+<!-- Navigation-->
+{% include 'templates/navigation.html.twig' %}
+
+<!-- Masthead-->
+{% include 'templates/header.html.twig' %}
 
 <h1>Les derniers posts ici</h1>
-{% for post in posts  %}
-{#{ post.chapo }#}
-<h3>{{post.title}}</h3>
-<p>{{post.content}}</p>
 
-{# <a href="index.php?action=post&id={{post.id}}"><p><i>commentaires</i></p></a> #}
-<a href="posts/{{post.id}}"><p><i>commentaires</i></p></a>
+{% for post in posts  %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+    {# je vais tester cette syntaxe #}
+    {# <a href="index.php?action=post&id={{post.id}}"><p><i>commentaires</i></p></a> #}
+    <a href="posts/{{post.id}}"><p><i>commentaires</i></p></a>
 {% endfor %}
+
+<!-- Portfolio Section-->
+{% include 'templates/portfolioSection.html.twig' %}
+
+<!-- About Section-->
+{% include 'templates/aboutSection.html.twig' %}
+
+<!-- Contact Section-->
+{% include 'templates/contactSection.html.twig' %}
+
+<!-- Footer-->
+{% include 'templates/footerSection.html.twig' %}
+
+<!-- Copyright Section-->
+{% include 'templates/copyrightSection.html.twig' %}
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core theme JS-->
+<script src="public/js/scripts.js"></script>
+
+</body>
+</html>

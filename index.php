@@ -11,19 +11,7 @@ use Oc\Blog\service\TwigService;
 
 session_start();
 
-// var_dump(getenv("SCRIPT_NAME"));
-var_dump($_SERVER);
-// var_dump($_SERVER['REQUEST_URI']);
-
-switch (true) {
-    // If nothing in url we load the home page and reset session variable
-    // case !isset($_SERVER['PATH_INFO']) :
-    //     // unset($_SESSION['flash']);
-    //     // unset($_SESSION['flash_message']);
-    //     $homeController = new HomeController(TwigService::getInstance());
-    //     $homeController->showHome();
-    //     break;
-    
+switch (true) {    
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] == 'POST' :
         
@@ -40,12 +28,17 @@ switch (true) {
             $contactController->submitFormContact($name, $lastname, $email, $message);
         }
         break;
-    case $_SERVER['PATH_INFO'] == '/posts' :
+        // once contact formular sent, show succes or error message
+    case $_SERVER['QUERY_STRING'] == 'contact' :
+        $userController = new UserController(TwigService::getInstance());
+        $userController->showContactMessage();
+        break;
+    case $_SERVER['QUERY_STRING'] == 'posts' :
         $userController = new UserController(TwigService::getInstance());
         $userController->showPosts();
         break;
         // récupérer un /posts/int 
-    case $_GET['action'] == 'post' :
+    case $_SERVER['QUERY_STRING'] == 'post' :
         //  TO DO : vérifier UserModel, si la table est la bonne
         $userController = new UserController(TwigService::getInstance());
         $userController->showPostAndComments($_GET['id']);

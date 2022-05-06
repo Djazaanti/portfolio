@@ -2,33 +2,40 @@
     <div class="container">
         <!-- Contact Section Heading-->
         <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Me contacter</h2>
+
         <!-- Icon Divider-->
         <div class="divider-custom">
             <div class="divider-custom-line"></div>
             <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
             <div class="divider-custom-line"></div>
         </div>
+
         <!-- Contact Section Form-->
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-7">
+            
                 <form method="post" action="index.php/contact">
+
                     <!-- Name input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" name="name" id="name" type="text" placeholder="Dupont" required/>
                         <label for="name">Nom</label>
                     </div>
+
                     <!-- last name input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="lastname" name="lastname" type="text" placeholder="Jean"
                                required/>
                         <label for="lastname">Prénom</label>
                     </div>
+
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="email" type="email" name="email" placeholder="nom@example.com"
                                required/>
                         <label for="email">Adresse e-mail</label>
                     </div>
+
                     <!-- Message input-->
                     <div class="form-floating mb-3">
                         <textarea class="form-control" id="message" name="message" type="text"
@@ -38,11 +45,7 @@
 
                     <!-- Submit Button-->
                     <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Envoyer</button>
-                    {# {{ dump(session.flash_message) }}    #}
                 </form>
-                
-                {% include 'templates/message.html.twig' %}
-                {# https://getbootstrap.com/docs/4.2/components/alerts/ #}
             </div>
         </div>
     </div>
