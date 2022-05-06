@@ -62,7 +62,7 @@ class ContactController
 
         if (!$mail->smtpConnect()) {
             return false;
-        };
+        }
 
         $mail->From = $email;
         $mail->FromName = $name.'.'.$lastname;
@@ -71,12 +71,9 @@ class ContactController
         $mail->WordWrap = 50;
         $mail->MsgHTML('<div>'.$message.'</div>');
         $mail->isHTML(true);
-
-        // var_dump($message, $mail);
         $mail->addAddress('alidjazaanti1@gmail.com', 'Djazaanti');
 
         return $mail->send();
-
     }
 
     public function submitFormContact($name, $lastname, $email, $message)
