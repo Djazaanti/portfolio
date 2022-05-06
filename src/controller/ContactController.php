@@ -69,14 +69,14 @@ class ContactController
 
         $mail->Subject = 'Formulaire de contact';
         $mail->WordWrap = 50;
-        $mail->MsgHTML('<div>'.$message.'</div>');
+        $mail->MsgHTML('<div><p>Nom : '.$name.'</p><p>Prénom : '.$lastname.'</p><p>'.'</p><p>Message : '.$message.'</p><p>Répondre à : '.$email.'</p></div>');
         $mail->isHTML(true);
         $mail->addAddress('alidjazaanti1@gmail.com', 'Djazaanti');
 
         return $mail->send();
     }
 
-    public function submitFormContact($name, $lastname, $email, $message)
+    public function submitFormContact(string $name, string $lastname, string $email, string $message)
     {
         $nameValid = $this->validInput($name);
         $lastnameValid = $this->validInput($lastname);
@@ -97,11 +97,13 @@ class ContactController
             $_SESSION['flash'] = 'success';
             $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         }
-
-        // After sending email we redirect to homepage with contact anchor
-        echo $this->twigService->get()->render('templates/message.html.twig');
-
+        
         header('Location: ../index.php?contact');
         exit();
+    }
+
+    public function showContactMessage()
+    {
+        echo $this->twigService->get()->render('templates/message.html.twig');
     }
 }

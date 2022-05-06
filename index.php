@@ -28,10 +28,10 @@ switch (true) {
             $contactController->submitFormContact($name, $lastname, $email, $message);
         }
         break;
-        // once contact formular sent, show succes or error message
+    // once contact formular sent, show succes or error message
     case $_SERVER['QUERY_STRING'] == 'contact' :
-        $userController = new UserController(TwigService::getInstance());
-        $userController->showContactMessage();
+        $contactController = new ContactController(TwigService::getInstance());
+        $contactController->showContactMessage();
         break;
     case $_SERVER['QUERY_STRING'] == 'posts' :
         $userController = new UserController(TwigService::getInstance());
