@@ -7,11 +7,11 @@ use Oc\Blog\service\TwigService;
 use Oc\Blog\controller\UserController;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require 'PHPMailer-master/src/Exception.php';
-require 'PHPMailer-master/src/PHPMailer.php';
-require 'PHPMailer-master/src/SMTP.php';
+//Load Composer's autoloader
+require 'vendor/autoload.php';
 
 class ContactController
 {
@@ -26,29 +26,38 @@ class ContactController
     private ContactModel $contactModel;
 
     /**
-     * Le constructeur de la classe ContactController.
-     * Il attend en paramètre twig pour afficher les vues
      * @param TwigService $twigService
      */
     public function __construct(TwigService $twigService)
     {
-        // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twigService;
     }
 
-    private function validInput(string $data) {
+    /**
+     * @param string $data
+     * 
+     * @return string
+     */
+    private function validInput(string $data) : string {
         return htmlspecialchars($data);
     }
 
+    /**
+     * @param string $name
+     * @param string $lastname
+     * @param string $email
+     * @param string $message
+     * 
+     * @return bool
+     */
     private function sendEmail(string $name, string $lastname, string $email, string $message) : bool {
 
         // send mails with PHPMailer
-        $mail = new PHPMailer();
+        $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 465;
         $mail->SMTPAuth = 1;
-        // $mail->SMTPDebug = 1;
         
         if (!$mail->SMTPAuth) {
             return false;
@@ -76,7 +85,15 @@ class ContactController
         return $mail->send();
     }
 
-    public function submitFormContact(string $name, string $lastname, string $email, string $message)
+    /**
+     * @param string $name
+     * @param string $lastname
+     * @param string $email
+     * @param string $message
+     * 
+     * @return void
+     */
+    public function submitFormContact(string $name, string $lastname, string $email, string $message) : void
     {
         $nameValid = $this->validInput($name);
         $lastnameValid = $this->validInput($lastname);
@@ -99,10 +116,12 @@ class ContactController
         }
         
         header('Location: ../index.php?contact');
-        exit();
     }
 
-    public function showContactMessage()
+    /**
+     * @return void
+     */
+    public function showContactMessage() : void
     {
         echo $this->twigService->get()->render('templates/message.html.twig');
     }

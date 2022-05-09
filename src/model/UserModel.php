@@ -6,13 +6,10 @@ namespace Oc\Blog\model;
 
 class UserModel
 {
-    /*public function __construct(){
-    }*/
-
     /**
      * @return \PDO|null
      */
-    public function dbConnect(): ?\PDO
+    public function dbConnect() : ?\PDO
     {
         try {
             $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
@@ -24,28 +21,10 @@ class UserModel
         }
     }
 
-     /**
-     * - Se connecter à la base de données
-     * - Récupérer les utilisateurs
-     * @return array d'utilisateurs
-     */
-    public function getUsers(): array
-    {
-        $db = $this->dbConnect();
-        if (null === $db) {
-            return [];
-        }
-
-        $req = $db->prepare('SELECT pseudo FROM user');
-        $req->execute();
-
-        return $req->fetchAll();
-    }
-
     /**
-     * @return [type]
+     * @return array
      */
-    public function getPostsHome()
+    public function getPostsHome() : array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -58,9 +37,9 @@ class UserModel
     }
 
     /**
-     * @return [type]
+     * @return array
      */
-    public function getPosts()
+    public function getPosts() : array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -74,13 +53,11 @@ class UserModel
     }
 
     /**
-     * récupère un post avec id donné
-     * @param mixed $id
+     * @param int $id
      * 
-     * @return [type]
-     * 
+     * @return array
      */
-    public function getPost($id): array
+    public function getPost(int $id) : array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -94,11 +71,11 @@ class UserModel
     }
     
     /**
-     * @param mixed $id
+     * @param int $id
      * 
-     * @return [type]
+     * @return array
      */
-    public function getComments($id)
+    public function getComments(int $id) : array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -112,11 +89,11 @@ class UserModel
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      * 
-     * @return [type]
+     * @return array
      */
-    public function getUser($id)
+    public function getUser(int $id) : array
     {
         $db = $this->dbConnect();
         if (null === $db) {

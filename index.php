@@ -10,6 +10,7 @@ use Oc\Blog\controller\UserController;
 use Oc\Blog\service\TwigService;
 
 session_start();
+$postId = intval(substr($_SERVER['QUERY_STRING'], -1));
 
 switch (true) {    
     // Manage POST form
@@ -38,10 +39,10 @@ switch (true) {
         $userController->showPosts();
         break;
         // récupérer un /posts/int 
-    case $_SERVER['QUERY_STRING'] == 'post' :
+    case $_SERVER['QUERY_STRING'] == 'post/'.$postId :
         //  TO DO : vérifier UserModel, si la table est la bonne
         $userController = new UserController(TwigService::getInstance());
-        $userController->showPostAndComments($_GET['id']);
+        $userController->showPostAndComments($postId);
         break;
     // If any case is found
     default:
