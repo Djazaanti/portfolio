@@ -1,0 +1,15 @@
+{% include 'templates/base.html.twig' %}
+
+{% if session.flash == "success" %}
+    <div class="alert alert-success" role="alert">
+        {{ session.flash_message }}
+    </div>
+{% endif %}
+
+{% if session.flash == "error" %}
+    <div class="alert alert-danger" role="alert">
+        {{ session.flash_message }}
+    </div>
+{% endif %}
+
+<a class="btn btn-primary btn-xl" href="{{ ('http://portfolio.local/index.php') }}">Retour à l'accueil</a>

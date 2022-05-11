@@ -6,97 +6,103 @@ namespace Oc\Blog\model;
 
 class UserModel
 {
-    /*public function __construct(){
-    }*/
-
     /**
      * @return \PDO|null
      */
-    public function dbConnect(): ?\PDO
+    public function dbConnect() : ?\PDO
     {
         try {
             $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
             return $db;
         } catch (\PDOException $e) {
             echo $e->getMessage();
+
             return null;
         }
     }
 
-     /**
-     * - Se connecter à la base de données
-     * - Récupérer les utilisateurs
-     * @return array d'utilisateurs
+    /**
+     * @return array
      */
-    public function getUsers(): array
+    public function getPostsHome() : array
     {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
-
-        $req = $db->prepare('SELECT pseudo FROM user');
-        $req->execute();
-        return $req->fetchAll();
-    }
-
-    
-    /**
-     * @return [type]
-     * récupère tous les posts
-     */
-    public function getPosts()
-    {
-        $db = $this->dbConnect();
-        if(null === $db){
-            return[];
-        }
-        $posts = $db->prepare('SELECT * FROM post ORDER BY id DESC');
+        $posts = $db->prepare('SELECT  id, title, content, updatedAt, chapo, media  FROM post ORDER BY  id DESC limit 3');
         $posts->execute();
 
         return $posts->fetchAll();
     }
 
     /**
-     * récupère un post avec id donné
-     * @param mixed $id
-     * 
-     * @return [type]
-     * 
+     * @return array
      */
-    public function getPost($id): array
+    public function getPosts() : array
     {
         $db = $this->dbConnect();
-        if(null === $db){
-            return[];
+        if (null === $db) {
+            return [];
+        }
+
+        $posts = $db->prepare('SELECT id, title, content, updatedAt, chapo, media  FROM post ORDER BY id DESC');
+        $posts->execute();
+
+        return $posts->fetchAll();
+    }
+
+    /**
+     * @param int $id
+     * 
+     * @return array
+     */
+    public function getPost(int $id) : array
+    {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
         }
         
         $req = $db->prepare('SELECT * FROM post where id = ?');
         $req->execute(array($id));
+
         return $post = $req->fetchAll();
     }
     
-    public function getComments($id)
+    /**
+     * @param int $id
+     * 
+     * @return array
+     */
+    public function getComments(int $id) : array
     {
         $db = $this->dbConnect();
-        if(null === $db){
-            return[];
+        if (null === $db) {
+            return [];
         }
+
         $req = $db->prepare('SELECT id, content, isValidate, updatedAt, user_id, post_id FROM comment WHERE post_id = ?');
         $req->execute(array($id));
+
         return $comments = $req->fetchAll();
     }
 
-   
-    public function getUser($id)
+    /**
+     * @param int $id
+     * 
+     * @return array
+     */
+    public function getUser(int $id) : array
     {
         $db = $this->dbConnect();
-        if(null === $db){
-            return[];
+        if (null === $db) {
+            return [];
         }
         
         $req = $db->prepare('SELECT * FROM user where id = ?');
         $req->execute(array($id));
+
         return $user = $req->fetchAll();
     }
 }

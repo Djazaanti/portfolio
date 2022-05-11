@@ -1,7 +1,21 @@
 <pre>
-    {{ dump(post) }}
+    {# {{ dump(post) }} #}
 </pre>
  
+
+{% include 'templates/base.html.twig' %}
+
+{# <body id="page-post"> #}
+
+<!-- Navigation-->
+{% include 'templates/navigation.html.twig' %}
+
+<!-- Masthead-->
+<header>
+<div> p </div>
+</header>
+{# {% include 'templates/header.html.twig' %} #}
+
 {% for ContentPost in post %}
     <li>{{ContentPost.content}}</li>
 {% endfor %}

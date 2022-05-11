@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
-
 use Oc\Blog\service\TwigService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -33,72 +32,32 @@ class UserController
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
     }
-    
-    public function showUsers()
-    {
-        $userModel = new UserModel();
-        $users = $userModel->getUsers();
-        // On récupère des faux utilisateurs, une fois le UserModel fonctionnel
-        // Tu peux remplacer la ligne ci-dessous par les lignes 51 et 52.
-        // La fonction mockUsers() est just pour tester sans la base de données.
-        //$users = $this->mockUsers();
 
-        // On affiche les utilisateurs dans le template twig user.html.twig
-        echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
-    }
+    // public function showUsers()
+    // {
+    //     $userModel = new UserModel();
+    //     $users = $userModel->getUsers();
+    //     echo $this->twigService->get()->render('user.html.twig', ['users' => $users]);
+    // }
 
+    /**
+     * @return [type]
+     */
     public function showPosts(){
         $userModel = new UserModel();
         $posts = $userModel->getPosts();
-        // il faudra que je pointe vers le menu portfolio
         echo $this->twigService->get()->render('posts.html.twig', ['posts' => $posts]); 
     }
 
+    /**
+     * @param mixed $id
+     * 
+     * @return [type]
+     */
     public function showPostAndComments($id){
         $userModel = new UserModel();
         $post = $userModel->getPost($id);
         $comments = $userModel->getComments($id);
-       // var_dump($post); die;
-        echo $this->twigService->get()->render('post.html.twig', [ 'comments' => $comments, 'post' => $post]);
+        echo $this->twigService->get()->render('post.html.twig', ['comments' => $comments, 'post' => $post]);
     }
-
-
-    /**
-     * Fonction test pour afficher la home page
-     * @return void
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
-    public function displayText()
-    {
-        // On affiche le template twig home.html.twig
-        echo $this->twigService->get()->render('home.html.twig');
-    }
-
-    /**
-     * Fonction pour :
-     * - récupérer les informations des utilisateurs
-     * - afficher les utilisateurs
-     */
-
-
-    /**
-     * Fonction qui permet de créer des faux utilisateurs.
-     * @return array[]
-     */
-    private function mockUsers() : array
-    {
-        return [
-            [
-                'id' => 1,
-                'pseudo' => 'Djazaanti'
-            ],
-            [
-                'id' => 2,
-                'pseudo' => 'Toto'
-            ]
-        ];
-    }
-
 }

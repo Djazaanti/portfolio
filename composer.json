@@ -15,6 +15,7 @@
   ],
   "require": {
     "twig/twig": "^3.3",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "phpmailer/phpmailer" : "^6.6"
   }
 }

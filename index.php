@@ -1,44 +1,53 @@
 <?php
 declare(strict_types=1);
-session_start();
+
 // On charge l'autoloader de composer afin d'avoir accès aux dépendances du projet comme Twig
 require_once('vendor/autoload.php');
 
+use Oc\Blog\controller\ContactController;
 use Oc\Blog\controller\HomeController;
 use Oc\Blog\controller\UserController;
 use Oc\Blog\service\TwigService;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
-$userController = new UserController(TwigService::getInstance());
-//print_r($userController);
+session_start();
+$postId = intval(substr($_SERVER['QUERY_STRING'], -1));
 
-if(isset ($_GET['action']))
-{
+switch (true) {    
+    // Manage POST form
+    case $_SERVER['REQUEST_METHOD'] == 'POST' :
+        
+        // if url is equals to /contact or /#contact
+        if (($_SERVER['PATH_INFO'] == '/contact' || $_SERVER['PATH_INFO'] == '/#contact')) {
+            // echo 'Bonjour'.$_POST['name'];
+            $contactController = new ContactController(TwigService::getInstance());
+            // check inputs format
+            $name = htmlspecialchars($_POST['name']);
+            $lastname =  htmlspecialchars($_POST['lastname']);
+            $email = $_POST['email'];
+            $message =  htmlspecialchars($_POST['message']);
 
-    // show users 
-    if ($_GET['action'] == 'users'){
-        $userController->showUsers();
-    }
-
-    // show posts
-    elseif($_GET['action'] == 'posts')
-    {
-    $userController->showPosts();
-    }  
-
-    // show selected post ans his comments 
-    elseif($_GET['action'] == 'post')
-    {
-    $id = $_GET['id'];
-    $userController->showPostAndComments($id);
-    } 
-
+            $contactController->submitFormContact($name, $lastname, $email, $message);
+        }
+        break;
+    // once contact formular sent, show succes or error message
+    case $_SERVER['QUERY_STRING'] == 'contact' :
+        $contactController = new ContactController(TwigService::getInstance());
+        $contactController->showContactMessage();
+        break;
+    case $_SERVER['QUERY_STRING'] == 'posts' :
+        $userController = new UserController(TwigService::getInstance());
+        $userController->showPosts();
+        break;
+        // récupérer un /posts/int 
+    case $_SERVER['QUERY_STRING'] == 'post/'.$postId :
+        //  TO DO : vérifier UserModel, si la table est la bonne
+        $userController = new UserController(TwigService::getInstance());
+        $userController->showPostAndComments($postId);
+        break;
+    // If any case is found
+    default:
+        unset($_SESSION['flash']);
+        unset($_SESSION['flash_message']);
+        $homeController = new HomeController(TwigService::getInstance());
+        $homeController->showHome();
 }
-
-
-// instancie le Home Controller en lui passant en paramètre Twig Service
-$homeController = new HomeController(TwigService::getInstance());
-
-$homeController->showHome();

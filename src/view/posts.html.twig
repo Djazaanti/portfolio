@@ -1,7 +1,71 @@
-<h1>Les derniers posts ici</h1>
-{% for post in posts  %}
-{#{ post.chapo }#}
-<p>{{post.content}}</p>
 
-<a href="index.php?action=post&id={{post.id}}"><p><i>commentaires</i></p></a>
-{% endfor %}
+{% include 'templates/base.html.twig' %}
+
+<body id="page-blog">
+
+<!-- Navigation-->
+{% include 'templates/navigation.html.twig' %}
+
+<div class="container">
+
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Mon parcours</h2>
+
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- Portfolio Grid Items-->
+        <div class="row justify-content-center">
+            {% for post in posts %}
+                {# <!-- Portfolio Item {{ post.id }} --> #}
+                <a href="index.php?post/{{ post.id }}" id="post-href"><div class="col-md-6 col-lg-4 mb-5">
+                    <div class="portfolio-item mx-auto" data-bs-toggle="modal">
+                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                        </div>
+                        <img class="img-fluid" src="public/assets/img/portfolio/{{ post.media }}" alt="..."/>
+                        <strong>{{ post.title }}</strong>
+                        <p>{{ post.chapo }}</p>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+       </div>
+
+{# <h1>Le blog ici </h1>
+
+{% for post in posts  %}
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+    {# je vais tester cette syntaxe #}
+    {# <a href="index.php?action=post&id={{ post.id }}"><p><i>commentaires</i></p></a> #}
+    {# <a href="posts/{{ post.id }}"><p><i>commentaires</i></p></a> #}
+{# {% endfor %} #}
+
+{# <!-- Portfolio Section-->
+{% include 'templates/portfolioSection.html.twig' %}
+
+<!-- About Section-->
+{% include 'templates/aboutSection.html.twig' %}
+
+<!-- Contact Section-->
+{% include 'templates/contactSection.html.twig' %} #}
+
+<!-- Footer-->
+{% include 'templates/footerSection.html.twig' %}
+
+<!-- Copyright Section-->
+{% include 'templates/copyrightSection.html.twig' %}
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core theme JS-->
+<script src="public/js/scripts.js"></script>
+
+</body>
+</html>
