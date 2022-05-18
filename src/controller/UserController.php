@@ -47,6 +47,7 @@ class UserController
         $userModel = new UserModel();
         $posts = $userModel->getPosts();
         echo $this->twigService->get()->render('posts.html.twig', ['posts' => $posts]); 
+        // echo $this->twigService->get()->render('posts.html.twig', compact('posts'));
     }
 
     /**

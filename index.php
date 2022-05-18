@@ -11,12 +11,11 @@ use Oc\Blog\service\TwigService;
 
 session_start();
 $postId = intval(substr($_SERVER['QUERY_STRING'], -1));
+// var_dump($_SERVER);
 
 switch (true) {    
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] == 'POST' :
-        
-        // if url is equals to /contact or /#contact
         if (($_SERVER['PATH_INFO'] == '/contact' || $_SERVER['PATH_INFO'] == '/#contact')) {
             // echo 'Bonjour'.$_POST['name'];
             $contactController = new ContactController(TwigService::getInstance());
@@ -38,7 +37,6 @@ switch (true) {
         $userController = new UserController(TwigService::getInstance());
         $userController->showPosts();
         break;
-        // récupérer un /posts/int 
     case $_SERVER['QUERY_STRING'] == 'post/'.$postId :
         //  TO DO : vérifier UserModel, si la table est la bonne
         $userController = new UserController(TwigService::getInstance());

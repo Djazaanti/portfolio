@@ -31,7 +31,7 @@ class HomeController
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function showHome(): void
+    public function showHome() : void
     {
         $twig = $this->twigService->get();
         $userModel = new UserModel();

@@ -1,26 +1,39 @@
-<pre>
-    {# {{ dump(post) }} #}
-</pre>
- 
+{% extends "templates/base-posts.html.twig" %}
 
-{% include 'templates/base.html.twig' %}
+{% block title %} Article {% endblock %}
 
-{# <body id="page-post"> #}
+{% block body %}
+    {% block navigation %} {{parent()}} {% endblock %}
 
-<!-- Navigation-->
-{% include 'templates/navigation.html.twig' %}
+    <!-- Masthead-->
+    {% block masthead %}
+        <header>
+            <div class="container d-flex align-items-center flex-column">
+                <!-- Icon Divider-->
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+            </div>
+        </header>
+    {% endblock %}  
 
-<!-- Masthead-->
-<header>
-<div> p </div>
-</header>
-{# {% include 'templates/header.html.twig' %} #}
-
-{% for ContentPost in post %}
-    <li>{{ContentPost.content}}</li>
-{% endfor %}
-
-{% for comment in comments %}
-    <li>{{comment.content}}</li>
-    <li>{{comment.updatedAt}}</li>
-{% endfor %}
+    <section class="page-section portfolio">
+        <div class="container">
+            {% for contentPost in post %}
+                <!-- Portfolio Modal - Title-->
+                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{ contentPost.title }}</h2>
+                <!-- Portfolio Modal - Image-->
+                <img class="img-fluid rounded mb-5" src="public/assets/img/portfolio/{{ contentPost.media }}" alt="..." />
+                <!-- Portfolio Modal - Text-->
+                <p class="mb-4">{{ contentPost.content }}</p>
+            {% endfor %}
+            
+            {% for comment in comments %}
+                <li>{{ comment.content }}</li>
+                <i>{{ comment.updatedAt }}</i>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %} {# body #}

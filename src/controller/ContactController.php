@@ -116,6 +116,7 @@ class ContactController
         }
         
         header('Location: ../index.php?contact');
+        // rajouter un param dans index et le récupérer pour afficher le message dans la homepage
     }
 
     /**
