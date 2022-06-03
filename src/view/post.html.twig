@@ -1,39 +1,33 @@
-{% extends "templates/base-posts.html.twig" %}
+{% extends "base.html.twig" %}
 
-{% block title %} Article {% endblock %}
+{% block title %} Détail article{% endblock %}
 
-{% block body %}
-    {% block navigation %} {{parent()}} {% endblock %}
-
-    <!-- Masthead-->
-    {% block masthead %}
-        <header>
-            <div class="container d-flex align-items-center flex-column">
+{% block content %}
+    <section class="page-section portfolio">
+        <div class="row justify-content-center">
+            {% for contentPost in post %}
+                <!-- Portfolio Modal - Title-->
+                <h2 class="portfolio-modal-title text-center text-uppercase mb-0">{{ contentPost.title }}</h2>
                 <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
+                <div class="divider-custom">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
+                <div class="col-lg-8 col-xl-7 text-center">  
+                    <!-- Portfolio Modal - Image-->
+                    <img class="img-fluid rounded mb-5" src="public/assets/img/portfolio/{{ contentPost.media }}" alt="..." />
+                    <!-- Portfolio Modal - Text-->
+                    <p class="mb-4">{{ contentPost.content }}</p>
+                </div>
+            {% endfor %}
+                    
+            <div class="col-lg-8 col-xl-7 ">
+                {% for comment in comments %}
+                    <li>{{ comment.content }}</li>
+                    <i>{{ comment.updatedAt }}</i>
+                {% endfor %}    
             </div>
-        </header>
-    {% endblock %}  
-
-    <section class="page-section portfolio">
-        <div class="container">
-            {% for contentPost in post %}
-                <!-- Portfolio Modal - Title-->
-                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{ contentPost.title }}</h2>
-                <!-- Portfolio Modal - Image-->
-                <img class="img-fluid rounded mb-5" src="public/assets/img/portfolio/{{ contentPost.media }}" alt="..." />
-                <!-- Portfolio Modal - Text-->
-                <p class="mb-4">{{ contentPost.content }}</p>
-            {% endfor %}
-            
-            {% for comment in comments %}
-                <li>{{ comment.content }}</li>
-                <i>{{ comment.updatedAt }}</i>
-            {% endfor %}
         </div>
     </section>
-{% endblock %} {# body #}
+{% endblock %} {# content #}

@@ -1,106 +1,97 @@
-{% extends "templates/base.html.twig" %}
+{% extends "base.html.twig" %}
 
 {% block title %}Accueil{% endblock %}
 
-{% block body %}
+{% block content %}
 
-    {% block navigation %}
-        {{parent()}} 
-    {% endblock %}
-
-    <!-- Masthead-->
-    {% block masthead %}
-        <header class="masthead bg-primary text-white text-center">
-            <div class="container d-flex align-items-center flex-column">
-                <!-- Masthead Avatar Image-->
-                <img class="masthead-avatar mb-5" src="public/assets/img/photo_profil.png" alt="..." />
-                <!-- Masthead Heading-->
-                <h1 class="masthead-heading text-uppercase mb-0">Djazaanti M'SA</h1>
-                <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-                <!-- Masthead Subheading-->
-                <p class="masthead-subheading font-weight-light mb-0">Développeuse d'application Symfony, persévérante et optimiste</p>
+<!-- Masthead-->
+    <header class="masthead bg-primary text-white text-center">
+        <div class="container d-flex align-items-center flex-column">
+            <!-- Masthead Avatar Image-->
+            <img class="masthead-avatar mb-5" src="public/assets/img/photo_profil.png" alt="..." />
+            <!-- Masthead Heading-->
+            <h1 class="masthead-heading text-uppercase mb-0">Djazaanti M'SA</h1>
+            <!-- Icon Divider-->
+            <div class="divider-custom divider-light">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
             </div>
-        </header>
-    {% endblock %} {# masthead #}
+            <!-- Masthead Subheading-->
+            <p class="masthead-subheading font-weight-light mb-0">Développeuse d'application Symfony, persévérante et optimiste</p>
+        </div>
+    </header>
 
+<!-- Portfolio Section-->
+    <section class="page-section portfolio" id="portfolio">
+        <div class="container">
 
-    <!-- Portfolio Section-->
-    {% block portfolioSection %}
-        <section class="page-section portfolio" id="portfolio">
-            <div class="container">
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Mon parcours</h2>
 
-                <!-- Portfolio Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Mon parcours</h2>
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
 
-                <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-
-                <!-- Portfolio Grid Items-->
-                <div class="row justify-content-center">
-                    {% for post in posts %}
-                        {# <!-- Portfolio Item {{ post.id }} --> #}
-                        <div class="col-md-6 col-lg-4 mb-5">
-                            <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="{{ '#' ~ 'modal-article-' ~ post.id }}" >
-                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                    <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                                </div>
-                                <img class="img-fluid" src="public/assets/img/portfolio/{{ post.media }}" alt="..."/>
-                                <strong>{{ post.title }}</strong>
-                                <p>{{ post.chapo }}</p>
+            <!-- Portfolio Grid Items-->
+            <div class="row justify-content-center">
+                {% for post in posts %}
+                    {# <!-- Portfolio Item {{ post.id }} --> #}
+                    <div class="col-md-6 col-lg-4 mb-5">
+                        <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="{{ '#' ~ 'modal-article-' ~ post.id }}" >
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
+                            <img class="img-fluid" src="public/assets/img/portfolio/{{ post.media }}" alt="..."/>
+                            <strong>{{ post.title }}</strong>
+                            <p>{{ post.chapo }}</p>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
-        </section>
+        </div>
+    </section>
 
-        {% for post in posts %}
-            {# <!-- Portfolio Modal {{post.id}}--> #}
-            <div class="portfolio-modal modal fade" id="{{ 'modal-article-' ~ post.id }}" tabindex="-1" aria-labelledby="{{ post.id }}" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
-                        <div class="modal-body text-center pb-5">
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-8">
+        
+    {# <!-- Portfolio Modal {{post.id}}--> #}
+    {% for post in posts %}
+        <div class="portfolio-modal modal fade" id="{{ 'modal-article-' ~ post.id }}" tabindex="-1" aria-labelledby="{{ post.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                    <div class="modal-body text-center pb-5">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8">
 
-                                    <!-- Portfolio Modal - Title-->
-                                        <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{ post.title }}</h2>
+                                <!-- Portfolio Modal - Title-->
+                                    <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{ post.title }}</h2>
 
-                                        <!-- Icon Divider-->
-                                        <div class="divider-custom">
-                                            <div class="divider-custom-line"></div>
-                                            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                                            <div class="divider-custom-line"></div>
-                                        </div>
-
-                                        <!-- Portfolio Modal - Image-->
-                                        <img class="img-fluid rounded mb-5" src="public/assets/img/portfolio/{{ post.media }}" alt="..." />
-                                        
-                                        <!-- Portfolio Modal - Text-->
-                                        <p class="mb-4">{{ post.content }}</p>
+                                    <!-- Icon Divider-->
+                                    <div class="divider-custom">
+                                        <div class="divider-custom-line"></div>
+                                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                                        <div class="divider-custom-line"></div>
                                     </div>
+
+                                    <!-- Portfolio Modal - Image-->
+                                    <img class="img-fluid rounded mb-5" src="public/assets/img/portfolio/{{ post.media }}" alt="..." />
+                                    
+                                    <!-- Portfolio Modal - Text-->
+                                    <p class="mb-4">{{ post.content }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-    {% endblock %}
+        </div>
+    {% endfor %}
 
     <!-- About Section-->
-    {% block aboutSection %}
         <section class="page-section bg-primary text-white mb-0" id="about">
             <div class="container">
                 <!-- About Section Heading-->
@@ -113,8 +104,8 @@
                 </div>
                 <!-- About Section Content-->
                 <div class="row">
-                    <div class="col-lg-4 ms-auto"><p class="lead">Ceux qui me connaissent, me définissent comme joviale, enthousiaste et persévrante. Les études sont une vraie aventure pour moi, mais à chaque fois, je vais jusqu'au bout de mes devoirs. Suite à mon DUT informatique en 2017, j'ai poursuivi mes études universitaires à l'UPEC, puis une alternance en L3 Conceptrice d'Application Web et Mobile Sécurisée.</p></div>
-                    <div class="col-lg-4 me-auto"><p class="lead">Je suis actuellement une formation en développement d'application Symfony, de part mon amour pour le PHP. Je suis pleine d'ambition et d'enthousiaste pour intégrer bientôt le monde professionnel du développement d'application. J'aime apprendre et faire preuve de mes compétences avec une équipe - ou pas peut-être ;). </p></div>
+                    <div class="col-lg-4 ms-auto"><p class="lead">Ceux qui me connaissent, me définissent comme joviale, enthousiaste et persévrante. Les études sont une vraie aventure pour moi, et à chaque fois, je vais jusqu'au bout de mes devoirs. Suite à mon DUT informatique en 2017, j'ai poursuivi mes études universitaires à l'UPEC, puis une alternance en L3 Conceptrice d'Application Web et Mobile Sécurisée.</p></div>
+                    <div class="col-lg-4 me-auto"><p class="lead">Je suis actuellement une formation en développement d'application Symfony, de part mon amour pour le PHP. Je suis pleine d'ambition et d'enthousiasme pour intégrer bientôt le monde professionnel du développement d'application. J'aime apprendre et faire preuve de mes compétences avec une équipe - ou pas peut-être ;). </p></div>
                 </div>
                 <!-- About Section Button-->
                 <div class="text-center mt-4">
@@ -125,10 +116,8 @@
                 </div>
             </div>
         </section>
-    {% endblock %}
 
     <!-- Contact Section-->
-    {% block contactSection %}
         <section class="page-section" id="contact">
             <div class="container">
                 <!-- Contact Section Heading-->
@@ -144,7 +133,17 @@
                 <!-- Contact Section Form-->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
-                    
+                        {% if session.flash == "success" %}
+                            <div class="alert alert-success" role="alert">
+                                {{ session.flash_message }}
+                            </div>
+                        {% endif %}
+
+                        {% if session.flash == "error" %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ session.flash_message }}
+                            </div>
+                        {% endif %}
                         <form method="post" action="index.php/contact">
 
                             <!-- Name input-->
@@ -181,7 +180,4 @@
                 </div>
             </div>
         </section>
-
-    {% endblock %} {# contactSection #}
-
-{% endblock %} {# body #}
+{% endblock %} {# content #}

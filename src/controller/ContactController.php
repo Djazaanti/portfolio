@@ -115,15 +115,7 @@ class ContactController
             $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         }
         
-        header('Location: ../index.php?contact');
-        // rajouter un param dans index et le récupérer pour afficher le message dans la homepage
-    }
-
-    /**
-     * @return void
-     */
-    public function showContactMessage() : void
-    {
-        echo $this->twigService->get()->render('templates/message.html.twig');
+        header('Location: ../index.php?contact#contact');
+        // Pas très joli mais c'est ce qui fionctionne comme on le souhaitais :/
     }
 }

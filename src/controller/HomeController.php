@@ -7,7 +7,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use Oc\Blog\model\UserModel;
+use Oc\Blog\model\PostModel;
 
 class HomeController
 {
@@ -34,10 +34,10 @@ class HomeController
     public function showHome() : void
     {
         $twig = $this->twigService->get();
-        $userModel = new UserModel();
+        $postModel = new PostModel();
 
-        // c'est mon parcours, pas des articles, je dois les renommer : issue -latest changes
-        $posts = $userModel->getPostsHome();
+        // ceci est mon parcours, pas des articles, je dois les renommer : issue -latest changes
+        $posts = $postModel->getPostsHome();
 
         echo $twig->render('home.html.twig', ['posts' => $posts]);
     }

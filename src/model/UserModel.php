@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Oc\Blog\model;
 
+use PDO;
+
 class UserModel
 {
     /**
@@ -20,74 +22,7 @@ class UserModel
             return null;
         }
     }
-
-    /**
-     * @return array
-     */
-    public function getPostsHome() : array
-    {
-        $db = $this->dbConnect();
-        if (null === $db) {
-            return [];
-        }
-        $posts = $db->prepare('SELECT  id, title, content, updatedAt, chapo, media  FROM post ORDER BY  id DESC limit 3');
-        $posts->execute();
-
-        return $posts->fetchAll();
-    }
-
-    /**
-     * @return array
-     */
-    public function getPosts() : array
-    {
-        $db = $this->dbConnect();
-        if (null === $db) {
-            return [];
-        }
-
-        $posts = $db->prepare('SELECT id, title, content, updatedAt, chapo, media  FROM post ORDER BY id DESC');
-        $posts->execute();
-
-        return $posts->fetchAll();
-    }
-
-    /**
-     * @param int $id
-     * 
-     * @return array
-     */
-    public function getPost(int $id) : array
-    {
-        $db = $this->dbConnect();
-        if (null === $db) {
-            return [];
-        }
-        
-        $req = $db->prepare('SELECT * FROM post where id = ?');
-        $req->execute(array($id));
-
-        return $post = $req->fetchAll();
-    }
     
-    /**
-     * @param int $id
-     * 
-     * @return array
-     */
-    public function getComments(int $id) : array
-    {
-        $db = $this->dbConnect();
-        if (null === $db) {
-            return [];
-        }
-
-        $req = $db->prepare('SELECT id, content, isValidate, updatedAt, user_id, post_id FROM comment WHERE post_id = ?');
-        $req->execute(array($id));
-
-        return $comments = $req->fetchAll();
-    }
-
     /**
      * @param int $id
      * 
@@ -103,6 +38,22 @@ class UserModel
         $req = $db->prepare('SELECT * FROM user where id = ?');
         $req->execute(array($id));
 
-        return $user = $req->fetchAll();
+        return $user = $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+     /**
+     * @return array
+     */
+    public function getUserByPseudo(string $pseudo) : array
+    {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT * FROM user where pseudo = ?');
+        $req->execute(array($pseudo));
+
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 }

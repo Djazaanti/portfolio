@@ -10,12 +10,13 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 use Oc\Blog\model\PostModel;
+use Oc\Blog\model\CommentModel;
 
 
 /**
  * @UserController Le controller permettant de gérer l'utilisateur
  */
-class BlogController
+class PostController
 {
     /**
      * @var TwigService Twig
@@ -34,12 +35,15 @@ class BlogController
     }
 
     /**
+     * @param int $id
+     * 
      * @return void
      */
-    public function showBlog() : void{
+    public function showPostAndComments(int $id) : void{
         $postModel = new PostModel();
-        $posts = $postModel->getPosts();
-        echo $this->twigService->get()->render('blog.html.twig', ['posts' => $posts]); 
-        // echo $this->twigService->get()->render('posts.html.twig', compact('posts'));
+        $commentModel = new CommentModel();
+        $post = $postModel->getPost($id);
+        $comments = $commentModel->getComments($id);
+        echo $this->twigService->get()->render('post.html.twig', ['comments' => $comments, 'post' => $post]);
     }
 }

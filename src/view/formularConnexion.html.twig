@@ -1,0 +1,62 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Connexion {% endblock %}
+
+{% block content %} 
+    <section class="page-section portfolio" id="portfolio">
+        <div class="container">
+
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Connexion</h2>
+
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+
+        </div>
+        <!-- Contact Section Form-->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                {% if errorMessage is defined %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ errorMessage }}
+                    </div>
+                {% endif %}
+
+                {% if successMessage is defined %}
+                    <div class="alert alert-success" role="alert">
+                        {{ successMessage }}
+                    </div>
+                {% endif %}
+
+                <form method="post" action="index.php?connexion" accept-charset="UTF-8">
+                    {# {{ csrfInput() }} #}
+                    <input type="hidden" name="action" value="login">
+                
+                    <div class="form-floating mb-3">
+                        <input class="form-control" name="pseudo" id="pseudo" type="text" required/>
+                        <label for="pseudo">Pseudo</label>
+                        {# value="{{ craft.app.user.rememberedUsername }}"> #}
+                    </div>
+                
+                    <div class="form-floating mb-3">
+                        <input class="form-control" name="password" id="password" type="password" required/>
+                        <label for="password">Mot de passe</label>
+                    </div>
+                
+                    <div class="form-floating mb-3">
+                        <input name="rememberMe" type="checkbox" value="1">
+                        Se souvenir de moi
+                    </div>
+                
+                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Se connecter</button>
+                </form>        
+                <p><a href="index.php?oublimdp">mot de passe oublié ?</a></p>
+                {# <p><a href="{{ url("forgotpassword") }}">Mot de passe oublié ?</a></p> #}
+            </div>
+        </div>
+    </section>   
+{% endblock %} {# content #}
