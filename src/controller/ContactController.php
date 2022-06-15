@@ -107,7 +107,7 @@ class ContactController
         }
 
         $isEmailSended = $this->sendEmail($nameValid, $lastnameValid, $emailValid, $messageValid);
-        if ($isEmailSended == false) {
+        if ($isEmailSended === false) {
             $_SESSION['flash'] = 'error';
             $_SESSION['flash_message'] = "Une erreur est survenue. L'e-mail n'a pas pu être envoyé.";
         } else {

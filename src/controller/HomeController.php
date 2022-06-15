@@ -42,6 +42,4 @@ class HomeController
 
         echo $twig->render('home.html.twig', ['posts' => $posts]);
     }
-
-
 }

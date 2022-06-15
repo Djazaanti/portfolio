@@ -13,7 +13,7 @@ use Oc\Blog\model\PostModel;
 
 
 /**
- * @UserController Le controller permettant de gérer l'utilisateur
+ * UserController Le controller permettant de gérer l'utilisateur
  */
 class BlogController
 {
@@ -40,6 +40,5 @@ class BlogController
         $postModel = new PostModel();
         $posts = $postModel->getPosts();
         echo $this->twigService->get()->render('blog.html.twig', ['posts' => $posts]); 
-        // echo $this->twigService->get()->render('posts.html.twig', compact('posts'));
     }
 }

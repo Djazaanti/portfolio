@@ -71,5 +71,4 @@ class PostModel
 
         return $req->fetchAll();
     }
-
 }

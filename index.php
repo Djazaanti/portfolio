@@ -16,8 +16,6 @@ session_start();
 // convert id for URL of post details
 $postId = intval(substr($_SERVER['QUERY_STRING'], -1));
 
-// var_dump($_SERVER);
-
 switch (true) {    
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] == 'POST' :

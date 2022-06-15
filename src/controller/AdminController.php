@@ -29,5 +29,4 @@ class AdminController{
 
         echo $this->twigService->get()->render('dashboard.html.twig', ['admins' => $admins]);
     }
-
 }
