@@ -29,7 +29,7 @@ class ConnexionController{
      * 
      * @return void
      */
-    public function verifyConnexion(string $pseudo, string $password) : void 
+    public function verifyConnexionAdmin(string $pseudo, string $password) : void 
     {
         $userModel = new UserModel();
         $user = $userModel->getUserByPseudo($pseudo);
@@ -39,21 +39,17 @@ class ConnexionController{
             echo $this->twigService->get()->render('admin/dashboard.html.twig');
         }
         else {
-            echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"l'utilisateur n'a pas les droits d'accès"]);
+            echo $this->twigService->get()->render('formularConnexionAdmin.html.twig',  ['errorMessage' =>"l'utilisateur n'a pas les droits d'accès"]);
         }
     }
 
+    
     /**
-     * Fonction test pour d'afficher la home page
-     * @return void
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
      * @return void
      */
-    public function FormularConnexionPage() : void
+    public function formularConnexionAdmin() : void
     {
-        echo $this->twigService->get()->render('formularConnexion.html.twig');
+        echo $this->twigService->get()->render('formularConnexionAdmin.html.twig');
     }
 
     /**

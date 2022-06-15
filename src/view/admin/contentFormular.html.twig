@@ -1,3 +1,10 @@
+{% extends "admin/base.html.twig" %}
+
+{# code security : only admin can access in this page #}
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+
 <section class="page-section portfolio" id="portfolio">
         <div class="container">
 
@@ -27,7 +34,7 @@
                     </div>
                 {% endif %}
 
-                <form method="post" action="index.php?connexion" accept-charset="UTF-8">
+                <form method="post" action="" accept-charset="UTF-8">
                     {# {{ csrfInput() }} #}
                     <input type="hidden" name="action" value="login">
                 
@@ -53,4 +60,5 @@
                 {# <p><a href="{{ url("forgotpassword") }}">Mot de passe oublié ?</a></p> #}
             </div>
         </div>
-    </section>   
+    </section> 
+{% endblock %} {# content #}  

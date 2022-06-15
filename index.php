@@ -31,12 +31,12 @@ switch (true) {
 
             $contactController->submitFormContact($name, $lastname, $email, $message);
         }
-        elseif ($_SERVER['QUERY_STRING'] == 'connexion') {
+        elseif ($_SERVER['QUERY_STRING'] == 'dashboard') {
             // traitement formulaire de connexion
             $connexionController = new ConnexionController(TwigService::getInstance());
             $pseudo = trim($_POST['pseudo']);
             $password = trim($_POST['password']);
-            $connexionController->verifyConnexion($pseudo, $password);
+            $connexionController->verifyConnexionAdmin($pseudo, $password);
         }
         break;
     // once contact formular sent, show succes or error message
@@ -52,12 +52,14 @@ switch (true) {
         $postController = new PostController(TwigService::getInstance());
         $postController->showPostAndComments($postId);
         break;
-    case $_SERVER['QUERY_STRING'] == 'connexion' : 
+    case $_SERVER['QUERY_STRING'] == 'connexion-admin' : 
         $connexionController = new ConnexionController(TwigService::getInstance());
-        $connexionController->FormularConnexionPage();
+        $connexionController->formularConnexionAdmin();
+        break;
     case $_SERVER['QUERY_STRING'] == 'dashboard' : 
         $connexionController = new ConnexionController(TwigService::getInstance());
         $connexionController->dashboardPage();
+        break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :
         unset($_SESSION['flash']);
@@ -70,4 +72,4 @@ switch (true) {
         unset($_SESSION['flash_message']);
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
-}
+} 

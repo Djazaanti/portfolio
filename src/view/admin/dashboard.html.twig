@@ -1,3 +1,9 @@
+{# TODO : SECURE 
+    {% if user.isLoggedIn %}
+            code de la page
+        {% endif %}
+#}
+
 {% extends "admin/base.html.twig" %}
 
 {# code security : only admin can access in this page #}
@@ -5,6 +11,7 @@
 
 {% block content %}
 
+    <!-- section aout d'un article -->
     <section class="page-section portfolio" id="portfolio">
         <div class="container">
 
@@ -16,6 +23,71 @@
                 <div class="divider-custom-line"></div>
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                 <div class="divider-custom-line"></div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+
+            {% for admin in admins %} 
+                <pre>
+                    {{ dump(admin.pseudo) }}
+                </pre>
+            {% endfor %}
+                {% if errorMessage is defined %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ errorMessage }}
+                    </div>
+                {% endif %}
+
+                {% if successMessage is defined %}
+                    <div class="alert alert-success" role="alert">
+                        {{ successMessage }}
+                    </div>
+                {% endif %}
+
+                <form method="post" action="index.php?add-post" accept-charset="UTF-8">
+                
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Titre</label>
+                        <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Détail</label>
+                        <div class="col-sm-10">
+                        <input type="password" class="form-control" id="inputPassword">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">chapô</label>
+                        <div class="col-sm-10">
+                        <input type="password" class="form-control" id="inputPassword">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFileSm" class="form-label">photo</label>
+                        <input class="form-control form-control-sm" id="formFileSm" type="file">
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                publié
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <select class="form-select" aria-label="Default select example">
+                            {% for admin in admins %} 
+                            <option value="{{ admin.id }}">{{admin.pseudo}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Ajouter</button>
+                </form>
             </div>
         </div>
     </section>

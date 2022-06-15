@@ -33,6 +33,7 @@ class HomeController
      */
     public function showHome() : void
     {
+        session_destroy();
         $twig = $this->twigService->get();
         $postModel = new PostModel();
 
@@ -41,4 +42,6 @@ class HomeController
 
         echo $twig->render('home.html.twig', ['posts' => $posts]);
     }
+
+
 }

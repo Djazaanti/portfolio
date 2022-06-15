@@ -8,6 +8,8 @@ use PDO;
 
 class UserModel
 {
+    private const ROLE_ADMIN = 'admin';
+
     /**
      * @return \PDO|null
      */
@@ -53,6 +55,22 @@ class UserModel
 
         $req = $db->prepare('SELECT * FROM user where pseudo = ?');
         $req->execute(array($pseudo));
+
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdmins() : array
+    {
+        $db = $this->dbConnect();
+        if (null == $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT * FROM user where role = "admin" ');
+        $req->execute();
 
         return $req->fetch(PDO::FETCH_ASSOC);
     }
