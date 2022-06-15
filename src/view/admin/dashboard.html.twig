@@ -11,8 +11,8 @@
 
 {% block content %}
 
-    <!-- section aout d'un article -->
-    <section class="page-section portfolio" id="portfolio">
+    <!-- section -->
+    <section class="page-section portfolio " id="portfolio">
         <div class="container">
 
             <!-- Portfolio Section Heading-->
@@ -105,5 +105,30 @@
                 <div class="divider-custom-line"></div>
             </div>
         </div>
-    </section>
+    <!-- commentaires en attente -->
+    <table class="table container-sm">
+    <thead>
+            <tr>
+            <th scope="col">Id-article</th>
+            <th scope="col">Titre</th>
+            <th scope="col">commentaire</th>
+            <th scope="col">Date envoi</th>
+            <th scope="col">Pseudo</th>
+            <th scope="col">E-mail</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commentaire in commentaires %}
+           <tr>
+                <td>{{ commentaire.post_id }}</td>
+                <td>{{ commentaire.title }}</td>
+                <td>{{ commentaire.content }}</td>
+                <td>{{ commentaire.createdAt }}</td>
+                <td>{{ commentaire.pseudo }}</td>
+                <td>{{ commentaire.email }}</td>
+            </tr> 
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
 {% endblock %} {# content #}

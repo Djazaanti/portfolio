@@ -40,4 +40,25 @@ class CommentModel
 
         return $req->fetchAll();
     }
+
+    /**
+     * @return array
+     */
+    public function getCommentairesEnAttente() : array {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT comment.id, comment.content, comment.createdAt, comment.user_id, comment.post_id, user.id, pseudo, email, post.title
+                            FROM comment, user, post
+                            INNER JOIN user
+                            ON comment.user_id = user.id
+                            INNER JOIN post
+                            ON comment.post_id = post.id
+                            WHERE comment.isValidate = 1');
+        $req->execute();
+
+        return $req->fetchAll();
+    }
 }

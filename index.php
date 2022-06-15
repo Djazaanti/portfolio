@@ -9,6 +9,8 @@ use Oc\Blog\controller\HomeController;
 use Oc\Blog\controller\ConnexionController;
 use Oc\Blog\controller\BlogController;
 use Oc\Blog\controller\PostController;
+use Oc\Blog\controller\DashboardController;
+
 use Oc\Blog\service\TwigService;
 
 session_start();
@@ -55,8 +57,10 @@ switch (true) {
         $connexionController->formularConnexionAdmin();
         break;
     case $_SERVER['QUERY_STRING'] == 'dashboard' : 
-        $connexionController = new ConnexionController(TwigService::getInstance());
-        $connexionController->dashboardPage();
+        $dashboardController = new DashboardController(TwigService::getInstance());
+        $dashboardController->dashboardPage();
+        $dashboardController->commentairesEnAttente();
+
         break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :

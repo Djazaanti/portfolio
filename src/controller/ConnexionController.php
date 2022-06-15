@@ -51,12 +51,4 @@ class ConnexionController{
     {
         echo $this->twigService->get()->render('formularConnexionAdmin.html.twig');
     }
-
-    /**
-     * @return void
-     */
-    public function dashboardPage() : void
-    {
-        echo $this->twigService->get()->render('admin/dashboard.html.twig');
-    }
 }
