@@ -58,8 +58,8 @@ switch (true) {
         break;
     case $_SERVER['QUERY_STRING'] == 'dashboard' : 
         $dashboardController = new DashboardController(TwigService::getInstance());
-        $dashboardController->dashboardPage();
-        $dashboardController->commentairesEnAttente();
+        // $dashboardController->dashboardPage();
+        $dashboardController->dashboardEtcommentairesAValider();
 
         break;
     // If any case is found

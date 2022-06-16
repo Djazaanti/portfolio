@@ -44,19 +44,19 @@ class CommentModel
     /**
      * @return array
      */
-    public function getCommentairesEnAttente() : array {
+    public function getCommentairesAValider() : array {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
 
-        $req = $db->prepare('SELECT comment.id, comment.content, comment.createdAt, comment.user_id, comment.post_id, user.id, pseudo, email, post.title
-                            FROM comment, user, post
-                            INNER JOIN user
+        $req = $db->prepare('SELECT user.pseudo, user.email, comment.user_id, comment.id, comment.content, comment.createdAt, post.title
+                            FROM comment
+                            JOIN user
                             ON comment.user_id = user.id
-                            INNER JOIN post
+                            JOIN post
                             ON comment.post_id = post.id
-                            WHERE comment.isValidate = 1');
+                            WHERE isValidate = 1');
         $req->execute();
 
         return $req->fetchAll();

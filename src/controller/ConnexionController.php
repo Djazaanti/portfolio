@@ -35,8 +35,7 @@ class ConnexionController{
         $user = $userModel->getUserByPseudo($pseudo);
 
         if ($user['password'] == $password && $user['role'] == self::ROLE_ADMIN )  {
-            //  template admin page 'dashboard'
-            echo $this->twigService->get()->render('admin/dashboard.html.twig');
+            header('location: index.php?dashboard');
         }
         else {
             echo $this->twigService->get()->render('formularConnexionAdmin.html.twig',  ['errorMessage' =>"l'utilisateur n'a pas les droits d'accès"]);

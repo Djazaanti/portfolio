@@ -16,5 +16,12 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            {% for admin in admins %} 
+                <pre>
+                    {{ dump(admin.pseudo) }}
+                </pre>
+            {% endfor %}
+        </div>
     </footer>
 {% endblock %}{# footer #}

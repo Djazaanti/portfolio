@@ -26,23 +26,14 @@ class DashboardController{
         $this->twigService = $twigService;
     }
 
-    
     /**
      * @return void
      */
-    public function dashboardPage() : void
-    {
-        echo $this->twigService->get()->render('admin/dashboard.html.twig');
-    }
-
-    /**
-     * @return void
-     */
-    public function commentairesEnAttente() : void {
+    public function dashboardEtcommentairesAValider() : void {
 
         $commentModel = new CommentModel();
-        $commentaires = $commentModel->getCommentairesEnAttente();
+        $commentaires = $commentModel->getCommentairesAValider();
 
-        echo $this->twigService->get()->render('dashboard.html.twig', ['commentaires' => $commentaires ]);
+        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['commentaires' => $commentaires]);
     }
 }
