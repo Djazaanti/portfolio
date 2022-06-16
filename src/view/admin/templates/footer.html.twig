@@ -16,12 +16,11 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            {% for admin in admins %} 
-                <pre>
-                    {{ dump(admin.pseudo) }}
-                </pre>
-            {% endfor %}
+        <div class="col-lg-4 mb-5 mb-lg-0">
+                    {% for admin in admins %} 
+                        {{ admin.pseudo }}
+                    {% endfor %}
+                </div>
         </div>
     </footer>
 {% endblock %}{# footer #}

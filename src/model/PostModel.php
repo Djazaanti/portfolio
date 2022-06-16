@@ -71,4 +71,33 @@ class PostModel
 
         return $req->fetchAll();
     }
+
+    /**
+     * @param string $title
+     * @param string $content
+     * @param string $chapo
+     * @param string $media
+     * @param bool $isPublished
+     * @param string $adminName
+     */
+    public function insertPostInDB(string $title, string $content, string $chapo, string $media, string $isPublished, mixed $createdAt, int $id_admin) {
+
+        var_dump($id_admin);
+
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+        $req = $db->prepare("INSERT INTO post(title, content, chapo, media, isPublished, user_id) 
+                             VALUES(:title, :content, :chapo, :media, :isPublished, :user_id) ");
+        $req->execute(array(
+                            "title" => $title,
+                            "content" => $content,
+                            "chapo" => $chapo,
+                            "media" => $media,
+                            "isPublished" => $isPublished,
+                            "user_id" => $id_admin
+        ));
+        die;        
+    }
 }

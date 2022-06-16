@@ -72,6 +72,6 @@ class UserModel
         $req = $db->prepare('SELECT * FROM user where role = "admin" ');
         $req->execute();
 
-        return $req->fetch(PDO::FETCH_ASSOC);
+        return $req->fetchAll();
     }
 }

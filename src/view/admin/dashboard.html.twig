@@ -40,42 +40,42 @@
                     </div>
                 {% endif %}
 
-                <form method="post" action="index.php?add-post" accept-charset="UTF-8">
+                <form name="add_post" method="post" action="index.php?add-post" accept-charset="UTF-8" enctype="multipart/form-data">
                 
                     <div class="mb-3 row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Titre</label>
+                        <label for="title" class="col-sm-2 col-form-label required">Titre</label>
                         <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+                        <input type="text" class="form-control" id="title" name="title" required="required">
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label">Détail</label>
+                        <label for="content" class="col-sm-2 col-form-label">Contenu</label>
                         <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword">
+                        <input type="text" class="form-control" id="content" name="content" required="required">
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label">chapô</label>
+                        <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
                         <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword">
+                        <input type="text" class="form-control" id="chapo" name="chapo" required="required">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="formFileSm" class="form-label">photo</label>
-                        <input class="form-control form-control-sm" id="formFileSm" type="file">
+                        <label for="media" class="form-label">Média</label>
+                        <input class="form-control form-control-sm" id="media" type="file" name="media" required="required">
                     </div>
                     <div class="mb-3 row">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                publié
+                            <input class="form-check-input" type="checkbox" name="isPublished" id="isPublished" required="required">
+                            <label class="form-check-label" for="isPublished">
+                                Publié ?
                             </label>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <select class="form-select" aria-label="Default select example">
+                        <select name="userId" class="form-select" aria-label="Default select example">
                             {% for admin in admins %} 
-                            <option value="{{ admin.id }}">{{admin.pseudo}}</option>
+                            <option selected value="{{ admin.id }}">{{admin.pseudo}}</option>
                             {% endfor %}
                         </select>
                     </div>
