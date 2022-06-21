@@ -82,20 +82,19 @@ class PostModel
      */
     public function insertPostInDB(string $title, string $content, string $chapo, string $media, string $isPublished, mixed $createdAt, int $id_admin) {
 
-        var_dump($id_admin);
-
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
-        $req = $db->prepare("INSERT INTO post(title, content, chapo, media, isPublished, user_id) 
-                             VALUES(:title, :content, :chapo, :media, :isPublished, :user_id) ");
+        $req = $db->prepare("INSERT INTO post(title, content, chapo, media, isPublished, createdAt, user_id) 
+                             VALUES(:title, :content, :chapo, :media, :isPublished, :createdAt, :user_id) ");
         $req->execute(array(
                             "title" => $title,
                             "content" => $content,
                             "chapo" => $chapo,
                             "media" => $media,
                             "isPublished" => $isPublished,
+                            "createdAt" => date("d_m_Y_H_i_s"),
                             "user_id" => $id_admin
         ));
         die;        

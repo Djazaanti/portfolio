@@ -43,7 +43,7 @@
                 <form name="add_post" method="post" action="index.php?add-post" accept-charset="UTF-8" enctype="multipart/form-data">
                 
                     <div class="mb-3 row">
-                        <label for="title" class="col-sm-2 col-form-label required">Titre</label>
+                        <label for="title" class="col-sm-2 col-form-label">Titre</label>
                         <div class="col-sm-10">
                         <input type="text" class="form-control" id="title" name="title" required="required">
                         </div>
@@ -102,12 +102,11 @@
     <table class="table container-sm">
     <thead>
             <tr>
-            <th scope="col">Titre article</th>
-            <th scope="col">commentaire</th>
-            <th scope="col">Date envoi</th>            
-            <th scope="col">Publieur</th>
-            <th scope="col">E-mail</th>
-
+                <th scope="col">Titre article</th>
+                <th scope="col">commentaire</th>
+                <th scope="col">Date envoi</th>            
+                <th scope="col">Publieur</th>
+                <th scope="col">E-mail</th>
             </tr>
         </thead>
         <tbody>
@@ -118,22 +117,27 @@
                 <td>{{ commentaire.createdAt }}</td>
                 <td>{{ commentaire.pseudo }}</td>
                 <td>{{ commentaire.email }}</td>
-                <td>
-                    <div class="form-check" id="">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Valider
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-check" id="">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Supprimer
-                        </label>
-                    </div>
-                </td>
+                    <td>
+                        <form name="valid_comment" action="index.php?validComment" method="post">
+                            <div class="form-check">
+                            <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkValidComment">
+                                <label class="form-check-label" for="checkValidComment">
+                                    <button type="submit">Valider</button>
+                                </label>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form name="delete_comment" action="index.php?deleteComment" method="post">
+                            <div class="form-check">
+                            <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkDeleteComment" >
+                                <label class="form-check-label" for="checkDeleteComment">
+                                    <button type="submit">Supprimer</button>
+                                </label>
+                            </div>
+                        </form>
+                    </td>
+                </div>
             </tr> 
         {% endfor %}
         </tbody>

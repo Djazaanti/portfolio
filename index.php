@@ -40,40 +40,30 @@ switch (true) {
             $connexionController->verifyConnexionAdmin($pseudo, $password);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'add-post') {
-            
-
             // Vérifie si le fichier a été uploadé sans erreur.
             if($_FILES["media"]["error"] == 0){
                 $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
                 $filename = $_FILES["media"]["name"];
                 $filetype = $_FILES["media"]["type"];
                 $filesize = $_FILES["media"]["size"];
-                var_dump(date("d-m-Y H:i:s"));
+                $file_tmp_name = $_FILES["media"]["tmp_name"];
                 // Vérifie l'extension du fichier
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                if(!array_key_exists($ext, $allowed)) die("Erreur : Veuillez sélectionner un format de fichier valide.");
-
-                // Vérifie la taille du fichier - 5Mo maximum
-                $maxsize = 5 * 1024 * 1024;
-                if($filesize > $maxsize) die("Error: La taille du fichier est supérieure à la limite autorisée.");
-
-                // Vérifie le type MIME du fichier
-                if(in_array($filetype, $allowed)){
-                    // Vérifie si le fichier existe avant de le télécharger.
-                    if(file_exists("upload/" . $_FILES["media"]["name"])){
-                        echo $_FILES["media"]["name"] . " existe déjà.";
-                    } else{
-                        move_uploaded_file($_FILES["media"]["tmp_name"], "public/assets/img/portfolio/".date("d_m_Y_H_i_s").'.'.$ext);
-                    }
-                }
-                else{
-                    echo "Error: Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer."; 
-                }   
 
                 $dashboardController = new DashboardController(TwigService::getInstance());
                 $dashboardController->addPost($_POST['title'], $_POST['content'], $_POST['chapo'], date("d_m_Y_H_i_s").'.'.$ext, $_POST['isPublished'], date("d-m-Y H:i:s"), $_POST['userId']);
+                $dashboardController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
             }   
-        }       
+        } 
+        elseif ($_SERVER['QUERY_STRING'] == 'validComment'){
+            // récupérer l'id du commentaire
+            $dashboardController = new DashboardController(TwigService::getInstance());
+            $dashboardController->validComment($_POST['idComment']);
+        }     
+        elseif ($_SERVER['QUERY_STRING'] == 'deleteComment'){
+            $dashboardController = new DashboardController(TwigService::getInstance());
+            $dashboardController->deleteComment($_POST['idComment']);
+        }  
         break;
     // once contact formular sent, show succes or error message
     case $_SERVER['QUERY_STRING'] == 'contact' :

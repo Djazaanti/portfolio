@@ -56,9 +56,39 @@ class CommentModel
                             ON comment.user_id = user.id
                             JOIN post
                             ON comment.post_id = post.id
-                            WHERE isValidate = 1');
+                            WHERE isValidate = 0');
         $req->execute();
 
         return $req->fetchAll();
     }
+
+    /**
+     * @param mixed $idComment
+     * 
+     */
+    public function updateValidComment($idComment) {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('UPDATE comment SET isValidate=:isValidate WHERE id=:id');
+        $req->execute(array(
+            "isValidate" => 1,
+            "id" => $idComment
+        ));       
+    }
+
+    public function updateDeleteComment($idComment) {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('DELETE FROM comment WHERE id=:id');
+        $req->execute(array(
+            "id" => $idComment
+        ));       
+    }
+
 }

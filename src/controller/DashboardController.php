@@ -63,7 +63,61 @@ class DashboardController{
         $postModel = new PostModel();
         $retunReq = $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
 
+    }
+
+   
+    /**
+     * @param mixed $ext
+     * @param mixed $allowed
+     * @param mixed $filesize
+     * @param mixed $filetype
+     * @param mixed $filename
+     * @param mixed $file_tmp_name
+     * 
+     * @return void
+     */
+    public function downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name) : void{
+        
+        if(!array_key_exists($ext, $allowed)) die("Erreur : Veuillez sélectionner un format de fichier valide.");
+
+        // Vérifie la taille du fichier - 5Mo maximum
+        $maxsize = 5 * 1024 * 1024;
+        if($filesize > $maxsize) die("Error: La taille du fichier est supérieure à la limite autorisée.");
+
+        // Vérifie le type MIME du fichier
+        if(in_array($filetype, $allowed)){
+            // Vérifie si le fichier existe avant de le télécharger.
+            if(file_exists("upload/" .$filename)){
+                echo $filename. " existe déjà.";
+            } else{
+                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y_H_i_s").'.'.$ext);
+            }
+        }
+        else{
+            echo "Error: Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer."; 
+        } 
+
         header('location: index.php?dashboard');
 
     }
+
+    /**
+     * @param mixed $idComment
+     * 
+     * @return void
+     */
+    public function validComment($idComment) : void {
+        $commentModel = new CommentModel();
+        $commentModel->updateValidComment($idComment);
+
+        header('location: index.php?dashboard');
+    }
+
+    public function deleteComment($idComment) : void {
+        $commentModel = new CommentModel();
+        $commentModel->updateDeleteComment($idComment);
+
+        header('location: index.php?dashboard');
+    }
+
 }
