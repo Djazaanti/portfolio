@@ -43,25 +43,28 @@ class DashboardController{
     }
 
 
+    
     /**
-     * @param string $title
-     * @param string $content
-     * @param string $chapo
-     * @param string $media
-     * @param string $isPublished
+     * @param mixed $title
+     * @param mixed $content
+     * @param mixed $chapo
+     * @param mixed $media
+     * @param mixed $isPublished
      * @param mixed $createdAt
-     * @param string $userId
+     * @param mixed $userId
      * 
      * @return void
      */
-    public function addPost(string $title, string $content, string $chapo, string $media, string $isPublished, mixed $createdAt, string $userId) : void {
+    public function addPost(mixed $title, mixed $content, mixed $chapo, mixed $media, mixed $isPublished, mixed $createdAt, mixed $userId) : void {
         $title = htmlspecialchars($title);
         $content = htmlspecialchars($content);
         $chapo = htmlspecialchars($chapo);
         $userId =  intval($userId);
         
         $postModel = new PostModel();
-        $retunReq = $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
+        $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
+
+        header('location: index.php?dashboard');
 
     }
 
@@ -76,7 +79,7 @@ class DashboardController{
      * 
      * @return void
      */
-    public function downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name) : void{
+    public function downloadFile(mixed $ext, mixed $allowed, mixed $filesize, mixed $filetype, mixed $filename, mixed $file_tmp_name) : void{
         
         if(!array_key_exists($ext, $allowed)) die("Erreur : Veuillez sélectionner un format de fichier valide.");
 
@@ -106,14 +109,19 @@ class DashboardController{
      * 
      * @return void
      */
-    public function validComment($idComment) : void {
+    public function validComment(mixed $idComment) : void {
         $commentModel = new CommentModel();
         $commentModel->updateValidComment($idComment);
 
         header('location: index.php?dashboard');
     }
 
-    public function deleteComment($idComment) : void {
+    /**
+     * @param mixed $idComment
+     * 
+     * @return void
+     */
+    public function deleteComment(mixed $idComment) : void {
         $commentModel = new CommentModel();
         $commentModel->updateDeleteComment($idComment);
 

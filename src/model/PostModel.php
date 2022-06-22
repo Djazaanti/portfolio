@@ -73,14 +73,17 @@ class PostModel
     }
 
     /**
-     * @param string $title
-     * @param string $content
-     * @param string $chapo
-     * @param string $media
-     * @param bool $isPublished
-     * @param string $adminName
+     * @param mixed $title
+     * @param mixed $content
+     * @param mixed $chapo
+     * @param mixed $media
+     * @param mixed $isPublished
+     * @param mixed $createdAt
+     * @param mixed $id_admin
+     * 
+     * @return array
      */
-    public function insertPostInDB(string $title, string $content, string $chapo, string $media, string $isPublished, mixed $createdAt, int $id_admin) {
+    public function insertPostInDB(mixed $title, mixed $content, mixed $chapo, mixed $media, mixed $isPublished, mixed $createdAt, mixed $id_admin) : array {
 
         $db = $this->dbConnect();
         if (null === $db) {
@@ -94,7 +97,7 @@ class PostModel
                             "chapo" => $chapo,
                             "media" => $media,
                             "isPublished" => $isPublished,
-                            "createdAt" => date("d_m_Y_H_i_s"),
+                            "createdAt" => $createdAt,
                             "user_id" => $id_admin
         ));
         die;        

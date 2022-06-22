@@ -40,6 +40,10 @@ switch (true) {
             $connexionController->verifyConnexionAdmin($pseudo, $password);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'add-post') {
+            // var_dump($_POST);
+            if (!isset($_POST['isPublished'])) {
+                $_POST['isPublished'] = 0;
+            }
             // Vérifie si le fichier a été uploadé sans erreur.
             if($_FILES["media"]["error"] == 0){
                 $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
@@ -51,8 +55,9 @@ switch (true) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
                 $dashboardController = new DashboardController(TwigService::getInstance());
-                $dashboardController->addPost($_POST['title'], $_POST['content'], $_POST['chapo'], date("d_m_Y_H_i_s").'.'.$ext, $_POST['isPublished'], date("d-m-Y H:i:s"), $_POST['userId']);
                 $dashboardController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
+                $dashboardController->addPost($_POST['title'], $_POST['content'], $_POST['chapo'], date("d_m_Y_H_i_s").'.'.$ext, $_POST['isPublished'], date("Y-m-d H:i:s"), $_POST['userId']);
+
             }   
         } 
         elseif ($_SERVER['QUERY_STRING'] == 'validComment'){
