@@ -1,0 +1,116 @@
+{% extends "admin/base.html.twig" %}
+
+{# code security : only admin can access in this page #}
+{% block title %} Détail article {% endblock %}
+
+{% block content %}
+
+    <!-- section -->
+    <section class="page-section portfolio " id="portfolio">
+        <div class="container">
+
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Détail de l'article</h2>
+            
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <form name="PostDetail">
+                    {% for postDetail in post %}
+                        <div class="mb-3 row">
+                            <label for="title" class="col-sm-2 col-form-label">Titre</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" value="{{ postDetail.title }}" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" type="text" rows="2" readonly>{{ postDetail.chapo}}</textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="content" class="col-sm-2 col-form-label">Contenu</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" type="text" rows="5" readonly>{{ postDetail.content}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="mediaExist" class="col-sm-2 col-form-label">Média</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" value="{{ postDetail.media}}" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="isPublished" class="col-sm-2 col-form-label">Publié ? </label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" value="{% if post.isPublished == 0 %}
+                                                                                    {{ 'Non' }}
+                                                                                {% endif %}
+                                                                                {% if post.isPublished == 1 %}
+                                                                                    {{ 'Oui' }}
+                                                                                {% endif %}" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="admin" class="col-sm-2 col-form-label">Admin</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" value=" {% for admin in admins %} 
+                                                                                    {{ admin.pseudo }}
+                                                                                 {% endfor %}"  readonly>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="row g-3">
+
+                    <div class="col-sm">
+                        <form name="edit_post" action="index.php?editPost" method="post">
+                        <div class="col-sm-10">
+                            <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
+                            <label class="form-check-label" for="checkEditPost">
+                                <button type="submit">Mod</button>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <form name="delete_post" action="index.php?deletePost" method="post">
+                            <label class="form-check-label" for="checkDeletePost">
+                                <button type="submit">Supp</button>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
+                            </div>
+                        </form>
+                    </div>                  
+                    {% if post.isPublished == 0 %}
+                        <div class="col-sm">
+                            <form name="publishpublishPost" action="index.php?publishPost" method="post">
+                                <label class="form-check-label" for="checkPublishPost">
+                                    <button type="submit">Pub</button>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="hidden" name="publishPost" value="{{ post.id }}" id="checkPublishPost" >
+                                </div>
+                            </form>
+                        </div>
+                    {% endif %} 
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

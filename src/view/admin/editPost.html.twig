@@ -1,0 +1,96 @@
+{% extends "admin/base.html.twig" %}
+
+{# code security : only admin can access in this page #}
+{% block title %} Edit Post {% endblock %}
+
+{% block content %}
+
+    <!-- section -->
+    <section class="page-section portfolio " id="portfolio">
+        <div class="container">
+
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Mise à jour d'article</h2>
+            
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                {% if errorMessage is defined %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ errorMessage }}
+                    </div>
+                {% endif %}
+
+                {% if successMessage is defined %}
+                    <div class="alert alert-success" role="alert">
+                        {{ successMessage }}
+                    </div>
+                {% endif %}
+
+                <form name="edit_post" method="post" action="index.php?formEditPost" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {% for postColumn in post %}
+                        <div class="mb-3 row">
+                            <label for="title" class="col-sm-2 col-form-label">Titre</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="title" name="title" value="{{ postColumn.title }}" required="required">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="content" class="col-sm-2 col-form-label">Contenu</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="content" name="content" value="{{ postColumn.content}}" required="required">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="chapo" name="chapo" value="{{ postColumn.chapo }}" required="required">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="mediaExist" class="col-sm-2 col-form-label">Média existant</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="mediaExist" name="mediaExist" value="{{ postColumn.media }}" aria-label="readonly input example" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="media" class="form-label">Télécharger un autre Média</label>
+                            <input class="form-control form-control-sm" id="media" type="file" name="media">
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="isPublished" class="col-sm-2 col-form-label">Publié ? </label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="isPublished" name="isPublished" value="{{ postColumn.isPublished }}" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Publish" id="Publish">
+                                <label class="form-check-label" for="Publish">
+                                    Publier maintenant  ?
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <select name="userId" class="form-select" aria-label="Default select example">
+                                {% for admin in admins %} 
+                                <option selected value="{{ admin.id }}">{{admin.pseudo}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                        <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Mettre à jour</button>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

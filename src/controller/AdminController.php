@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_type=1);
+declare(strict_types=1);
 
 namespace OC\Blog\controller;
 
@@ -9,7 +9,9 @@ use Twig\error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use OC\Blog\model\UserModel;
+use Oc\Blog\model\UserModel;
+use Oc\Blog\model\PostModel;
+
 
 class AdminController{
 
@@ -27,6 +29,51 @@ class AdminController{
         $userModel = new UserModel();
         $admins = $userModel->getAdmins();
 
-        echo $this->twigService->get()->render('dashboard.html.twig', ['admins' => $admins]);
+        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['admins' => $admins]);
+    }
+
+    /**
+     * @return void
+     */
+    public function adminPosts() : void {
+        $postModel = new PostModel();
+        $posts = $postModel->getAdminPosts();
+
+        echo $this->twigService->get()->render('admin/adminPosts.html.twig', ['posts' => $posts]);
+    }
+
+   
+    /**
+     * @param mixed $id
+     * 
+     * @return void
+     */
+    public function adminPostDetails($id) : void{
+        $postModel = new PostModel();
+        $post = $postModel->getPost($id);
+
+        $userModel = new UserModel();
+        $admins = $userModel->getAdmins();
+
+        echo $this->twigService->get()->render('admin/adminPostDetails.html.twig', ['post' => $post, 'admins' => $admins]);
+
+    }
+
+    /**
+     * @param mixed $id
+     * 
+     * @return [type]
+     */
+    public function editPost($id) {
+        $postModel = new PostModel();
+        $id = intval($id);
+        $postPublished = $postModel->getPost($id);
+        // var_dump($postPublished);
+
+        $userModel = new UserModel();
+        $admins = $userModel->getAdmins();
+
+        echo $this->twigService->get()->render('admin/editPost.html.twig', ['post' => $postPublished, 'admins' => $admins]);
+
     }
 }

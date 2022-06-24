@@ -10,6 +10,8 @@ use Oc\Blog\controller\ConnexionController;
 use Oc\Blog\controller\BlogController;
 use Oc\Blog\controller\PostController;
 use Oc\Blog\controller\DashboardController;
+use Oc\Blog\controller\AdminController;
+
 
 use Oc\Blog\service\TwigService;
 
@@ -69,6 +71,10 @@ switch (true) {
             $dashboardController = new DashboardController(TwigService::getInstance());
             $dashboardController->deleteComment($_POST['idComment']);
         }  
+        elseif ($_SERVER['QUERY_STRING'] == 'editPost') {
+            $adminController = new AdminController(TwigService::getInstance());
+            $adminController->editPost($_POST['idPost']);
+        }
         break;
     // once contact formular sent, show succes or error message
     case $_SERVER['QUERY_STRING'] == 'contact' :
@@ -90,6 +96,14 @@ switch (true) {
     case $_SERVER['QUERY_STRING'] == 'dashboard' : 
         $dashboardController = new DashboardController(TwigService::getInstance());
         $dashboardController->dashboard();
+        break;
+    case $_SERVER['QUERY_STRING'] == 'adminPosts' :
+        $adminController = new AdminController(TwigService::getInstance());
+        $adminController->adminPosts();
+        break;
+    case $_SERVER['QUERY_STRING'] == 'adminPostDetails/'.$postId : 
+        $adminController = new AdminController(TwigService::getInstance());
+        $adminController->adminPostDetails($postId);
         break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :

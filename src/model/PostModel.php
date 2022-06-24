@@ -48,7 +48,22 @@ class PostModel
             return [];
         }
 
-        $posts = $db->prepare('SELECT id, title, content, updatedAt, chapo, media  FROM post ORDER BY id DESC');
+        $posts = $db->prepare('SELECT id, title, content, createdAt, updatedAt, chapo, media  FROM post ORDER BY id DESC');
+        $posts->execute();
+
+        return $posts->fetchAll();
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdminPosts() : array {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $posts = $db->prepare('SELECT id, title, content, createdAt, isPublished, updatedAt, chapo, media  FROM post ORDER BY isPublished ASC');
         $posts->execute();
 
         return $posts->fetchAll();
