@@ -52,10 +52,10 @@
                         <div class="mb-3 row">
                             <label for="isPublished" class="col-sm-2 col-form-label">Publié ? </label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="text" value="{% if post.isPublished == 0 %}
+                                <input class="form-control" type="text" value="{% if postDetail.isPublished == 0 %}
                                                                                     {{ 'Non' }}
                                                                                 {% endif %}
-                                                                                {% if post.isPublished == 1 %}
+                                                                                {% if postDetail.isPublished == 1 %}
                                                                                     {{ 'Oui' }}
                                                                                 {% endif %}" readonly>
                             </div>
@@ -68,7 +68,6 @@
                                                                                  {% endfor %}"  readonly>
                             </div>
                         </div>
-                    {% endfor %}
                 </form>
             </div>
         </div>
@@ -80,7 +79,7 @@
                     <div class="col-sm">
                         <form name="edit_post" action="index.php?editPost" method="post">
                         <div class="col-sm-10">
-                            <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
+                            <input type="hidden" name="idPost" value="{{ postDetail.id }}" id="checkEditPost">
                             <label class="form-check-label" for="checkEditPost">
                                 <button type="submit">Mod</button>
                             </label>
@@ -92,22 +91,23 @@
                                 <button type="submit">Supp</button>
                             </label>
                             <div class="col-sm-10">
-                                <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
+                                <input type="hidden" name="idPost" value="{{ postDetail.id }}" id="checkDeletePost" >
                             </div>
                         </form>
-                    </div>                  
-                    {% if post.isPublished == 0 %}
+                    </div>     
+                    {% if postDetail.isPublished == 0 %}
                         <div class="col-sm">
                             <form name="publishpublishPost" action="index.php?publishPost" method="post">
                                 <label class="form-check-label" for="checkPublishPost">
                                     <button type="submit">Pub</button>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="hidden" name="publishPost" value="{{ post.id }}" id="checkPublishPost" >
+                                    <input type="hidden" name="publishPost" value="{{ postDetail.id }}" id="checkPublishPost" >
                                 </div>
                             </form>
                         </div>
                     {% endif %} 
+                    {% endfor %}
                 </div>
             </div>
         </div>

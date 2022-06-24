@@ -18,7 +18,8 @@ use Oc\Blog\service\TwigService;
 session_start();
 
 // convert id for URL of post details
-$postId = intval(substr($_SERVER['QUERY_STRING'], -1));
+$idString = explode('/', $_SERVER['QUERY_STRING']);
+$postId = intval($idString[1]);
 
 switch (true) {    
     // Manage POST form
