@@ -70,11 +70,11 @@ class PostModel
     }
 
     /**
-     * @param int $id
+     * @param mixed $id
      * 
      * @return array
      */
-    public function getPost(int $id) : array
+    public function getPost(mixed $id) : array
     {
         $db = $this->dbConnect();
         if (null === $db) {

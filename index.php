@@ -11,6 +11,7 @@ use Oc\Blog\controller\BlogController;
 use Oc\Blog\controller\PostController;
 use Oc\Blog\controller\DashboardController;
 use Oc\Blog\controller\AdminController;
+use Oc\Blog\controller\CommentController;
 
 
 use Oc\Blog\service\TwigService;
@@ -19,7 +20,10 @@ session_start();
 
 // convert id for URL of post details
 $idString = explode('/', $_SERVER['QUERY_STRING']);
-$postId = intval($idString[1]);
+if ( is_int($idString )) {
+    var_dump($idString);    
+    $postId = intval($idString[1]);
+}
 
 switch (true) {    
     // Manage POST form
@@ -75,47 +79,51 @@ switch (true) {
             $adminController = new AdminController(TwigService::getInstance());
             $adminController->editPost($_POST['idPost']);
         }
-        break;
+    break;
     // once contact formular sent, show succes or error message
     case $_SERVER['QUERY_STRING'] == 'contact' :
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
-        break;
+    break;
     case $_SERVER['QUERY_STRING'] == 'blog' :
         $blogController = new BlogController(TwigService::getInstance());
         $blogController->showBlog();
-        break;
+    break;
     case $_SERVER['QUERY_STRING'] == 'post/'.$postId :
         $postController = new PostController(TwigService::getInstance());
         $postController->showPostAndComments($postId);
-        break;
+    break;
+    case $_SERVER['QUERY_STRING'] == 'addCommentFormular' : 
+        $commentController = new CommentController(TwigService::getInstance());
+        $commentController->addCommentFormular();
+    break;
     case $_SERVER['QUERY_STRING'] == 'connexion-admin' : 
         $connexionController = new ConnexionController(TwigService::getInstance());
         $connexionController->formularConnexionAdmin();
-        break;
+    break;
     case $_SERVER['QUERY_STRING'] == 'dashboard' : 
         $dashboardController = new DashboardController(TwigService::getInstance());
         $dashboardController->dashboard();
-        break;
+    break;
     case $_SERVER['QUERY_STRING'] == 'adminPosts' :
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPosts();
-        break;
+    break;
     case $_SERVER['QUERY_STRING'] == 'adminPostDetails/'.$postId : 
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPostDetails($postId);
-        break;
+    break;
     case $_SERVER['QUERY_STRING'] == 'addPostFormular' : 
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->addPostFormular();
-        break;
+    break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :
         unset($_SESSION['flash']);
         unset($_SESSION['flash_message']);
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
-        break;
+    break;
     default:
         unset($_SESSION['flash']);
         unset($_SESSION['flash_message']);

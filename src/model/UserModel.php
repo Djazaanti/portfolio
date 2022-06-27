@@ -74,4 +74,26 @@ class UserModel
 
         return $req->fetchAll();
     }
+
+    /**
+     * @param mixed $id
+     * 
+     * @return array
+     */
+    public function getAuthor(mixed $id) : array {
+        
+        $db = $this->dbConnect();
+        if (null == $db) {
+            return [];
+        }
+         $req = $db->prepare('SELECT pseudo 
+                              FROM user
+                              WHERE id = ( SELECT user_id 
+                                           FROM post
+                                           WHERE post.id = ? )');
+         $req->execute(array($id));
+ 
+         return $user = $req->fetch(PDO::FETCH_ASSOC);
+
+    }
 }

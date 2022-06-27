@@ -9,15 +9,11 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use Oc\Blog\model\PostModel;
-use Oc\Blog\model\CommentModel;
-use Oc\Blog\model\UserModel;
-
 
 /**
  * @UserController Le controller permettant de gérer l'utilisateur
  */
-class PostController
+class CommentController
 {
     /**
      * @var TwigService Twig
@@ -35,22 +31,12 @@ class PostController
         $this->twigService = $twig;
     }
 
-    
     /**
-     * @param mixed $id
-     * 
      * @return void
      */
-    public function showPostAndComments(mixed $id) : void{
-        $postModel = new PostModel();
-        $commentModel = new CommentModel();
-
-        $post = $postModel->getPost($id);
-        $comments = $commentModel->getComments($id);
-
-        $userModel = new UserModel();
-        $author = $userModel->getAuthor($id);
-        
-        echo $this->twigService->get()->render('post.html.twig', ['comments' => $comments, 'post' => $post, 'author' => $author]);
+    public function addCommentFormular() : void {
+        echo $this->twigService->get()->render('addComment.html.twig');
     }
 }
+
+    

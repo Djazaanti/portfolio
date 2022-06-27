@@ -18,16 +18,55 @@
                     <!-- Portfolio Modal - Image-->
                     <img class="img-fluid rounded mb-5" src="public/assets/img/portfolio/{{ contentPost.media }}" alt="..." />
                     <!-- Portfolio Modal - Text-->
+                    <p class="mb-4"><strong>{{ contentPost.chapo }}</strong></p>
                     <p class="mb-4">{{ contentPost.content }}</p>
+                    <p><i>écrit par : {{ author.pseudo }}</i></p>
+                    <p><i> Dernière mise à jour :   {% if contentPost.updatedAt %} 
+                                                        {{ contentPost.updatedAt }}  
+                                                    {% else %}
+                                                        {{ 'Publié une seule fois' }}</i>
+                                                    {% endif %}
+                    </p>
                 </div>
             {% endfor %}
-                    
-            <div class="col-lg-8 col-xl-7 ">
-                {% for comment in comments %}
-                    <li>{{ comment.content }}</li>
-                    <i>{{ comment.updatedAt }}</i>
-                {% endfor %}    
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <a class="btn btn-primary" href="index.php?addCommentFormular" role="button">Ajouter un commentaire</a>
             </div>
         </div>
+
+    <!-- section des commentaires -->
+    {% if comments %}
+        <section class="page-section portfolio">
+            <div class="container">
+                <!-- Portfolio Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Commentaires</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+            
+                <!-- commentaires -->
+                {% for comment in comments %}
+                    <div class="col-lg-8 col-xl-7 text-center"> 
+                        <li>{{ comment.content }}</li>
+                        <i>{{ comment.updatedAt }}</i>
+                    </div>
+                {% endfor %} 
+    {% else %}
+            <!-- Portfolio Section Heading-->
+            <h6 class="page-section-heading text-center text-uppercase text-secondary mb-0">Aucun commentaire</h6>
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+        </div>
+    {% endif %}
+        </section>
     </section>
+        
+
 {% endblock %} {# content #}
