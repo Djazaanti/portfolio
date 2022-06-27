@@ -5,13 +5,11 @@
 
 {% block content %}
 
-    <!-- section -->
+    <!-- section articles non publiés -->
     <section class="page-section portfolio " id="portfolio">
         <div class="container">
-
             <!-- Portfolio Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles publiés</h2>
-            
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles non publiés</h2>  
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
@@ -19,69 +17,130 @@
                 <div class="divider-custom-line"></div>
             </div>
         </div>
+        <table class="table container-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">chapo</th>
+                    <th scope="col">Détail</th>            
+                    <th scope="col">Publié</th>
+                    <th scope="col">Créé le</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    {% if post.isPublished == 0 %}
+                        <tr>
+                            <td><a href="index.php?adminPostDetails/{{post.id}}">{{ post.title }}</a></td>
+                            <td>{{ post.chapo }}</td>
+                            <td>{{ post.content }}</td>
+                            <td>{% if post.isPublished == 0 %}
+                                    {{ 'Non' }}
+                                {% endif %}
+                                {% if post.isPublished == 1 %}
+                                    {{ 'Oui' }}
+                                {% endif %}
+                            </td>
+                            <td>{{ post.createdAt }}</td>
+                            <td>
+                                <form name="edit_post" action="index.php?editPost" method="post">
+                                    <div class="form-check">
+                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
+                                        <label class="form-check-label" for="checkEditPost">
+                                            <button type="submit">Mod</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form name="delete_post" action="index.php?deletePost" method="post">
+                                    <div class="form-check">
+                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
+                                        <label class="form-check-label" for="checkDeletePost">
+                                            <button type="submit">Supp</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form name="publishpublishPost" action="index.php?publishPost" method="post">
+                                    <div class="form-check">
+                                        <input type="hidden" name="publishPost" value="{{ post.id }}" id="checkPublishPost" >
+                                        <label class="form-check-label" for="checkPublishPost">
+                                            <button type="submit">Pub</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr> 
+                    {% endif %}    
+                {% endfor %}
+            </tbody>
+        </table>
     </section>
 
-    <table class="table container-sm">
-    <thead>
-            <tr>
-                <th scope="col">Titre</th>
-                <th scope="col">chapo</th>
-                <th scope="col">Détail</th>            
-                <th scope="col">Publié</th>
-                <th scope="col">Créé le</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-           <tr>
-                <td><a href="index.php?adminPostDetails/{{post.id}}">{{ post.title }}</a></td>
-                <td>{{ post.chapo }}</td>
-                <td>{{ post.content }}</td>
-                <td>{% if post.isPublished == 0 %}
-                        {{ 'Non' }}
-                    {% endif %}
+    <!-- section articles publiés -->
+    <section class="page-section portfolio " id="portfolio">
+        <div class="container">
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles publiés</h2>
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+        </div>
+        <table class="table container-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">chapo</th>
+                    <th scope="col">Détail</th>            
+                    <th scope="col">Publié</th>
+                    <th scope="col">Créé le</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
                     {% if post.isPublished == 1 %}
-                        {{ 'Oui' }}
-                    {% endif %}
-                </td>
-                <td>{{ post.createdAt }}</td>
-                    <td>
-                        <form name="edit_post" action="index.php?editPost" method="post">
-                            <div class="form-check">
-                            <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
-                                <label class="form-check-label" for="checkEditPost">
-                                    <button type="submit">Mod</button>
-                                </label>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form name="delete_post" action="index.php?deletePost" method="post">
-                            <div class="form-check">
-                            <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
-                                <label class="form-check-label" for="checkDeletePost">
-                                    <button type="submit">Supp</button>
-                                </label>
-                            </div>
-                        </form>
-                    </td>
-
-                    {% if post.isPublished == 0 %}
-                        <td>
-                            <form name="publishpublishPost" action="index.php?publishPost" method="post">
-                                <div class="form-check">
-                                    <input type="hidden" name="publishPost" value="{{ post.id }}" id="checkPublishPost" >
-                                    <label class="form-check-label" for="checkPublishPost">
-                                        <button type="submit">Pub</button>
-                                    </label>
-                                </div>
-                            </form>
-                        </td>
-                    {% endif %}                    
-
-                </div>
-            </tr> 
-        {% endfor %}
-        </tbody>
-    </table>
+                        <tr>
+                            <td><a href="index.php?adminPostDetails/{{post.id}}">{{ post.title }}</a></td>
+                            <td>{{ post.chapo }}</td>
+                            <td>{{ post.content }}</td>
+                            <td>{% if post.isPublished == 0 %}
+                                    {{ 'Non' }}
+                                {% endif %}
+                                {% if post.isPublished == 1 %}
+                                    {{ 'Oui' }}
+                                {% endif %}
+                            </td>
+                            <td>{{ post.createdAt }}</td>
+                            <td>
+                                <form name="edit_post" action="index.php?editPost" method="post">
+                                    <div class="form-check">
+                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
+                                        <label class="form-check-label" for="checkEditPost">
+                                            <button type="submit">Mod</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form name="delete_post" action="index.php?deletePost" method="post">
+                                    <div class="form-check">
+                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
+                                        <label class="form-check-label" for="checkDeletePost">
+                                            <button type="submit">Supp</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr> 
+                    {% endif %}    
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    
 {% endblock %}
