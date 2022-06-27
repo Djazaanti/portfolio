@@ -36,10 +36,15 @@ class DashboardController{
 
         $commentModel = new CommentModel();
         $commentaires = $commentModel->getCommentairesAValider();
+
         $userModel = new UserModel();
         $admins = $userModel->getAdmins();
 
-        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['commentaires' => $commentaires, 'admins' => $admins]);
+        $postModel = new PostModel();
+        $posts = $postModel->getPosts();
+
+
+        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['commentaires' => $commentaires, 'admins' => $admins, 'posts' => $posts]);
     }
 
 

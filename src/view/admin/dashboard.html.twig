@@ -4,14 +4,19 @@
 {% block title %} Dashboard {% endblock %}
 
 {% block content %}
-
-    <!-- section -->
     <section class="page-section portfolio " id="portfolio">
         <div class="container">
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <a class="btn btn-primary" href="index.php?addPostFormular" role="button">Ajouter un article</a>
+            </div>
+        </div>
+    </div>
 
+    <!-- section articles à publier-->
+    <section class="page-section portfolio " id="portfolio">
+        <div class="container">
             <!-- Portfolio Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Ajout d'un article</h2>
-            
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles à publier</h2>
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
@@ -20,71 +25,71 @@
             </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-xl-7">
-                {% if errorMessage is defined %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ errorMessage }}
-                    </div>
-                {% endif %}
-
-                {% if successMessage is defined %}
-                    <div class="alert alert-success" role="alert">
-                        {{ successMessage }}
-                    </div>
-                {% endif %}
-
-                <form name="add_post" method="post" action="index.php?add-post" accept-charset="UTF-8" enctype="multipart/form-data">
-                
-                    <div class="mb-3 row">
-                        <label for="title" class="col-sm-2 col-form-label">Titre</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="title" name="title" required="required">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="content" class="col-sm-2 col-form-label">Contenu</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="content" name="content" required="required">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" id="chapo" name="chapo" required="required">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="media" class="form-label">Média</label>
-                        <input class="form-control form-control-sm" id="media" type="file" name="media" required="required">
-                    </div>
-                    <div class="mb-3 row">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="isPublished" id="isPublished">
-                            <label class="form-check-label" for="isPublished">
-                                Publié ?
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <select name="userId" class="form-select" aria-label="Default select example">
-                            {% for admin in admins %} 
-                                <option selected value="{{ admin.id }}">{{admin.pseudo}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                
-                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Ajouter</button>
-                </form>
-            </div>
-        </div>
+        <table class="table container-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">chapo</th>
+                    <th scope="col">Détail</th>            
+                    <th scope="col">Publié</th>
+                    <th scope="col">Créé le</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    {% if post.isPublished == 0 %}
+                        <tr>
+                            <td><a href="index.php?adminPostDetails/{{post.id}}">{{ post.title }}</a></td>
+                            <td>{{ post.chapo }}</td>
+                            <td>{{ post.content }}</td>
+                            <td>{% if post.isPublished == 0 %}
+                                    {{ 'Non' }}
+                                {% endif %}
+                                {% if post.isPublished == 1 %}
+                                    {{ 'Oui' }}
+                                {% endif %}
+                            </td>
+                            <td>{{ post.createdAt }}</td>
+                            <td>
+                                <form name="edit_post" action="index.php?editPost" method="post">
+                                    <div class="form-check">
+                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
+                                        <label class="form-check-label" for="checkEditPost">
+                                            <button type="submit">Mod</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form name="delete_post" action="index.php?deletePost" method="post">
+                                    <div class="form-check">
+                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
+                                        <label class="form-check-label" for="checkDeletePost">
+                                            <button type="submit">Supp</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form name="publishpublishPost" action="index.php?publishPost" method="post">
+                                    <div class="form-check">
+                                        <input type="hidden" name="publishPost" value="{{ post.id }}" id="checkPublishPost" >
+                                        <label class="form-check-label" for="checkPublishPost">
+                                            <button type="submit">Pub</button>
+                                        </label>
+                                    </div>
+                                </form>
+                            </td>                   
+                        </tr>
+                    {% endif %}  
+                {% endfor %}
+            </tbody>
+        </table>
     </section>
-
     <section class="page-section portfolio">
         <div class="container">
             <!-- Portfolio Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Commentaires en attente</h2>
-            
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>

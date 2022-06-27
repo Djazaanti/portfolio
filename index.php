@@ -43,7 +43,6 @@ switch (true) {
             $connexionController->verifyConnexionAdmin($pseudo, $password);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'add-post') {
-            // var_dump($_POST);
             if (!isset($_POST['isPublished'])) {
                 $_POST['isPublished'] = 0;
             }
@@ -105,6 +104,10 @@ switch (true) {
     case $_SERVER['QUERY_STRING'] == 'adminPostDetails/'.$postId : 
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPostDetails($postId);
+        break;
+    case $_SERVER['QUERY_STRING'] == 'addPostFormular' : 
+        $adminController = new AdminController(TwigService::getInstance());
+        $adminController->addPostFormular();
         break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :
