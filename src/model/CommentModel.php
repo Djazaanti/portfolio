@@ -42,6 +42,34 @@ class CommentModel
     }
 
     /**
+     * @param mixed $comment
+     * @param mixed $user
+     * @param mixed $postId
+     * 
+     */
+    public function saveComment(mixed $comment, mixed $user, mixed $postId)  {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $isValidate = 0 ;
+        $createdAt = date("Y-m-d H:i:s"); 
+        $updatedAt = date("Y-m-d H:i:s");
+        
+        $req = $db->prepare('INSERT INTO comment (content, isValidate, createdAt, updatedAt, user_id, post_id) VALUES(:content, :isValidate, :createdAt, :updatedAt, :user_id, :post_id) ');
+        $req->execute(array(
+            "content" => $comment,
+            "isValidate" => $isValidate,
+            "createdAt" => $createdAt,
+            "updatedAt" => $updatedAt,
+            "user_id" => $user,
+            "post_id" => $postId
+        ));
+        die;   
+    }
+
+    /**
      * @return array
      */
     public function getCommentairesAValider() : array {

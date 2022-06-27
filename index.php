@@ -20,8 +20,7 @@ session_start();
 
 // convert id for URL of post details
 $idString = explode('/', $_SERVER['QUERY_STRING']);
-if ( is_int($idString )) {
-    var_dump($idString);    
+if ( isset($idString[1])) {
     $postId = intval($idString[1]);
 }
 
@@ -38,6 +37,14 @@ switch (true) {
             $message =  htmlspecialchars($_POST['message']);
 
             $contactController->submitFormContact($name, $lastname, $email, $message);
+        }
+        elseif ($_SERVER['QUERY_STRING'] == 'add-comment/'.$postId) {
+            $comment = $_POST['comment'];
+            $user = 'Djazaanti';
+            // $user = $_POST['userId']
+            
+            $commentController = new CommentController(TwigService::getInstance());
+            $commentController->sendComment($comment, $user, $postId);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'dashboard') {
             // traitement formulaire de connexion
@@ -79,6 +86,7 @@ switch (true) {
             $adminController = new AdminController(TwigService::getInstance());
             $adminController->editPost($_POST['idPost']);
         }
+    
     break;
     // once contact formular sent, show succes or error message
     case $_SERVER['QUERY_STRING'] == 'contact' :
@@ -93,9 +101,9 @@ switch (true) {
         $postController = new PostController(TwigService::getInstance());
         $postController->showPostAndComments($postId);
     break;
-    case $_SERVER['QUERY_STRING'] == 'addCommentFormular' : 
+    case $_SERVER['QUERY_STRING'] == 'addCommentFormular/'.$postId : 
         $commentController = new CommentController(TwigService::getInstance());
-        $commentController->addCommentFormular();
+        $commentController->addCommentFormular($postId);
     break;
     case $_SERVER['QUERY_STRING'] == 'connexion-admin' : 
         $connexionController = new ConnexionController(TwigService::getInstance());

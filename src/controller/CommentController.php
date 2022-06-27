@@ -9,6 +9,8 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+use Oc\Blog\model\CommentModel;
+
 
 /**
  * @UserController Le controller permettant de gérer l'utilisateur
@@ -34,9 +36,19 @@ class CommentController
     /**
      * @return void
      */
-    public function addCommentFormular() : void {
-        echo $this->twigService->get()->render('addComment.html.twig');
+    public function addCommentFormular($postId) : void {
+        $idOfPost = $postId; 
+        echo $this->twigService->get()->render('addComment.html.twig', ['idOfPost' => $idOfPost]);
+    }
+
+    /**
+     * @param mixed $comment
+     * @param mixed $user
+     * 
+     * @return void
+     */
+    public function sendComment($comment, $user, $postId) : void {
+          $commentModel = new CommentModel();
+        $commentModel->saveComment($comment, $user, $postId);
     }
 }
-
-    
