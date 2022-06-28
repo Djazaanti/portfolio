@@ -42,12 +42,13 @@ class CommentController
     }
 
     /**
-     * @param mixed $comment
-     * @param mixed $user
+     * @param string $comment
+     * @param id $user
+     * @param id $postId
      * 
      * @return void
      */
-    public function sendComment($comment, $user, $postId) : void {
+    public function sendComment(string $comment, int $user, int $postId) : void {
           $commentModel = new CommentModel();
         $commentModel->saveComment($comment, $user, $postId);
     }

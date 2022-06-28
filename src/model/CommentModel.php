@@ -41,13 +41,15 @@ class CommentModel
         return $req->fetchAll();
     }
 
+   
     /**
-     * @param mixed $comment
-     * @param mixed $user
-     * @param mixed $postId
+     * @param string $comment
+     * @param id $user
+     * @param id $postId
      * 
+     * @return [type]
      */
-    public function saveComment(mixed $comment, mixed $user, mixed $postId)  {
+    public function saveComment(string $comment, int $user, int $postId)  {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];

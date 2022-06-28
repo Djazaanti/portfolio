@@ -23,6 +23,9 @@ $idString = explode('/', $_SERVER['QUERY_STRING']);
 if ( isset($idString[1])) {
     $postId = intval($idString[1]);
 }
+else {
+    $postId = 0;
+}
 
 switch (true) {    
     // Manage POST form
@@ -39,12 +42,13 @@ switch (true) {
             $contactController->submitFormContact($name, $lastname, $email, $message);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'add-comment/'.$postId) {
+            var_dump($_SESSION);
             $comment = $_POST['comment'];
-            $user = 'Djazaanti';
+            $userId = 1 ;
             // $user = $_POST['userId']
             
             $commentController = new CommentController(TwigService::getInstance());
-            $commentController->sendComment($comment, $user, $postId);
+            $commentController->sendComment($comment, $userId, $postId);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'dashboard') {
             // traitement formulaire de connexion
