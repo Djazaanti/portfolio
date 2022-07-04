@@ -27,7 +27,12 @@
                     Djazaanti Ink, Développement d'application Symfony
                     .
                 </p>
-                {# <a href="index.php?connexion">Connexion admin</a> #}
+                {% if session.role is defined %}
+                    {% if session.role == 'admin' %}
+                        <a href="index.php?dashboard">Accès administration</a>
+                    {% endif %}    
+                {% endif %}
+                
             </div>
         </div>
     </div>

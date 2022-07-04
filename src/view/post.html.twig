@@ -28,10 +28,12 @@
                                                     {% endif %}
                     </p>
                 </div>
-                <div class="d-grid gap-2 col-6 mx-auto">
-                    <a class="btn btn-primary" href="index.php?addCommentFormular/{{ contentPost.id }}">Ajouter un commentaire</a>
-                </div>
-             {% endfor %}
+                {% if session.user is defined %}
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <a class="btn btn-primary" href="index.php?addCommentFormular/{{ contentPost.id }}">Ajouter un commentaire</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
 
     <!-- section des commentaires -->

@@ -42,7 +42,7 @@ switch (true) {
             $contactController->submitFormContact($name, $lastname, $email, $message);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'add-comment/'.$postId) {
-            var_dump($_SESSION);
+            // var_dump($_SESSION);
             $comment = $_POST['comment'];
             $userId = 1 ;
             // $user = $_POST['userId']
@@ -50,12 +50,12 @@ switch (true) {
             $commentController = new CommentController(TwigService::getInstance());
             $commentController->sendComment($comment, $userId, $postId);
         }
-        elseif ($_SERVER['QUERY_STRING'] == 'dashboard') {
+        elseif ($_POST['action'] == 'login') {
             // traitement formulaire de connexion
             $connexionController = new ConnexionController(TwigService::getInstance());
             $pseudo = trim($_POST['pseudo']);
             $password = trim($_POST['password']);
-            $connexionController->verifyConnexionAdmin($pseudo, $password);
+            $connexionController->verifyConnexion($pseudo, $password);
         }
         elseif ($_SERVER['QUERY_STRING'] == 'add-post') {
             if (!isset($_POST['isPublished'])) {
@@ -78,7 +78,6 @@ switch (true) {
             }   
         } 
         elseif ($_SERVER['QUERY_STRING'] == 'validComment'){
-            // récupérer l'id du commentaire
             $dashboardController = new DashboardController(TwigService::getInstance());
             $dashboardController->validComment($_POST['idComment']);
         }     
@@ -91,51 +90,56 @@ switch (true) {
             $adminController->editPost($_POST['idPost']);
         }
     
-    break;
+        break;
     // once contact formular sent, show succes or error message
     case $_SERVER['QUERY_STRING'] == 'contact' :
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
-    break;
+        break;
     case $_SERVER['QUERY_STRING'] == 'blog' :
+
         $blogController = new BlogController(TwigService::getInstance());
         $blogController->showBlog();
-    break;
+        break;
     case $_SERVER['QUERY_STRING'] == 'post/'.$postId :
         $postController = new PostController(TwigService::getInstance());
         $postController->showPostAndComments($postId);
-    break;
+        break;
     case $_SERVER['QUERY_STRING'] == 'addCommentFormular/'.$postId : 
         $commentController = new CommentController(TwigService::getInstance());
         $commentController->addCommentFormular($postId);
-    break;
-    case $_SERVER['QUERY_STRING'] == 'connexion-admin' : 
+        break;
+    case $_SERVER['QUERY_STRING'] == 'connexion' : 
         $connexionController = new ConnexionController(TwigService::getInstance());
-        $connexionController->formularConnexionAdmin();
-    break;
+        $connexionController->formularConnexion();
+        break;
+    case $_SERVER['QUERY_STRING'] == 'logout' :  
+        $connexionController = new ConnexionController(TwigService::getInstance());
+        $connexionController->logout();
+        break;
     case $_SERVER['QUERY_STRING'] == 'dashboard' : 
         $dashboardController = new DashboardController(TwigService::getInstance());
         $dashboardController->dashboard();
-    break;
+        break;
     case $_SERVER['QUERY_STRING'] == 'adminPosts' :
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPosts();
-    break;
+        break;
     case $_SERVER['QUERY_STRING'] == 'adminPostDetails/'.$postId : 
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPostDetails($postId);
-    break;
+        break;
     case $_SERVER['QUERY_STRING'] == 'addPostFormular' : 
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->addPostFormular();
-    break;
+        break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :
         unset($_SESSION['flash']);
         unset($_SESSION['flash_message']);
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
-    break;
+        break;
     default:
         unset($_SESSION['flash']);
         unset($_SESSION['flash_message']);
