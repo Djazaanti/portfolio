@@ -50,7 +50,7 @@ switch (true) {
             $commentController = new CommentController(TwigService::getInstance());
             $commentController->sendComment($comment, $userId, $postId);
         }
-        elseif ($_POST['action'] == 'login') {
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'login') {
             // traitement formulaire de connexion
             $connexionController = new ConnexionController(TwigService::getInstance());
             $pseudo = trim($_POST['pseudo']);
@@ -79,6 +79,7 @@ switch (true) {
         } 
         elseif ($_SERVER['QUERY_STRING'] == 'validComment'){
             $dashboardController = new DashboardController(TwigService::getInstance());
+            $dashboardController->confirmation();
             $dashboardController->validComment($_POST['idComment']);
         }     
         elseif ($_SERVER['QUERY_STRING'] == 'deleteComment'){

@@ -115,12 +115,13 @@ class DashboardController{
      * @return void
      */
     public function validComment(mixed $idComment) : void {
+        
         $commentModel = new CommentModel();
         $commentModel->updateValidComment($idComment);
 
         header('location: index.php?dashboard');
     }
-
+    
     /**
      * @param mixed $idComment
      * 
