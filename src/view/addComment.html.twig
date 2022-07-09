@@ -5,7 +5,7 @@
 
 {% block content %}
 {# TODO Activer la ligne ci-dessosu après le traitement de connexion utilisateurs #}
-{# {% if userSession is defined %} #}
+{% if session is defined %}
     <!-- section -->
     <section class="page-section portfolio " id="portfolio">
         <div class="container">
@@ -35,8 +35,9 @@
                     </div>
                 {% endif %}
 
-                <form name="add_comment" method="post" action="index.php?add-comment/{{ idOfPost }}" accept-charset="UTF-8">
-                
+                <form name="add_comment" method="post" action="" accept-charset="UTF-8" onsubmit="return confirm('Envoyer le commentaire ?');">
+                    <input type="hidden" name="action" value="addComment">
+                    <input type="hidden" name="postId" value="{{ postId }}">
                     <div class="mb-3 row">
                         <label for="comment" class="col-sm-2 col-form-label">Commentaire</label>
                         <div class="col-sm-10">
@@ -46,7 +47,7 @@
                     <div class="mb-3 row">
                         <select hidden="hidden" name="userId" class="form-select" aria-label="Default select example" >
                         {# TODO : récupérer le nom de l'utilisateur connecté  #}                            
-                            <option selected value="{{ user.id }}" selected>{{user.pseudo}}</option>
+                            <option selected value="{{ session.id }}" selected>{{session.pseudo}}</option>
                         </select>
                     </div>
                 
@@ -55,8 +56,7 @@
             </div>
         </div>
     </section>
-{# TODO Activer la ligne ci-dessosu après le traitement de connexion utilisateurs #}
-{# {% else %} #}
+{% else %}
     
  <div class="row justify-content-center">
     <div class="col-lg-8 col-xl-7">
@@ -66,6 +66,6 @@
         </div>
     </div>
 </div>
-{# TODO Activer la ligne ci-dessosu après le traitement de connexion utilisateurs #}
-{# {% endif %} #}
+
+{% endif %}
 {% endblock %}

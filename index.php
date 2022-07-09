@@ -30,6 +30,7 @@ else {
 switch (true) {    
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] == 'POST' :
+
         if (isset($_SERVER['PATH_INFO']) && ($_SERVER['PATH_INFO'] == '/contact' || $_SERVER['PATH_INFO'] == '/#contact')) 
         {
             $contactController = new ContactController(TwigService::getInstance());
@@ -41,12 +42,11 @@ switch (true) {
 
             $contactController->submitFormContact($name, $lastname, $email, $message);
         }
-        elseif ($_SERVER['QUERY_STRING'] == 'add-comment/'.$postId) {
-            // var_dump($_SESSION);
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'addComment') {
             $comment = $_POST['comment'];
-            $userId = 1 ;
-            // $user = $_POST['userId']
-            
+            $userId = intval($_SESSION['userId']);
+            $postId = intval($_POST['postId']);
+
             $commentController = new CommentController(TwigService::getInstance());
             $commentController->sendComment($comment, $userId, $postId);
         }
@@ -57,7 +57,17 @@ switch (true) {
             $password = trim($_POST['password']);
             $connexionController->verifyConnexion($pseudo, $password);
         }
-        elseif ($_SERVER['QUERY_STRING'] == 'add-post') {
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'validComment') {
+            $idComment = intval($_POST['idComment']);
+            $dashboardController = new DashboardController(TwigService::getInstance());
+            $dashboardController->validComment($idComment);
+        }
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'deleteComment'){
+            $idComment = intval($_POST['idComment']);
+            $dashboardController = new DashboardController(TwigService::getInstance());
+            $dashboardController->deleteComment($idComment);
+        }  
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'addPost') {
             if (!isset($_POST['isPublished'])) {
                 $_POST['isPublished'] = 0;
             }
@@ -72,25 +82,34 @@ switch (true) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
                 $dashboardController = new DashboardController(TwigService::getInstance());
-                $dashboardController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
                 $dashboardController->addPost($_POST['title'], $_POST['content'], $_POST['chapo'], date("d_m_Y_H_i_s").'.'.$ext, $_POST['isPublished'], date("Y-m-d H:i:s"), $_POST['userId']);
+                $dashboardController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
 
             }   
         } 
-        elseif ($_SERVER['QUERY_STRING'] == 'validComment'){
-            $dashboardController = new DashboardController(TwigService::getInstance());
-            $dashboardController->confirmation();
-            $dashboardController->validComment($_POST['idComment']);
-        }     
-        elseif ($_SERVER['QUERY_STRING'] == 'deleteComment'){
-            $dashboardController = new DashboardController(TwigService::getInstance());
-            $dashboardController->deleteComment($_POST['idComment']);
-        }  
-        elseif ($_SERVER['QUERY_STRING'] == 'editPost') {
-            $adminController = new AdminController(TwigService::getInstance());
-            $adminController->editPost($_POST['idPost']);
+        elseif ($_SERVER['QUERY_STRING'] == 'editPostFormular') {
+            $postController = new PostController(TwigService::getInstance());
+            $postController->editPostFormular($_POST);
         }
-    
+        elseif ($_SERVER['QUERY_STRING'] == 'editPost') {
+            $idPost = intval($_POST['idPost']);
+            // var_dump($idPost);
+            if (isset($_POST['media'])) $media = date("d_m_Y_H_i_s").'.'.$ext;
+            else $media = $_POST['mediaExist'];
+            if (isset($_POST['publish'])) $isPublished = boolval($_POST['publish']);
+            else $isPublished = boolval($_POST['isPublished']);
+            $updatedAt = date("Y-m-d H:i:s");
+            $idUser = intval($_POST['idUser']);
+
+            $postController = new PostController(TwigService::getInstance());
+            $postController->editPost($_POST['title'], $_POST['content'], $_POST['chapo'], $media, $isPublished, $updatedAt, $idUser, $idPost);
+        }    
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'deletePost') {
+            $idPost = intval($_POST['idPost']);
+
+            $postController = new PostController(TwigService::getInstance());
+            $postController->deletePost($idPost);
+        } 
         break;
     // once contact formular sent, show succes or error message
     case $_SERVER['QUERY_STRING'] == 'contact' :
@@ -131,8 +150,8 @@ switch (true) {
         $adminController->adminPostDetails($postId);
         break;
     case $_SERVER['QUERY_STRING'] == 'addPostFormular' : 
-        $adminController = new AdminController(TwigService::getInstance());
-        $adminController->addPostFormular();
+        $postController = new PostController(TwigService::getInstance());
+            $postController->addPostFormular();
         break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :

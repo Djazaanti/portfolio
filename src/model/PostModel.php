@@ -48,7 +48,7 @@ class PostModel
             return [];
         }
 
-        $posts = $db->prepare('SELECT id, title, content, createdAt, updatedAt, chapo, media  FROM post ORDER BY id DESC');
+        $posts = $db->prepare('SELECT * FROM post ORDER BY id DESC');
         $posts->execute();
 
         return $posts->fetchAll();
@@ -117,4 +117,35 @@ class PostModel
         ));
         die;        
     }
+
+    public function deletePostinBDD(int $idPost) {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare("DELETE FROM post WHERE id=:idPost");
+        $req->execute(array("idPost" => $idPost));
+    }
+
+    public function updatePost(int $idPost, string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $userId) {
+        var_dump($idPost);
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('UPDATE post SET title =:title, content =:content, chapo =:chapo, media =:media, $isPublished =:$isPublished, $updatedAt =:$updatedAt, user_id =:userId, WHERE id =:idPost');
+        return  $req->execute(array(
+            'title' => $title,
+            'content' => $content,
+            'chapo' => $chapo,
+            'media' => $media,
+            'isPublished' => $isPublished,
+            'updatedAt' => $updatedAt,
+            'userId' => $userId,
+            'idPost' => $idPost
+        )); 
+    }
+
 }

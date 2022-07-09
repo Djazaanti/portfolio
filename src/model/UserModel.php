@@ -40,7 +40,7 @@ class UserModel
         $req = $db->prepare('SELECT * FROM user where id = ?');
         $req->execute(array($id));
 
-        return $user = $req->fetch(PDO::FETCH_ASSOC);
+        return $req->fetchAll();
     }
 
      /**

@@ -68,8 +68,8 @@ class DashboardController{
         
         $postModel = new PostModel();
         $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
-
-        header('location: index.php?dashboard');
+        $_SESSION['SuccessMessage'] = "Article ajouté !";
+        // header('location: index.php?dashboard');
 
     }
 
@@ -84,53 +84,52 @@ class DashboardController{
      * 
      * @return void
      */
-    public function downloadFile(mixed $ext, mixed $allowed, mixed $filesize, mixed $filetype, mixed $filename, mixed $file_tmp_name) : void{
+    public function downloadFile(mixed $ext, mixed $allowed, mixed $filesize, mixed $filetype, mixed $filename, mixed $file_tmp_name) : void {
         
-        if(!array_key_exists($ext, $allowed)) die("Erreur : Veuillez sélectionner un format de fichier valide.");
-
-        // Vérifie la taille du fichier - 5Mo maximum
-        $maxsize = 5 * 1024 * 1024;
-        if($filesize > $maxsize) die("Error: La taille du fichier est supérieure à la limite autorisée.");
-
-        // Vérifie le type MIME du fichier
-        if(in_array($filetype, $allowed)){
-            // Vérifie si le fichier existe avant de le télécharger.
-            if(file_exists("upload/" .$filename)){
-                echo $filename. " existe déjà.";
-            } else{
-                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y_H_i_s").'.'.$ext);
-            }
-        }
-        else{
-            echo "Error: Il y a eu un problème de téléchargement de votre fichier. Veuillez réessayer."; 
+        if(!array_key_exists($ext, $allowed)) {
+            $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
+            header('location: index.php?addPostFormular'); die;
         } 
 
+        // Vérifie la taille du fichier - 5Mo maximum
+        $maxsize = 5 * 1024 * 1024 ;
+        if($filesize > $maxsize) {
+            $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
+            header('location: index.php?addPostFormular');die;
+        }
+        // Vérifie le type MIME du fichier
+        if(in_array($filetype, $allowed)){
+                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y_H_i_s").'.'.$ext);
+        }
+        $_SESSION['SuccessMessage'] = "Fichier téléchagé";
         header('location: index.php?dashboard');
 
     }
 
+
     /**
-     * @param mixed $idComment
+     * @param int $idComment
      * 
      * @return void
      */
-    public function validComment(mixed $idComment) : void {
+    public function validComment(int $idComment) : void {
         
         $commentModel = new CommentModel();
         $commentModel->updateValidComment($idComment);
-
+        $_SESSION['SuccessMessage'] = "Commentaire validé";
         header('location: index.php?dashboard');
     }
-    
+
     /**
-     * @param mixed $idComment
+     * @param int $idComment
      * 
      * @return void
      */
-    public function deleteComment(mixed $idComment) : void {
+    public function deleteComment(int $idComment) : void {
         $commentModel = new CommentModel();
         $commentModel->updateDeleteComment($idComment);
-
+        $_SESSION['SuccessMessage'] = "Commentaire supprimé";
+        // echo $this->twigService->get()->render('admin/dashboard.html.twig', ['Message' => $_SESSION['message']]);
         header('location: index.php?dashboard');
     }
 

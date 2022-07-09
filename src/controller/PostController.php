@@ -53,4 +53,47 @@ class PostController
         
         echo $this->twigService->get()->render('post.html.twig', ['comments' => $comments, 'post' => $post, 'author' => $author]);
     }
+
+    
+    /**
+     * @return void
+     */
+    public function addPostFormular() : void {
+        $userModel = new UserModel();
+        $admins = $userModel->getAdmins();
+
+        echo $this->twigService->get()->render('admin/addPost.html.twig', ['admins' => $admins]);
+
+    }
+
+    /**
+     * @param mixed $id
+     * 
+     * @return [type]
+     */
+    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $userId, int $idPost) {
+        $postModel = new PostModel();
+        $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $userId, $idPost);
+
+        $_SESSION["SuccessMessage"] = "article mis à jour avec succès";
+        header("location: index.php?dashboard");
+
+    }
+
+    public function editPostFormular(array $postInformations) : void {
+        
+        $userId = intval($postInformations['userId']);
+        $userModel = new UserModel();
+        $user = $userModel->getUser($userId);
+        
+        echo $this->twigService->get()->render('admin/editPost.html.twig', ['postInformations' => $postInformations, 'user' => $user]);
+    }
+
+    
+    public function deletePost(int $idPost) : void {
+        $postModel = new PostModel();
+        $post = $postModel->deletePostInBDD($idPost);
+        $_SESSION["SuccessMessage"] = "article supprimé avec succès";
+        header("location: index.php?dashboard");
+    }
 }

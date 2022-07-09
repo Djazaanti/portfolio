@@ -37,11 +37,7 @@ class CommentController
      * @return void
      */
     public function addCommentFormular($postId) : void {
-        // manage : display if only connected, so take $_SESSION['role']
-        // If not connected, errorMessage and invite to be connected
-        // create $_SESSION['connected'] = 'YES'
-        $idOfPost = $postId; 
-        echo $this->twigService->get()->render('addComment.html.twig', ['idOfPost' => $idOfPost]);
+        echo $this->twigService->get()->render('addComment.html.twig', ['postId' => $postId]);
     }
 
     /**
@@ -52,8 +48,10 @@ class CommentController
      * @return void
      */
     public function sendComment(string $comment, int $user, int $postId) : void {
-        // manage : display if only $_SESSION['connected'] = 'YES'
-          $commentModel = new CommentModel();
+        $commentModel = new CommentModel();
         $commentModel->saveComment($comment, $user, $postId);
+        $_SESSION['SuccessMessage'] = "Commentaire envoyé !";
+
+        header('location: index.php?post/'.$postId);
     }
 }

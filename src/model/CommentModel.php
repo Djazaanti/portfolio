@@ -68,7 +68,6 @@ class CommentModel
             "user_id" => $user,
             "post_id" => $postId
         ));
-        die;   
     }
 
     /**

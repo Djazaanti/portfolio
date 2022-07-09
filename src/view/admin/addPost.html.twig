@@ -22,20 +22,20 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-7">
-                {% if errorMessage is defined %}
+                {% if session.ErrorMessage is defined %}
                     <div class="alert alert-danger" role="alert">
-                        {{ errorMessage }}
+                        {{ session.ErrorMessage }}
                     </div>
                 {% endif %}
 
-                {% if successMessage is defined %}
+                {% if session.SuccessMessage is defined %}
                     <div class="alert alert-success" role="alert">
-                        {{ successMessage }}
+                        {{ session.SuccessMessage}}
                     </div>
                 {% endif %}
 
-                <form name="add_post" method="post" action="index.php?add-post" accept-charset="UTF-8" enctype="multipart/form-data">
-                
+                <form method="post" action="" accept-charset="UTF-8" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="addPost" id="addPost">
                     <div class="mb-3 row">
                         <label for="title" class="col-sm-2 col-form-label">Titre</label>
                         <div class="col-sm-10">
