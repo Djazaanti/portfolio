@@ -68,8 +68,9 @@ class DashboardController{
         
         $postModel = new PostModel();
         $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
+
         $_SESSION['SuccessMessage'] = "Article ajouté !";
-        // header('location: index.php?dashboard');
+        header('location: index.php?dashboard');
 
     }
 
@@ -87,21 +88,21 @@ class DashboardController{
     public function downloadFile(mixed $ext, mixed $allowed, mixed $filesize, mixed $filetype, mixed $filename, mixed $file_tmp_name) : void {
         
         if(!array_key_exists($ext, $allowed)) {
-            $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
+            // $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
             header('location: index.php?addPostFormular'); die;
         } 
 
         // Vérifie la taille du fichier - 5Mo maximum
         $maxsize = 5 * 1024 * 1024 ;
         if($filesize > $maxsize) {
-            $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
+            // $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
             header('location: index.php?addPostFormular');die;
         }
         // Vérifie le type MIME du fichier
         if(in_array($filetype, $allowed)){
-                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y_H_i_s").'.'.$ext);
+                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y à H_i_s").'.'.$ext);
         }
-        $_SESSION['SuccessMessage'] = "Fichier téléchagé";
+        // $_SESSION['SuccessMessage'] = "Fichier téléchagé";
         header('location: index.php?dashboard');
 
     }

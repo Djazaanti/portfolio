@@ -59,12 +59,4 @@ class AdminController{
 
     }
 
-    public function addPostFormular() : void {
-        $userModel = new UserModel();
-        $admins = $userModel->getAdmins();
-
-        echo $this->twigService->get()->render('admin/addPost.html.twig', ['admins' => $admins]);
-
-    }
-
 }

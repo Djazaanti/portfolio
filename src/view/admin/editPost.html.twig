@@ -33,15 +33,9 @@
                     </div>
                 {% endif %}
 
-                {# <pre>
-                {% for userDet in user %}
-                    {{ dump(userDet.pseudo) }}
-                {% endfor %}
-                </pre> #}
                 {% for userDetail in user %}
                     <form  method="post" action="index.php?editPost" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return confirm('MODIFIER ce post ?');">
 
-                        {# <input type="hidden" name="action" value="editPost"> #}
                         <input type="hidden" name="idPost" value="{{ postInformations.idPost }}">
                         <input type="hidden" name="idUser" value="{{ userDetail.id }}">
                         <input type="hidden" name="mediaExist" value="{{ postInformations.media }}">

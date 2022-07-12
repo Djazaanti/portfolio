@@ -13,22 +13,25 @@
     </section>
 
     <!-- Messages de retour d'action-->
-   
+    <section class="page-section portfolio " id="portfolio">
+        <div class="container">
+            {% if session.ErrorMessage is defined %}
+                <div class="alert alert-danger" role="alert">
+                    {{ session.ErrorMessage }}
+                </div>
+            {% endif %}
+
+            {% if session.SuccessMessage is defined %}
+                <div class="alert alert-success" role="alert">
+                    {{ session.SuccessMessage}}
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
     <!-- section articles à publier-->
     <section class="page-section portfolio " id="portfolio">
         <div class="container">
-         {% if session.ErrorMessage is defined %}
-        <div class="alert alert-danger" role="alert">
-            {{ session.ErrorMessage }}
-        </div>
-    {% endif %}
-
-    {% if session.SuccessMessage is defined %}
-        <div class="alert alert-success" role="alert">
-            {{ session.SuccessMessage}}
-        </div>
-    {% endif %}
             <!-- Portfolio Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles à publier</h2>
             <!-- Icon Divider-->
@@ -103,7 +106,7 @@
                                 <td>
                                     <form action="" method="post" accept-charset="UTF-8" onsubmit="return confirm('PUBLIER ce post ?');">
                                         <input type="hidden" name="action" value="publishPost">
-                                        <input type="hidden" name="publishPost" value="{{ post.id }}" id="checkPublishPost" >
+                                        <input type="hidden" name="idPost" value="{{ post.id }}" id="checkPublishPost" >
                                         <div class="form-check">
                                             <label class="form-check-label" for="checkPublishPost">
                                                 <button type="submit">Pub</button>

@@ -128,14 +128,23 @@ class PostModel
         $req->execute(array("idPost" => $idPost));
     }
 
-    public function updatePost(int $idPost, string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $userId) {
-        var_dump($idPost);
+    public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $userId, int $idPost) {
+
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
+        // var_dump($title.'<br>');
+        // var_dump($content.'<br>');
+        // var_dump($chapo.'<br>');
+        // var_dump($media.'<br>');
+        // var_dump($isPublished.'<br>');
+        // var_dump($updatedAt.'<br>');
+        // var_dump($userId.'<br>');
+        // var_dump($idPost.'<br>');
 
-        $req = $db->prepare('UPDATE post SET title =:title, content =:content, chapo =:chapo, media =:media, $isPublished =:$isPublished, $updatedAt =:$updatedAt, user_id =:userId, WHERE id =:idPost');
+        $req = $db->prepare('UPDATE post SET title =:title, content =:content, chapo =:chapo, media =:media, isPublished =:isPublished, updatedAt =:updatedAt, user_id =:userId WHERE id =:idPost ');
+
         return  $req->execute(array(
             'title' => $title,
             'content' => $content,
@@ -146,6 +155,19 @@ class PostModel
             'userId' => $userId,
             'idPost' => $idPost
         )); 
+
     }
 
+    public function updatePublishPost($idPost) {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('UPDATE post SET isPublished=1  WHERE id=:idPost');
+
+        return  $req->execute(array(
+            'idPost' => $idPost
+        ));
+    }
 }

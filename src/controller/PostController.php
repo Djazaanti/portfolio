@@ -72,6 +72,17 @@ class PostController
      * @return [type]
      */
     public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $userId, int $idPost) {
+    // public function editPost(string $title, mixed $updatedAt, int $idPost) {
+
+        // var_dump($title.'<br>');
+        // var_dump($content.'<br>');
+        // var_dump($chapo.'<br>');
+        // var_dump($media.'<br>');
+        // var_dump(boolval($isPublished).'<br>');
+        // var_dump($updatedAt.'<br>');
+        // var_dump($userId.'<br>');
+        // var_dump($idPost.'<br>');
+
         $postModel = new PostModel();
         $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $userId, $idPost);
 
@@ -90,10 +101,24 @@ class PostController
     }
 
     
+    /**
+     * @param int $idPost
+     * 
+     * @return void
+     */
     public function deletePost(int $idPost) : void {
         $postModel = new PostModel();
         $post = $postModel->deletePostInBDD($idPost);
         $_SESSION["SuccessMessage"] = "article supprimé avec succès";
         header("location: index.php?dashboard");
+    }
+
+    public function publishPost( int $idPost) : void {
+        $postModel = new PostModel();
+        $post = $postModel->updatePublishPost($idPost);
+
+        $_SESSION["SuccessMessage"] = "article publié avec succès";
+        header("location: index.php?dashboard");
+
     }
 }
