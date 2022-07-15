@@ -36,15 +36,24 @@ class DashboardController{
 
         $commentModel = new CommentModel();
         $commentaires = $commentModel->getCommentairesAValider();
+        $NbCommentsToValid = $commentModel->countCommentsToValid();
 
         $userModel = new UserModel();
         $admins = $userModel->getAdmins();
+        $NbUsers = $userModel->countUsers();
 
         $postModel = new PostModel();
         $posts = $postModel->getPosts();
+        $NbPostsToPublish = $postModel->countPostsToPublish();
+        $NbPostsPublished = $postModel->countPostsPublished();
+        
+        var_dump($NbCommentsToValid );
+        $_SESSION['page'] = "dashboard";
+        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['commentaires' => $commentaires, 'admins' => $admins, 'posts' => $posts, 'NbCommentsToValid' => $NbCommentsToValid, 'NbUsers' => $NbUsers, 'NbPostsToPublish' => $NbPostsToPublish, 'NbPostsPublished' => $NbPostsPublished]);
 
+        $_SESSION["SuccessMessage"] = "";
+        $_SESSION["ErrorMessage"] = "";
 
-        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['commentaires' => $commentaires, 'admins' => $admins, 'posts' => $posts]);
     }
 
 

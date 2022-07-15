@@ -96,4 +96,15 @@ class UserModel
          return $user = $req->fetch(PDO::FETCH_ASSOC);
 
     }
+
+    public function countUsers() : int {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT id FROM user');
+        $req->execute();
+        return $users= $req->rowCount();
+    }
 }

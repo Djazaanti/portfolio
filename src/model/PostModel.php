@@ -134,14 +134,6 @@ class PostModel
         if (null === $db) {
             return [];
         }
-        // var_dump($title.'<br>');
-        // var_dump($content.'<br>');
-        // var_dump($chapo.'<br>');
-        // var_dump($media.'<br>');
-        // var_dump($isPublished.'<br>');
-        // var_dump($updatedAt.'<br>');
-        // var_dump($userId.'<br>');
-        // var_dump($idPost.'<br>');
 
         $req = $db->prepare('UPDATE post SET title =:title, content =:content, chapo =:chapo, media =:media, isPublished =:isPublished, updatedAt =:updatedAt, user_id =:userId WHERE id =:idPost ');
 
@@ -170,4 +162,33 @@ class PostModel
             'idPost' => $idPost
         ));
     }
+
+    /**
+     * @return int
+     */
+    public function countPostsToPublish() : int {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT id FROM post WHERE isPublished=0');
+        $req->execute();
+        return $postsToPublish = $req->rowCount(); 
+    }
+
+    /**
+     * @return int
+     */
+    public function countPostsPublished() : int {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT id FROM post WHERE isPublished=1');
+        $req->execute();
+        return $postsPublished = $req->rowCount(); 
+    }
+
 }

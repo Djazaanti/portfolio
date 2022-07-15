@@ -22,13 +22,13 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-7">
-                {% if session.ErrorMessage is defined %}
+                {% if session.ErrorMessage != "" %}
                     <div class="alert alert-danger" role="alert">
                         {{ session.ErrorMessage }}
                     </div>
                 {% endif %}
 
-                {% if session.SuccessMessage is defined %}
+                {% if session.SuccessMessage != "" %}
                     <div class="alert alert-success" role="alert">
                         {{ session.SuccessMessage}}
                     </div>

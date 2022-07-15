@@ -120,4 +120,15 @@ class CommentModel
         ));       
     }
 
+    public function countCommentsToValid() : int {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT id FROM comment WHERE isValidate=0');
+        $req->execute();
+        return $commentsToValid = $req->rowCount(); 
+    }
+
 }

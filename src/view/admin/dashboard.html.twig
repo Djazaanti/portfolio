@@ -4,34 +4,68 @@
 {% block title %} Dashboard {% endblock %}
 
 {% block content %}
-    <section class="page-section portfolio " id="portfolio">
+
+    <section class="page-section portfolio">
         <div class="container">
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <a class="btn btn-primary" href="index.php?addPostFormular" role="button">Ajouter un article</a>
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Statistiques</h2>
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
             </div>
+            <!-- table des Statistiques -->
+            <table class="table table-dark table-striped-columns">
+                <thead>
+                    <tr>
+                        <th >Nb commentaires à valider</th>
+                        <th scope="col">Nb articles à publier</th>
+                        <th scope="col">Nb articles publiés</th>            
+                        <th scope="col">Nb Utilisateurs</th>
+                        </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td >{{ NbCommentsToValid }} </td>
+                        <td class="table-dark">{{ NbPostsToPublish }}</td>
+                        <td class="table-dark">{{ NbPostsPublished }}</td>
+                        <td class="table-dark">{{ NbUsers }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </section>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a class="btn btn-primary" href="index.php?addPostFormular" role="button">Ajouter un article</a>
+        </div>
+    {# </section> #}
 
     <!-- Messages de retour d'action-->
-    <section class="page-section portfolio " id="portfolio">
-        <div class="container">
-            {% if session.ErrorMessage is defined %}
+
+    {% if session.ErrorMessage != "" %}
+        {# <section class="page-section portfolio " id="portfolio"> #}
+            <div class="container">
                 <div class="alert alert-danger" role="alert">
                     {{ session.ErrorMessage }}
                 </div>
-            {% endif %}
+            </div>
+        {# </section> #}
+    {% endif %}
 
-            {% if session.SuccessMessage is defined %}
+    {% if session.SuccessMessage != "" %}
+        {# <section class="page-section portfolio " id="portfolio"> #}
+            <div class="container">
                 <div class="alert alert-success" role="alert">
                     {{ session.SuccessMessage}}
                 </div>
-            {% endif %}
-        </div>
-    </div>
+            </div>
+        </section>
+    {% endif %}
+        
 
     <!-- section articles à publier-->
     <section class="page-section portfolio " id="portfolio">
-        <div class="container">
+        {# <div class="container"> #}
             <!-- Portfolio Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles à publier</h2>
             <!-- Icon Divider-->
@@ -40,7 +74,7 @@
                 <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
-            <table class="table container-sm">
+            <table class="table container-sm table-dark table-striped-columns">
                 <thead>
                     <tr>
                         <th scope="col">Titre</th>
@@ -48,6 +82,7 @@
                         <th scope="col">Détail</th>            
                         <th scope="col">Publié</th>
                         <th scope="col">Créé le</th>
+                        <th  scope="col" colspan="3" align="right">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,20 +118,7 @@
 
                                         <div class="form-check">
                                             <label class="form-check-label" for="checkEditPost">
-                                                <button type="submit">Mod</button>
-                                            </label>
-                                        </div>
-                                    </form>
-                                </td>
-
-                                <!-- Supprimer un article -->
-                                <td>
-                                    <form action="" method="post" accept-charset="UTF-8" onsubmit="return confirm('SUPPRIMER ce post ?');">
-                                        <input type="hidden" name="action" value="deletePost">
-                                        <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="checkDeletePost">
-                                                <button type="submit">Supp</button>
+                                                <button type="submit" class="btn btn-light"><img src="public\assets\img\pencil.svg"></button>
                                             </label>
                                         </div>
                                     </form>
@@ -109,7 +131,20 @@
                                         <input type="hidden" name="idPost" value="{{ post.id }}" id="checkPublishPost" >
                                         <div class="form-check">
                                             <label class="form-check-label" for="checkPublishPost">
-                                                <button type="submit">Pub</button>
+                                                <button type="submit" class="btn btn-primary"><img src="public\assets\img\globe.svg"></button>
+                                            </label>
+                                        </div>
+                                    </form>
+                                </td>
+
+                                <!-- Supprimer un article -->
+                                <td>
+                                    <form action="" method="post" accept-charset="UTF-8" onsubmit="return confirm('SUPPRIMER ce post ?');">
+                                        <input type="hidden" name="action" value="deletePost">
+                                        <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="checkDeletePost">
+                                                <button type="submit" class="btn btn-danger"><img src="public\assets\img\trash.svg"></button>
                                             </label>
                                         </div>
                                     </form>
@@ -119,9 +154,9 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div> 
+        {# </div>  #}
     </section>
-    <section class="page-section portfolio">
+    <section class="page-section portfolio" id="comments">
         <div class="container">
             <!-- Portfolio Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Commentaires en attente</h2>
@@ -132,51 +167,52 @@
                 <div class="divider-custom-line"></div>
             </div>
         </div>
-    <!-- commentaires en attente -->
-    <table class="table container-sm">
-    <thead>
+        <!-- commentaires en attente -->
+        <table class="table container-sm table-dark table-striped-columns">
+            <thead>
+                <tr>
+                    <th scope="col">Titre article</th>
+                    <th scope="col">commentaire</th>
+                    <th scope="col">Date envoi</th>            
+                    <th scope="col">Publieur</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col" colspan="3" align="right">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for commentaire in commentaires %}
             <tr>
-                <th scope="col">Titre article</th>
-                <th scope="col">commentaire</th>
-                <th scope="col">Date envoi</th>            
-                <th scope="col">Publieur</th>
-                <th scope="col">E-mail</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for commentaire in commentaires %}
-           <tr>
-                <td>{{ commentaire.title }}</td>
-                <td>{{ commentaire.content }}</td>
-                <td>{{ commentaire.createdAt }}</td>
-                <td>{{ commentaire.pseudo }}</td>
-                <td>{{ commentaire.email }}</td>
-                    <td>
-                        <form action="" method="post" accept-charset="UTF-8" onsubmit="return confirm('VALIDER ce commentaire ?');">
-                            <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkValidComment">
-                            <input type="hidden" name="action" value="validComment">
-                            <div class="form-check">
-                                <label class="form-check-label" for="checkValidComment">
-                                    <button type="submit">Valider</button>
-                                </label>
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        <form  action="" method="post" onsubmit="return confirm('SUPPRIMER ce commentaire ?');">
-                        <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkDeleteComment" >
-                            <input type="hidden" name="action" value="deleteComment">
-                            <div class="form-check">
-                                <label class="form-check-label" for="checkDeleteComment">
-                                    <button type="submit">Supprimer</button>
-                                </label>
-                            </div>
-                        </form>
-                    </td>
-                </div>
-            </tr> 
-        {% endfor %}
-        </tbody>
-    </table>
-</section>
+                    <td>{{ commentaire.title }}</td>
+                    <td>{{ commentaire.content }}</td>
+                    <td>{{ commentaire.createdAt }}</td>
+                    <td>{{ commentaire.pseudo }}</td>
+                    <td>{{ commentaire.email }}</td>
+                        <td>
+                            <form action="" method="post" accept-charset="UTF-8" onsubmit="return confirm('VALIDER ce commentaire ?');">
+                                <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkValidComment">
+                                <input type="hidden" name="action" value="validComment">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="checkValidComment">
+                                        <button type="submit" class="btn btn-success"><img src="public\assets\img\check.svg"></button>
+                                    </label>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <form  action="" method="post" onsubmit="return confirm('SUPPRIMER ce commentaire ?');">
+                            <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkDeleteComment" >
+                                <input type="hidden" name="action" value="deleteComment">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="checkDeleteComment">
+                                        <button type="submit" class="btn btn-danger"><img src="public\assets\img\trash.svg"></button>
+                                    </label>
+                                </div>
+                            </form>
+                        </td>
+                    </div>
+                </tr> 
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
 {% endblock %}

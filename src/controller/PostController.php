@@ -109,6 +109,7 @@ class PostController
     public function deletePost(int $idPost) : void {
         $postModel = new PostModel();
         $post = $postModel->deletePostInBDD($idPost);
+        
         $_SESSION["SuccessMessage"] = "article supprimé avec succès";
         header("location: index.php?dashboard");
     }
