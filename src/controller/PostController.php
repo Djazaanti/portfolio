@@ -25,8 +25,6 @@ class PostController
     private TwigService $twigService;
 
     /**
-     * Le constructeur de la classe UserController.
-     * Il attend en paramètre twig pour afficher les vues
      * @param TwigService $twig Le service twig
      */
     public function __construct(TwigService $twig)
@@ -34,18 +32,18 @@ class PostController
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
     }
-
     
+
     /**
-     * @param mixed $id
+     * @param int $id
      * 
      * @return void
      */
-    public function showPostAndComments(mixed $id) : void{
+    public function showPostAndComments(int $id) : void{
         $postModel = new PostModel();
-        $commentModel = new CommentModel();
-
         $post = $postModel->getPost($id);
+
+        $commentModel = new CommentModel();
         $comments = $commentModel->getComments($id);
 
         $userModel = new UserModel();
@@ -54,7 +52,6 @@ class PostController
         echo $this->twigService->get()->render('post.html.twig', ['comments' => $comments, 'post' => $post, 'author' => $author]);
     }
 
-    
     /**
      * @return void
      */
@@ -66,62 +63,45 @@ class PostController
 
     }
 
+
     /**
-     * @param mixed $id
-     * 
-     * @return [type]
-     */
-    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $authorId, int $idPost) {
-        $postModel = new PostModel();
-        $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $authorId, $idPost);
-
-        $_SESSION["SuccessMessage"] = "article mis à jour avec succès";
-        header("location: index.php?dashboard");
-
-    }
-
-    
-    
-    /**
-     * @param mixed $title
-     * @param mixed $content
-     * @param mixed $chapo
-     * @param mixed $media
-     * @param mixed $isPublished
-     * @param mixed $createdAt
-     * @param mixed $userId
+     * @param string $title
+     * @param string $content
+     * @param string $chapo
+     * @param bool $isPublished
+     * @param int $userId
+     * @param string $media
      * 
      * @return void
      */
-    public function addPost(mixed $title, mixed $content, mixed $chapo, mixed $media, mixed $isPublished, mixed $createdAt, mixed $userId) : void {
-        $title = htmlspecialchars($title);
-        $content = htmlspecialchars($content);
-        $chapo = htmlspecialchars($chapo);
-        $userId =  intval($userId);
+    public function addPost(string $title, string $content, string $chapo, bool $isPublished, int $userId, string $media) : void {
         
         $postModel = new PostModel();
-        $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
+        $postModel->addPost($title, $content, $chapo, $isPublished, $userId, $media);
 
         $_SESSION['SuccessMessage'] = "Article ajouté !";
+
         header('location: index.php?dashboard');
 
     }
 
    
+    
     /**
-     * @param mixed $ext
-     * @param mixed $allowed
-     * @param mixed $filesize
-     * @param mixed $filetype
-     * @param mixed $filename
-     * @param mixed $file_tmp_name
+     * @param string $ext
+     * @param array $allowed
+     * @param int $filesize
+     * @param string $filetype
+     * @param string $filename
+     * @param string $file_tmp_name
      * 
      * @return void
      */
-    public function downloadFile(mixed $ext, mixed $allowed, mixed $filesize, mixed $filetype, mixed $filename, mixed $file_tmp_name) : void {
+    public function downloadFile(string $ext, array $allowed, int $filesize, string $filetype, string $filename, string $file_tmp_name) : void {
         
         if(!array_key_exists($ext, $allowed)) {
             $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
+
             header('location: index.php?addPostFormular'); die;
         } 
 
@@ -129,6 +109,7 @@ class PostController
         $maxsize = 5 * 1024 * 1024 ;
         if($filesize > $maxsize) {
             $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
+
             header('location: index.php?addPostFormular');die;
         }
         // Vérifie le type MIME du fichier
@@ -136,18 +117,50 @@ class PostController
                 move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y à H_i_s").'.'.$ext);
         }
         $_SESSION['SuccessMessage'] = "Fichier téléchagé";
+        
         header('location: index.php?dashboard');
 
     }
 
+    /**
+     * @param array $postInformations
+     * 
+     * @return void
+     */
     public function editPostFormular(array $postInformations) : void {
-        
         $userId = intval($postInformations['userId']);
         $userModel = new UserModel();
         $author = $userModel->getUser($userId);
-        $users = $userModel->getUsers();
+        $admins = $userModel->getAdmins();
         
-        echo $this->twigService->get()->render('admin/editPost.html.twig', ['postInformations' => $postInformations, 'author' => $author, 'users' => $users]);
+        echo $this->twigService->get()->render('admin/editPost.html.twig', ['postInformations' => $postInformations, 'author' => $author, 'admins' => $admins]);
+    }
+
+     
+    /**
+     * @param string $title
+     * @param string $content
+     * @param string $chapo
+     * @param string $media
+     * @param bool $isPublished
+     * @param string $updatedAt
+     * @param int $authorId
+     * @param int $idPost
+     * 
+     * @return void
+     */
+    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, string $updatedAt, int $authorId, int $idPost) : void {
+        $postModel = new PostModel();
+        $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $authorId, $idPost);
+
+        $_SESSION["SuccessMessage"] = "article mis à jour avec succès";
+
+        if ($_SESSION['page'] == 'dashboard') {
+            header('location: index.php?dashboard');
+        }
+        elseif ($_SESSION['page'] == 'adminPosts' || $_SESSION['page'] = 'adminPostDetails') {
+            header('location: index.php?adminPosts');
+        }
     }
 
     
@@ -161,15 +174,31 @@ class PostController
         $post = $postModel->deletePostInBDD($idPost);
         
         $_SESSION["SuccessMessage"] = "article supprimé avec succès";
-        header("location: index.php?dashboard");
+
+        if ($_SESSION['page'] == 'dashboard') {
+            header('location: index.php?dashboard');
+        }
+        elseif ($_SESSION['page'] == 'adminPosts' || $_SESSION['page'] = 'adminPostDetails') {
+            header('location: index.php?adminPosts');
+        }
     }
 
+    /**
+     * @param int $idPost
+     * 
+     * @return void
+     */
     public function publishPost( int $idPost) : void {
         $postModel = new PostModel();
         $post = $postModel->updatePublishPost($idPost);
 
         $_SESSION["SuccessMessage"] = "article publié avec succès";
-        header("location: index.php?dashboard");
 
+        if ($_SESSION['page'] == 'dashboard') {
+            header('location: index.php?dashboard');
+        }
+        elseif ($_SESSION['page'] == 'adminPosts' || $_SESSION['page'] = 'adminPostDetails') {
+            header('location: index.php?adminPosts');
+        }
     }
 }

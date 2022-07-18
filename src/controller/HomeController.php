@@ -22,7 +22,6 @@ class HomeController
      */
     public function __construct(TwigService $twigService)
     {
-        // Je stock la configuration twig dans notre variable twig du controller
         $this->twigService = $twigService;
     }
 

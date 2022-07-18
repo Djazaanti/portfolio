@@ -92,9 +92,9 @@
                                     {{authorDetail.pseudo}}
                             </option>
                         {% endfor %}
-                            {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.pseudo }}</option>
-                            {% endfor %}
+                        {% for admin in admins %}
+                            <option value="{{ admin.id }}">{{ admin.pseudo }}</option>
+                        {% endfor %}
                         </select>
                     </div>
                     

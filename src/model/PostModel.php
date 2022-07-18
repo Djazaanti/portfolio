@@ -32,10 +32,16 @@ class PostModel
         if (null === $db) {
             return [];
         }
-        $posts = $db->prepare('SELECT  id, title, content, updatedAt, chapo, media  FROM post ORDER BY  id DESC limit 3');
-        $posts->execute();
+        try {
+            $posts = $db->prepare('SELECT  id, title, content, updatedAt, chapo, media  FROM post ORDER BY  id DESC limit 3');
+            $posts->execute();
 
-        return $posts->fetchAll();
+            return $posts->fetchAll();
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
+           
+        
     }
 
     /**
@@ -47,11 +53,15 @@ class PostModel
         if (null === $db) {
             return [];
         }
-
+        try {
+                       
         $posts = $db->prepare('SELECT * FROM post ORDER BY id DESC');
         $posts->execute();
 
         return $posts->fetchAll();
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
     }
 
     /**
@@ -63,10 +73,15 @@ class PostModel
             return [];
         }
 
-        $posts = $db->prepare('SELECT id, title, content, createdAt, isPublished, updatedAt, chapo, media  FROM post ORDER BY isPublished ASC');
-        $posts->execute();
+        try {
+            $posts = $db->prepare('SELECT id, title, content, createdAt, isPublished, updatedAt, chapo, media  FROM post ORDER BY id DESC');
+            $posts->execute();
+    
+            return $posts->fetchAll();
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
 
-        return $posts->fetchAll();
     }
 
     /**
@@ -80,43 +95,52 @@ class PostModel
         if (null === $db) {
             return [];
         }
-        
-        $req = $db->prepare('SELECT * FROM post where id = ?');
-        $req->execute(array($id));
+        try {
+            $req = $db->prepare('SELECT * FROM post where id = ?');
+            $req->execute(array($id));
+    
+            return $req->fetchAll();
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
 
-        return $req->fetchAll();
     }
 
+   
     /**
-     * @param mixed $title
-     * @param mixed $content
-     * @param mixed $chapo
-     * @param mixed $media
-     * @param mixed $isPublished
-     * @param mixed $createdAt
-     * @param mixed $id_admin
+     * @param string $title
+     * @param string $content
+     * @param string $chapo
+     * @param bool $isPublished
+     * @param int $userId
+     * @param string $media
      * 
      * @return array
      */
-    public function insertPostInDB(mixed $title, mixed $content, mixed $chapo, mixed $media, mixed $isPublished, mixed $createdAt, mixed $id_admin) : array {
+    public function  addPost(string $title, string $content, string $chapo, bool $isPublished, int $userId, string $media) : array {
 
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
-        $req = $db->prepare("INSERT INTO post(title, content, chapo, media, isPublished, createdAt, updatedAt, user_id) 
+        try {
+            $req = $db->prepare("INSERT INTO post(title, content, chapo, media, isPublished, createdAt, updatedAt, user_id) 
                              VALUES(:title, :content, :chapo, :media, :isPublished, :createdAt, :updatedAt, :user_id) ");
-        $req->execute(array(
+            $req->execute(array(
                             "title" => $title,
                             "content" => $content,
                             "chapo" => $chapo,
                             "media" => $media,
                             "isPublished" => $isPublished,
-                            "createdAt" => $createdAt,
+                            "createdAt" => date("Y-m-d H:i:s"),
                             "updatedAt" => date("Y-m-d H:i:s"),
-                            "user_id" => $id_admin
+                            "user_id" => $userId
         ));
-        die;        
+        die;  
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
+              
     }
 
     public function deletePostinBDD(int $idPost) {
@@ -125,8 +149,13 @@ class PostModel
             return [];
         }
 
-        $req = $db->prepare("DELETE FROM post WHERE id=:idPost");
-        $req->execute(array("idPost" => $idPost));
+        try {
+            $req = $db->prepare("DELETE FROM post WHERE id=:idPost");
+            $req->execute(array("idPost" => $idPost));
+
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
     }
 
     public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $authorId, int $idPost) {
@@ -135,33 +164,39 @@ class PostModel
         if (null === $db) {
             return [];
         }
+        try {
+            $req = $db->prepare('UPDATE post SET title =:title, content =:content, chapo =:chapo, media =:media, isPublished =:isPublished, updatedAt =:updatedAt, user_id =:userId WHERE id =:idPost ');
 
-        $req = $db->prepare('UPDATE post SET title =:title, content =:content, chapo =:chapo, media =:media, isPublished =:isPublished, updatedAt =:updatedAt, user_id =:userId WHERE id =:idPost ');
-
-        return  $req->execute(array(
-            'title' => $title,
-            'content' => $content,
-            'chapo' => $chapo,
-            'media' => $media,
-            'isPublished' => $isPublished,
-            'updatedAt' => $updatedAt,
-            'userId' => $authorId,
-            'idPost' => $idPost
-        )); 
-
+            return  $req->execute(array(
+                'title' => $title,
+                'content' => $content,
+                'chapo' => $chapo,
+                'media' => $media,
+                'isPublished' => $isPublished,
+                'updatedAt' => $updatedAt,
+                'userId' => $authorId,
+                'idPost' => $idPost
+            )); 
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
     }
 
-    public function updatePublishPost($idPost) {
+    public function updatePublishPost(int $idPost) {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
 
-        $req = $db->prepare('UPDATE post SET isPublished=1  WHERE id=:idPost');
+        try {
+            $req = $db->prepare('UPDATE post SET isPublished=1  WHERE id=:idPost');
 
-        return  $req->execute(array(
-            'idPost' => $idPost
-        ));
+            return  $req->execute(array(
+                'idPost' => $idPost
+            ));
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
     }
 
     /**
@@ -172,10 +207,13 @@ class PostModel
         if (null === $db) {
             return [];
         }
-
-        $req = $db->prepare('SELECT id FROM post WHERE isPublished=0');
-        $req->execute();
-        return $postsToPublish = $req->rowCount(); 
+        try {
+            $req = $db->prepare('SELECT id FROM post WHERE isPublished=0');
+            $req->execute();
+            return $postsToPublish = $req->rowCount(); 
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
     }
 
     /**
@@ -186,10 +224,14 @@ class PostModel
         if (null === $db) {
             return [];
         }
+        try {
+            $req = $db->prepare('SELECT id FROM post WHERE isPublished=1');
+            $req->execute();
 
-        $req = $db->prepare('SELECT id FROM post WHERE isPublished=1');
-        $req->execute();
-        return $postsPublished = $req->rowCount(); 
+            return $postsPublished = $req->rowCount(); 
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
     }
 
 }

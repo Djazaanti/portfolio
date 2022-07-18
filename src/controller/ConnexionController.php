@@ -13,16 +13,21 @@ use Oc\Blog\model\UserModel;
 
 class ConnexionController{
 
+    /**
+     * @var TwigService
+     */
     private TwigService $twigService;
 
     public const ROLE_ADMIN = 'admin';
     public const ROLE_USER = 'user';
 
+    /**
+     * @param TwigService $twig
+     */
     public function __construct(TwigService $twig){
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
     }
-    
     
     /**
      * @param string $pseudo

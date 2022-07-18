@@ -23,8 +23,6 @@ class BlogController
     private TwigService $twigService;
 
     /**
-     * Le constructeur de la classe UserController.
-     * Il attend en paramètre twig pour afficher les vues
      * @param TwigService $twig Le service twig
      */
     public function __construct(TwigService $twig)

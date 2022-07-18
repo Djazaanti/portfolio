@@ -81,11 +81,17 @@ switch (true) {
                 $file_tmp_name = $_FILES["media"]["tmp_name"];
                 // Vérifie l'extension du fichier
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-                // var_dump(date("Y_m_dàH_i_s"));
+                
                 $postController = new PostController(TwigService::getInstance());
                 $postController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
-                $postController->addPost($_POST['title'], $_POST['content'], $_POST['chapo'], date("Y-m-d H:i:s").'.'.$ext, $_POST['isPublished'], date("Y-m-d H:i:s"), $_POST['userId']);
+
+                $title = htmlspecialchars($_POST['title']);
+                $content = htmlspecialchars($_POST['content']);
+                $chapo = htmlspecialchars($_POST['chapo']);
+                $isPublished = boolval($_POST['isPublished']);
+                $userId =  intval($_POST['userId']);
+                $media = date("d_m_Y à H_i_s").'.'.$ext;
+                $postController->addPost($title, $content, $chapo, $isPublished, $userId, $media);
             }   
         } 
         elseif ($_SERVER['QUERY_STRING'] == 'editPostFormular') {
@@ -94,7 +100,7 @@ switch (true) {
         }
         elseif ($_SERVER['QUERY_STRING'] == 'editPost') {
             
-            if (isset($_POST['media'])) $media = date("Y-m-d H:i:s").'.'.$ext;
+            if (isset($_POST['media'])) $media = date("d_m_Y à H_i_s").'.'.$ext;
             else $media = $_POST['mediaExist'];
             if (isset($_POST['publish'])) $isPublished = boolval($_POST['publish']);
             else $isPublished = boolval($_POST['isPublished']);
@@ -119,9 +125,6 @@ switch (true) {
         }
         elseif (isset($_POST['action']) &&  ($_POST['action']) == 'save-user') {
             $userController = new UserController(TwigService::getInstance());
-            var_dump($_POST['pseudo']);
-            var_dump($_POST['email']);
-            var_dump($_POST['password']);
             $userController->addUser($_POST['pseudo'], $_POST['email'], $_POST['password']);
         }
         break;
@@ -152,14 +155,17 @@ switch (true) {
         $connexionController->logout();
         break;
     case $_SERVER['QUERY_STRING'] == 'dashboard' : 
+        $_SESSION['page'] = 'dashboard';
         $dashboardController = new DashboardController(TwigService::getInstance());
         $dashboardController->dashboard();
         break;
     case $_SERVER['QUERY_STRING'] == 'adminPosts' :
+        $_SESSION['page'] = 'adminPosts';
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPosts();
         break;
     case $_SERVER['QUERY_STRING'] == 'adminPostDetails/'.$postId : 
+        $_SESSION['page'] = 'adminPostDetails';
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPostDetails($postId);
         break;

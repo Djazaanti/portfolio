@@ -25,7 +25,6 @@ class DashboardController{
      */
     public function __construct(TwigService $twigService)
     {
-        // Je stock la configuration twig dans notre variable twig du controller
         $this->twigService = $twigService;
     }
 
@@ -53,7 +52,6 @@ class DashboardController{
 
         $_SESSION["SuccessMessage"] = "";
         $_SESSION["ErrorMessage"] = "";
-
     }
 
 
@@ -78,8 +76,9 @@ class DashboardController{
     public function deleteComment(int $idComment) : void {
         $commentModel = new CommentModel();
         $commentModel->updateDeleteComment($idComment);
+
         $_SESSION['SuccessMessage'] = "Commentaire supprimé";
-        // echo $this->twigService->get()->render('admin/dashboard.html.twig', ['Message' => $_SESSION['message']]);
+        
         header('location: index.php?dashboard');
     }
 

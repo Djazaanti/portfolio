@@ -25,15 +25,25 @@ class UserController{
      */
     public function __construct(TwigService $twigService)
     {
-        // Je stock la configuration twig dans notre variable twig du controller
         $this->twigService = $twigService;
     }
 
+    /**
+     * @return void
+     */
     public function addUserFormular() : void {
         echo $this->twigService->get()->render('admin/addUserFormular.html.twig');
     }
 
-    public function addUser(string $pseudo, string $email, string $password) {
+  
+    /**
+     * @param string $pseudo
+     * @param string $email
+     * @param string $password
+     * 
+     * @return void
+     */
+    public function addUser(string $pseudo, string $email, string $password) : void {
 
         $userModel = new UserModel();
         $userModel->saveUser($pseudo, $email, $password);

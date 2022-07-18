@@ -17,6 +17,9 @@ class AdminController{
 
     private TwigService $twigService;
 
+    /**
+     * @param TwigService $twig
+     */
     public function __construct(TwigService $twig){
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
@@ -40,15 +43,18 @@ class AdminController{
         $posts = $postModel->getAdminPosts();
 
         echo $this->twigService->get()->render('admin/adminPosts.html.twig', ['posts' => $posts]);
+
+        $_SESSION["SuccessMessage"] = "";
+        $_SESSION["ErrorMessage"] = "";
     }
 
    
     /**
-     * @param mixed $id
+     * @param int $id
      * 
      * @return void
      */
-    public function adminPostDetails($id) : void{
+    public function adminPostDetails(int $id) : void{
         $postModel = new PostModel();
         $post = $postModel->getPost($id);
 
@@ -57,6 +63,8 @@ class AdminController{
 
         echo $this->twigService->get()->render('admin/adminPostDetails.html.twig', ['post' => $post, 'admins' => $admins]);
 
+        $_SESSION["SuccessMessage"] = "";
+        $_SESSION["ErrorMessage"] = "";
     }
 
 }

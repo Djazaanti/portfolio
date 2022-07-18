@@ -23,8 +23,6 @@ class CommentController
     private TwigService $twigService;
 
     /**
-     * Le constructeur de la classe UserController.
-     * Il attend en paramètre twig pour afficher les vues
      * @param TwigService $twig Le service twig
      */
     public function __construct(TwigService $twig)
@@ -34,9 +32,11 @@ class CommentController
     }
 
     /**
+     * @param int $postId
+     * 
      * @return void
      */
-    public function addCommentFormular($postId) : void {
+    public function addCommentFormular(int $postId) : void {
         echo $this->twigService->get()->render('addComment.html.twig', ['postId' => $postId]);
     }
 

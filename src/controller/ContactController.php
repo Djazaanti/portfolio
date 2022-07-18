@@ -21,11 +21,6 @@ class ContactController
     private TwigService $twigService;
 
     /**
-     * @var ContactModel The contact model to make request
-     */
-    private ContactModel $contactModel;
-
-    /**
      * @param TwigService $twigService
      */
     public function __construct(TwigService $twigService)
@@ -115,7 +110,6 @@ class ContactController
             $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         }
         
-        header('Location: ../index.php?contact#contact');
-        // Pas très joli mais c'est ce qui fionctionne comme on le souhaitais :/
+        header('Location: index.php?contact#contact');
     }
 }
