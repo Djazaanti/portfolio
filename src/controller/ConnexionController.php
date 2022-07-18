@@ -34,14 +34,17 @@ class ConnexionController{
     {
         $userModel = new UserModel();
         $user = $userModel->getUserByPseudo($pseudo);
+
         $_SESSION['role'] = $user['role'];
         $_SESSION['user'] = $user['pseudo'];
         $_SESSION['userId'] = $user['id'];
-        if ($user['password'] == $password ) {
+        $_SESSION['isValidate'] = $user['isValidate'];
+        var_dump($user['isValidate']);
+        if ($user['password'] == $password  && $_SESSION['isValidate'] == 1) {
             header('location: index.php');
         }
         else {
-            echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"l'utilisateur n'a pas les droits d'accès"]);
+            echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Vérifiez votre mot de passe. Sinon, réessayez une fois votre compte validé !"]);
         }
     }
 

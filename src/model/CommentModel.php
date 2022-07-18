@@ -73,7 +73,7 @@ class CommentModel
     /**
      * @return array
      */
-    public function getCommentairesAValider() : array {
+    public function getCommentsToValid() : array {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -85,7 +85,7 @@ class CommentModel
                             ON comment.user_id = user.id
                             JOIN post
                             ON comment.post_id = post.id
-                            WHERE isValidate = 0');
+                            WHERE comment.isValidate = 0');
         $req->execute();
 
         return $req->fetchAll();

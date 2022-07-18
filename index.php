@@ -12,6 +12,7 @@ use Oc\Blog\controller\PostController;
 use Oc\Blog\controller\DashboardController;
 use Oc\Blog\controller\AdminController;
 use Oc\Blog\controller\CommentController;
+use Oc\Blog\controller\UserController;
 
 
 use Oc\Blog\service\TwigService;
@@ -82,9 +83,9 @@ switch (true) {
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
                 // var_dump(date("Y_m_dàH_i_s"));
-                $dashboardController = new DashboardController(TwigService::getInstance());
-                $dashboardController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
-                $dashboardController->addPost($_POST['title'], $_POST['content'], $_POST['chapo'], date("Y-m-d H:i:s").'.'.$ext, $_POST['isPublished'], date("Y-m-d H:i:s"), $_POST['userId']);
+                $postController = new PostController(TwigService::getInstance());
+                $postController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
+                $postController->addPost($_POST['title'], $_POST['content'], $_POST['chapo'], date("Y-m-d H:i:s").'.'.$ext, $_POST['isPublished'], date("Y-m-d H:i:s"), $_POST['userId']);
             }   
         } 
         elseif ($_SERVER['QUERY_STRING'] == 'editPostFormular') {
@@ -98,11 +99,11 @@ switch (true) {
             if (isset($_POST['publish'])) $isPublished = boolval($_POST['publish']);
             else $isPublished = boolval($_POST['isPublished']);
 
-            $idUser = intval($_POST['idUser']);
+            $authorId = intval($_POST['authorId']);
             $idPost = intval($_POST['idPost']);
 
             $postController = new PostController(TwigService::getInstance());
-            $postController->editPost($_POST['title'], $_POST['content'], $_POST['chapo'], $media, $isPublished, date("Y-m-d H:i:s"), $idUser, $idPost);
+            $postController->editPost($_POST['title'], $_POST['content'], $_POST['chapo'], $media, $isPublished, date("Y-m-d H:i:s"), $authorId, $idPost);
         }    
         elseif (isset($_POST['action']) &&  ($_POST['action']) == 'deletePost') {
             $idPost = intval($_POST['idPost']);
@@ -115,6 +116,13 @@ switch (true) {
 
             $postController = new PostController(TwigService::getInstance());
             $postController->publishPost($idPost);
+        }
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'save-user') {
+            $userController = new UserController(TwigService::getInstance());
+            var_dump($_POST['pseudo']);
+            var_dump($_POST['email']);
+            var_dump($_POST['password']);
+            $userController->addUser($_POST['pseudo'], $_POST['email'], $_POST['password']);
         }
         break;
     // once contact formular sent, show succes or error message
@@ -158,6 +166,10 @@ switch (true) {
     case $_SERVER['QUERY_STRING'] == 'addPostFormular' : 
         $postController = new PostController(TwigService::getInstance());
         $postController->addPostFormular();
+        break;
+    case $_SERVER['QUERY_STRING'] == 'addUser' : 
+        $userController = new UserController(TwigService::getInstance());
+        $userController->addUserFormular();
         break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :

@@ -104,8 +104,8 @@ class PostModel
         if (null === $db) {
             return [];
         }
-        $req = $db->prepare("INSERT INTO post(title, content, chapo, media, isPublished, createdAt, user_id) 
-                             VALUES(:title, :content, :chapo, :media, :isPublished, :createdAt, :user_id) ");
+        $req = $db->prepare("INSERT INTO post(title, content, chapo, media, isPublished, createdAt, updatedAt, user_id) 
+                             VALUES(:title, :content, :chapo, :media, :isPublished, :createdAt, :updatedAt, :user_id) ");
         $req->execute(array(
                             "title" => $title,
                             "content" => $content,
@@ -113,6 +113,7 @@ class PostModel
                             "media" => $media,
                             "isPublished" => $isPublished,
                             "createdAt" => $createdAt,
+                            "updatedAt" => date("Y-m-d H:i:s"),
                             "user_id" => $id_admin
         ));
         die;        
@@ -128,7 +129,7 @@ class PostModel
         $req->execute(array("idPost" => $idPost));
     }
 
-    public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $userId, int $idPost) {
+    public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $authorId, int $idPost) {
 
         $db = $this->dbConnect();
         if (null === $db) {
@@ -144,7 +145,7 @@ class PostModel
             'media' => $media,
             'isPublished' => $isPublished,
             'updatedAt' => $updatedAt,
-            'userId' => $userId,
+            'userId' => $authorId,
             'idPost' => $idPost
         )); 
 

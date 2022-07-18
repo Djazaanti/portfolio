@@ -24,6 +24,21 @@ class UserModel
             return null;
         }
     }
+
+    /**
+     * @return array
+     */
+    public function getUsers() : array {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+        
+        $req = $db->prepare('SELECT * FROM user');
+        $req->execute();
+
+        return $req->fetchAll();
+    }
     
     /**
      * @param int $id
@@ -97,14 +112,45 @@ class UserModel
 
     }
 
-    public function countUsers() : int {
+    /**
+     * @return int
+     */
+    public function countUsersValidated() : int {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
 
-        $req = $db->prepare('SELECT id FROM user');
+        $req = $db->prepare('SELECT id FROM user WHERE isValidate=1');
         $req->execute();
         return $users= $req->rowCount();
+    }
+
+    public function countUsersToValid() : int {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('SELECT id FROM user WHERE isValidate=0');
+        $req->execute();
+        return $users= $req->rowCount();
+    }
+
+    public function saveUser(string $pseudo, string $email, string $password) {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        $req = $db->prepare('INSERT INTO user(pseudo, email, role, password, isValidate) VALUES(:pseudo, :email, :role, :password, :isValidate)');
+        $req->execute(array(
+            'pseudo' =>$pseudo, 
+            'email' => $email, 
+            'role' => "user", 
+            'password' => $password, 
+            'isValidate' => 0
+        ));
+        die; 
     }
 }

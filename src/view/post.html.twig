@@ -6,12 +6,11 @@
     <section class="page-section portfolio">
         <div class="row justify-content-center">
         
-                {% if session.SuccessMessage is defined %}
-                    <div class="alert alert-success d-grid gap-2 col-6 mx-auto" role="alert">
-                        <p class="btn btn-primary">{{ session.SuccessMessage}} </p>
-                    </div>
-                {% endif %}
-                
+             {% if session.SuccessMessage is defined and session.SuccessMessage != ""  %}
+                <div class="alert alert-success d-grid gap-2 col-6 mx-auto" role="alert">
+                    <p class="btn btn-primary">{{ session.SuccessMessage}} </p>
+                </div>
+            {% endif %}
 
             {% for contentPost in post %}
                 <!-- Portfolio Modal - Title-->
@@ -37,7 +36,7 @@
                                                     {% endif %}
                     </p>
                 </div>
-                {% if session.user is defined %}
+                {% if session.user is defined and session.isValidate == 1 %} {# vérification déjà faite lors de la connexion, nécessaire de la refaire ici quand même ? #}
                     <div class="d-grid gap-2 col-6 mx-auto">
                         <a class="btn btn-primary" href="index.php?addCommentFormular/{{ contentPost.id }}">Ajouter un commentaire</a>
                     </div>
@@ -45,40 +44,41 @@
             {% endfor %}
         </div>
 
-    <!-- section des commentaires -->
-    {% if comments %}
-        <section class="page-section portfolio">
-            <div class="container">
-                <!-- Portfolio Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Commentaires</h2>
-                <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
-                </div>
-            
-                <!-- commentaires -->
-                {% for comment in comments %}
-                    <div class="col-lg-8 col-xl-7 text-center"> 
-                        <li>{{ comment.content }}</li>
-                        <i>{{ comment.updatedAt }}</i>
+        <!-- section des commentaires -->
+        {% if comments %}
+            <section class="page-section portfolio">
+                <div class="container">
+                    <!-- Portfolio Section Heading-->
+                    <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Commentaires</h2>
+                    <!-- Icon Divider-->
+                    <div class="divider-custom">
+                        <div class="divider-custom-line"></div>
+                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                        <div class="divider-custom-line"></div>
                     </div>
-                {% endfor %} 
-    {% else %}
-        <section class="page-section portfolio">
-            <div class="container">
-                <!-- Portfolio Section Heading-->
-                <h6 class="page-section-heading text-center text-uppercase text-secondary mb-0">Aucun commentaire</h6>
-                <!-- Icon Divider-->
-                <div class="divider-custom">
-                    <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
-                    <div class="divider-custom-line"></div>
+                
+                    <!-- commentaires -->
+                    {% for comment in comments %}
+                        <div class="col-lg-8 col-xl-7 text-center"> 
+                            <li>{{ comment.content }}</li>
+                            <i>{{ comment.updatedAt }}</i>
+                        </div>
+                    {% endfor %} 
+        {% else %}
+            <section class="page-section portfolio">
+                <div class="container">
+                    <!-- Portfolio Section Heading-->
+                    <h6 class="page-section-heading text-center text-uppercase text-secondary mb-0">Aucun commentaire</h6>
+                    <!-- Icon Divider-->
+                    <div class="divider-custom">
+                        <div class="divider-custom-line"></div>
+                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                        <div class="divider-custom-line"></div>
+                    </div>
                 </div>
-             </div>
-    {% endif %}
-        </section>
+        {% endif %}
+            </section>
+            </section>
     </section>
         
 

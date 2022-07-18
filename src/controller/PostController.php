@@ -71,23 +71,72 @@ class PostController
      * 
      * @return [type]
      */
-    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $userId, int $idPost) {
-    // public function editPost(string $title, mixed $updatedAt, int $idPost) {
-
-        // var_dump($title.'<br>');
-        // var_dump($content.'<br>');
-        // var_dump($chapo.'<br>');
-        // var_dump($media.'<br>');
-        // var_dump(boolval($isPublished).'<br>');
-        // var_dump($updatedAt.'<br>');
-        // var_dump($userId.'<br>');
-        // var_dump($idPost.'<br>');
-
+    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $authorId, int $idPost) {
         $postModel = new PostModel();
-        $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $userId, $idPost);
+        $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $authorId, $idPost);
 
         $_SESSION["SuccessMessage"] = "article mis à jour avec succès";
         header("location: index.php?dashboard");
+
+    }
+
+    
+    
+    /**
+     * @param mixed $title
+     * @param mixed $content
+     * @param mixed $chapo
+     * @param mixed $media
+     * @param mixed $isPublished
+     * @param mixed $createdAt
+     * @param mixed $userId
+     * 
+     * @return void
+     */
+    public function addPost(mixed $title, mixed $content, mixed $chapo, mixed $media, mixed $isPublished, mixed $createdAt, mixed $userId) : void {
+        $title = htmlspecialchars($title);
+        $content = htmlspecialchars($content);
+        $chapo = htmlspecialchars($chapo);
+        $userId =  intval($userId);
+        
+        $postModel = new PostModel();
+        $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
+
+        $_SESSION['SuccessMessage'] = "Article ajouté !";
+        header('location: index.php?dashboard');
+
+    }
+
+   
+    /**
+     * @param mixed $ext
+     * @param mixed $allowed
+     * @param mixed $filesize
+     * @param mixed $filetype
+     * @param mixed $filename
+     * @param mixed $file_tmp_name
+     * 
+     * @return void
+     */
+    public function downloadFile(mixed $ext, mixed $allowed, mixed $filesize, mixed $filetype, mixed $filename, mixed $file_tmp_name) : void {
+        
+        if(!array_key_exists($ext, $allowed)) {
+            $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
+            header('location: index.php?addPostFormular'); die;
+        } 
+
+        // Vérifie la taille du fichier - 5Mo maximum
+        $maxsize = 5 * 1024 * 1024 ;
+        if($filesize > $maxsize) {
+            $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
+            header('location: index.php?addPostFormular');die;
+        }
+        // Vérifie le type MIME du fichier
+        if(in_array($filetype, $allowed)){
+                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y à H_i_s").'.'.$ext);
+        }
+        $_SESSION['SuccessMessage'] = "Fichier téléchagé";
+        header('location: index.php?dashboard');
 
     }
 
@@ -95,9 +144,10 @@ class PostController
         
         $userId = intval($postInformations['userId']);
         $userModel = new UserModel();
-        $user = $userModel->getUser($userId);
+        $author = $userModel->getUser($userId);
+        $users = $userModel->getUsers();
         
-        echo $this->twigService->get()->render('admin/editPost.html.twig', ['postInformations' => $postInformations, 'user' => $user]);
+        echo $this->twigService->get()->render('admin/editPost.html.twig', ['postInformations' => $postInformations, 'author' => $author, 'users' => $users]);
     }
 
     

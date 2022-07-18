@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{# code security : only admin can access in this page #}
+{% block title %} créer un compte {% endblock %}
+
+{% block content %}
+
+    <section class="page-section portfolio">
+        <div class="container">
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Créer un compte</h2>
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+
+             <!-- Contact Section Form-->
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-7">
+                    {% if errorMessage is defined %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ errorMessage }}
+                        </div>
+                    {% endif %}
+
+                    {% if successMessage is defined %}
+                        <div class="alert alert-success" role="alert">
+                            {{ successMessage }}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="action" value="save-user">
+
+                        <div class="form-floating mb-3">
+                            <input class="form-control" name="pseudo" id="pseudo" type="text" required/>
+                            <label for="pseudo">Nom utilisateur</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" name="email" id="email" type="text" required/>
+                            <label for="email">E-mail</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" name="password" id="password" type="text" required/>
+                            <label for="password">Mot de passe</label>
+                        </div>
+                        <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Enregistrer</button>            
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

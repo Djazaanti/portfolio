@@ -19,10 +19,11 @@
             <table class="table table-dark table-striped-columns">
                 <thead>
                     <tr>
-                        <th >Nb commentaires à valider</th>
-                        <th scope="col">Nb articles à publier</th>
-                        <th scope="col">Nb articles publiés</th>            
-                        <th scope="col">Nb Utilisateurs</th>
+                        <th >Nb comments to valid</th>
+                        <th scope="col">Nb posts in draft</th>
+                        <th scope="col">Nb posts published</th>            
+                        <th scope="col">Nb Users to valid</th>
+                        <th scope="col">Nb Users validated</th>
                         </tr>
                 </thead>
                 <tbody>
@@ -30,7 +31,9 @@
                         <td >{{ NbCommentsToValid }} </td>
                         <td class="table-dark">{{ NbPostsToPublish }}</td>
                         <td class="table-dark">{{ NbPostsPublished }}</td>
-                        <td class="table-dark">{{ NbUsers }}</td>
+                        <td class="table-dark">{{ NbUsersToValid }}</td>
+                        <td class="table-dark">{{ NbUsersValidated }}</td>
+                        
                     </tr>
                 </tbody>
             </table>
@@ -38,34 +41,30 @@
         <div class="d-grid gap-2 col-6 mx-auto">
             <a class="btn btn-primary" href="index.php?addPostFormular" role="button">Ajouter un article</a>
         </div>
-    {# </section> #}
+    </section>
 
     <!-- Messages de retour d'action-->
 
     {% if session.ErrorMessage != "" %}
-        {# <section class="page-section portfolio " id="portfolio"> #}
-            <div class="container">
+            <div class="d-grid gap-2 col-6 mx-auto">
                 <div class="alert alert-danger" role="alert">
                     {{ session.ErrorMessage }}
                 </div>
             </div>
-        {# </section> #}
     {% endif %}
 
     {% if session.SuccessMessage != "" %}
-        {# <section class="page-section portfolio " id="portfolio"> #}
-            <div class="container">
+            <div class="d-grid gap-2 col-6 mx-auto">
                 <div class="alert alert-success" role="alert">
                     {{ session.SuccessMessage}}
                 </div>
             </div>
-        </section>
     {% endif %}
         
 
     <!-- section articles à publier-->
     <section class="page-section portfolio " id="portfolio">
-        {# <div class="container"> #}
+        <div class="container">
             <!-- Portfolio Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles à publier</h2>
             <!-- Icon Divider-->
@@ -154,7 +153,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-        {# </div>  #}
+        </div> 
     </section>
     <section class="page-section portfolio" id="comments">
         <div class="container">
@@ -180,16 +179,17 @@
                 </tr>
             </thead>
             <tbody>
-            {% for commentaire in commentaires %}
+            {% for commentToValid in commentsToValid %}
             <tr>
-                    <td>{{ commentaire.title }}</td>
-                    <td>{{ commentaire.content }}</td>
-                    <td>{{ commentaire.createdAt }}</td>
-                    <td>{{ commentaire.pseudo }}</td>
-                    <td>{{ commentaire.email }}</td>
+                    <td>{{ commentToValid.title }}</td>
+                    <td>{{ commentToValid.content }}</td>
+                    <td>{{ commentToValid.createdAt }}</td>
+                    <td>{{ commentToValid.pseudo }}</td>
+                    <td>{{ commentToValid.email }}</td>
                         <td>
+                            <!-- Modification -->
                             <form action="" method="post" accept-charset="UTF-8" onsubmit="return confirm('VALIDER ce commentaire ?');">
-                                <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkValidComment">
+                                <input type="hidden" name="idComment" value="{{ commentToValid.id }}" id="checkValidComment">
                                 <input type="hidden" name="action" value="validComment">
                                 <div class="form-check">
                                     <label class="form-check-label" for="checkValidComment">
@@ -199,8 +199,9 @@
                             </form>
                         </td>
                         <td>
+                            <!-- Suppression -->
                             <form  action="" method="post" onsubmit="return confirm('SUPPRIMER ce commentaire ?');">
-                            <input type="hidden" name="idComment" value="{{ commentaire.id }}" id="checkDeleteComment" >
+                            <input type="hidden" name="idComment" value="{{ commentToValid.id }}" id="checkDeleteComment" >
                                 <input type="hidden" name="action" value="deleteComment">
                                 <div class="form-check">
                                     <label class="form-check-label" for="checkDeleteComment">

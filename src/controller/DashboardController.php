@@ -35,84 +35,24 @@ class DashboardController{
     public function dashboard() : void {
 
         $commentModel = new CommentModel();
-        $commentaires = $commentModel->getCommentairesAValider();
+        $commentsToValid = $commentModel->getCommentsToValid();
         $NbCommentsToValid = $commentModel->countCommentsToValid();
 
         $userModel = new UserModel();
         $admins = $userModel->getAdmins();
-        $NbUsers = $userModel->countUsers();
+        $NbUsersValidated = $userModel->countUsersValidated();
+        $NbUsersToValid = $userModel->countUsersToValid();
 
         $postModel = new PostModel();
         $posts = $postModel->getPosts();
         $NbPostsToPublish = $postModel->countPostsToPublish();
         $NbPostsPublished = $postModel->countPostsPublished();
         
-        var_dump($NbCommentsToValid );
         $_SESSION['page'] = "dashboard";
-        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['commentaires' => $commentaires, 'admins' => $admins, 'posts' => $posts, 'NbCommentsToValid' => $NbCommentsToValid, 'NbUsers' => $NbUsers, 'NbPostsToPublish' => $NbPostsToPublish, 'NbPostsPublished' => $NbPostsPublished]);
+        echo $this->twigService->get()->render('admin/dashboard.html.twig', ['commentsToValid' => $commentsToValid, 'admins' => $admins, 'posts' => $posts, 'NbCommentsToValid' => $NbCommentsToValid, 'NbUsersValidated' => $NbUsersValidated, 'NbUsersToValid' => $NbUsersToValid, 'NbPostsToPublish' => $NbPostsToPublish, 'NbPostsPublished' => $NbPostsPublished]);
 
         $_SESSION["SuccessMessage"] = "";
         $_SESSION["ErrorMessage"] = "";
-
-    }
-
-
-    
-    /**
-     * @param mixed $title
-     * @param mixed $content
-     * @param mixed $chapo
-     * @param mixed $media
-     * @param mixed $isPublished
-     * @param mixed $createdAt
-     * @param mixed $userId
-     * 
-     * @return void
-     */
-    public function addPost(mixed $title, mixed $content, mixed $chapo, mixed $media, mixed $isPublished, mixed $createdAt, mixed $userId) : void {
-        $title = htmlspecialchars($title);
-        $content = htmlspecialchars($content);
-        $chapo = htmlspecialchars($chapo);
-        $userId =  intval($userId);
-        
-        $postModel = new PostModel();
-        $postModel->insertPostInDB($title, $content, $chapo, $media, $isPublished, $createdAt, $userId);
-
-        $_SESSION['SuccessMessage'] = "Article ajouté !";
-        header('location: index.php?dashboard');
-
-    }
-
-   
-    /**
-     * @param mixed $ext
-     * @param mixed $allowed
-     * @param mixed $filesize
-     * @param mixed $filetype
-     * @param mixed $filename
-     * @param mixed $file_tmp_name
-     * 
-     * @return void
-     */
-    public function downloadFile(mixed $ext, mixed $allowed, mixed $filesize, mixed $filetype, mixed $filename, mixed $file_tmp_name) : void {
-        
-        if(!array_key_exists($ext, $allowed)) {
-            // $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
-            header('location: index.php?addPostFormular'); die;
-        } 
-
-        // Vérifie la taille du fichier - 5Mo maximum
-        $maxsize = 5 * 1024 * 1024 ;
-        if($filesize > $maxsize) {
-            // $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
-            header('location: index.php?addPostFormular');die;
-        }
-        // Vérifie le type MIME du fichier
-        if(in_array($filetype, $allowed)){
-                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y à H_i_s").'.'.$ext);
-        }
-        // $_SESSION['SuccessMessage'] = "Fichier téléchagé";
-        header('location: index.php?dashboard');
 
     }
 
