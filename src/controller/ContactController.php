@@ -4,14 +4,9 @@ declare(strict_types=1);
 namespace Oc\Blog\controller;
 
 use Oc\Blog\service\TwigService;
-use Oc\Blog\controller\UserController;
-
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-//Load Composer's autoloader
-require 'vendor/autoload.php';
 
 class ContactController
 {
@@ -30,10 +25,11 @@ class ContactController
 
     /**
      * @param string $data
-     * 
+     *
      * @return string
      */
-    private function validInput(string $data) : string {
+    private function validInput(string $data): string
+    {
         return htmlspecialchars($data);
     }
 
@@ -42,10 +38,11 @@ class ContactController
      * @param string $lastname
      * @param string $email
      * @param string $message
-     * 
+     *
      * @return bool
      */
-    private function sendEmail(string $name, string $lastname, string $email, string $message) : bool {
+    private function sendEmail(string $name, string $lastname, string $email, string $message): bool
+    {
 
         // send mails with PHPMailer
         $mail = new PHPMailer(true);
@@ -53,15 +50,14 @@ class ContactController
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 465;
         $mail->SMTPAuth = 1;
-        
+
         if (!$mail->SMTPAuth) {
             return false;
         }
-        
+
         $mail->SMTPSecure = 'ssl';
         $mail->Username = 'alidjazaanti1@gmail.com';
         $mail->Password = 'fsytpduoqnbzitlc';
-
         $mail->CharSet = 'UTF-8';
 
         if (!$mail->smtpConnect()) {
@@ -69,11 +65,11 @@ class ContactController
         }
 
         $mail->From = $email;
-        $mail->FromName = $name.'.'.$lastname;
+        $mail->FromName = $name . '.' . $lastname;
 
         $mail->Subject = 'Formulaire de contact';
         $mail->WordWrap = 50;
-        $mail->MsgHTML('<div><p>Nom : '.$name.'</p><p>Prénom : '.$lastname.'</p><p>'.'</p><p>Message : '.$message.'</p><p>Répondre à : '.$email.'</p></div>');
+        $mail->MsgHTML('<div><p>Nom : ' . $name . '</p><p>Prénom : ' . $lastname . '</p><p>' . '</p><p>Message : ' . $message . '</p><p>Répondre à : ' . $email . '</p></div>');
         $mail->isHTML(true);
         $mail->addAddress('alidjazaanti1@gmail.com', 'Djazaanti');
 
@@ -85,10 +81,10 @@ class ContactController
      * @param string $lastname
      * @param string $email
      * @param string $message
-     * 
+     *
      * @return void
      */
-    public function submitFormContact(string $name, string $lastname, string $email, string $message) : void
+    public function submitFormContact(string $name, string $lastname, string $email, string $message): void
     {
         $nameValid = $this->validInput($name);
         $lastnameValid = $this->validInput($lastname);
@@ -109,7 +105,7 @@ class ContactController
             $_SESSION['flash'] = 'success';
             $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         }
-        
+
         header('Location: index.php?contact#contact');
     }
 }
