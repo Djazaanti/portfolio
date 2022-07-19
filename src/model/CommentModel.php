@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Oc\Blog\model;
 
-use PDO;
-
 class CommentModel
 {
     /**
      * @return \PDO|null
      */
-    public function dbConnect() : ?\PDO
+    public function dbConnect(): ?\PDO
     {
         try {
             $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
@@ -24,11 +22,11 @@ class CommentModel
     }
 
     /**
-     * @param int $id
-     * 
-     * @return array
+     * @param int $id the post identifier
+     *
+     * @return array comments retrieved by post identifier
      */
-    public function getComments(int $id) : array
+    public function getComments(int $id): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -38,31 +36,30 @@ class CommentModel
         try {
             $req = $db->prepare('SELECT id, content, isValidate, updatedAt, user_id, post_id FROM comment WHERE post_id = ?');
             $req->execute(array($id));
-    
+
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
-   
     /**
      * @param string $comment
-     * @param id $user
-     * @param id $postId
-     * 
-     * @return [type]
+     * @param int $user
+     * @param int $postId
      */
-    public function saveComment(string $comment, int $user, int $postId)  {
+    public function saveComment(string $comment, int $user, int $postId): void
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return;
         }
 
-        $isValidate = 0 ;
-        $createdAt = date("Y-m-d H:i:s"); 
+        $isValidate = 0;
+        $createdAt = date("Y-m-d H:i:s");
         $updatedAt = date("Y-m-d H:i:s");
-        
+
         try {
             $req = $db->prepare('INSERT INTO comment (content, isValidate, createdAt, updatedAt, user_id, post_id) VALUES(:content, :isValidate, :createdAt, :updatedAt, :user_id, :post_id) ');
             $req->execute(array(
@@ -76,13 +73,13 @@ class CommentModel
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
         }
-
     }
 
     /**
      * @return array
      */
-    public function getCommentsToValid() : array {
+    public function getCommentsToValid(): array
+    {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -96,14 +93,20 @@ class CommentModel
                                 ON comment.post_id = post.id
                                 WHERE comment.isValidate = 0');
             $req->execute();
-    
+
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
-    public function updateValidComment( int $idComment) {
+    /**
+     * @param int $idComment
+     * @return array|false|\PDOStatement
+     */
+    public function updateValidComment(int $idComment): bool|array|\PDOStatement
+    {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -113,51 +116,54 @@ class CommentModel
             $req->execute(array(
                 "isValidate" => 1,
                 "id" => $idComment
-            ));     
-            
+            ));
+
             return $req;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
     /**
      * @param int $idComment
-     * 
-     * @return [type]
+     * @return void
      */
-    public function updateDeleteComment(int $idComment) {
+    public function updateDeleteComment(int $idComment): void
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return;
         }
 
         try {
             $req = $db->prepare('DELETE FROM comment WHERE id=:id');
             $req->execute(array(
                 "id" => $idComment
-            )); 
-        } catch (PDOException $e) {
+            ));
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
-        }    
+        }
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function countCommentsToValid() : int {
+    public function countCommentsToValid(): ?int
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return null;
         }
 
         try {
             $req = $db->prepare('SELECT id FROM comment WHERE isValidate=0');
             $req->execute();
-            return $commentsToValid = $req->rowCount(); 
-        } catch (PDOException $e) {
+            return $commentsToValid = $req->rowCount();
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
-        }  
+            return null;
+        }
     }
 
 }
