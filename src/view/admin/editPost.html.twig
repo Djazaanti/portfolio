@@ -48,16 +48,16 @@
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="content" class="col-sm-2 col-form-label">Contenu</label>
+                        <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="content" name="content" value="{{ postInformations.content}}" required="required">
+                            <input type="text" class="form-control" id="chapo" name="chapo" value="{{ postInformations.chapo }}" required="required">
                         </div>
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
+                        <label for="content" class="col-sm-2 col-form-label">Contenu</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="chapo" name="chapo" value="{{ postInformations.chapo }}" required="required">
+                            <textarea type="text" class="form-control" id="content" name="content" required="required" rows="5">{{ postInformations.content}}</textarea>
                         </div>
                     </div>
 
@@ -98,14 +98,16 @@
                         </select>
                     </div>
                     
-                    <div class="mb-3 row">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="publish" id="publish">
-                            <label class="form-check-label" for="publish">
-                                Publier ?
-                            </label>
+                    {% if  postInformations.isPublished is not empty and postInformations.isPublished == 0 %}
+                        <div class="mb-3 row">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="publish" id="publish">
+                                <label class="form-check-label" for="publish">
+                                    Publier ?
+                                </label>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
 
                     <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Mettre à jour</button>
                 </form>

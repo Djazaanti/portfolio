@@ -34,11 +34,7 @@ class HomeController
     public function showHome() : void
     {
         $twig = $this->twigService->get();
-        $postModel = new PostModel();
 
-        // ceci est mon parcours, pas des articles, je dois les renommer : issue -latest changes
-        $posts = $postModel->getPostsHome();
-
-        echo $twig->render('home.html.twig', ['posts' => $posts]);
+        echo $twig->render('home.html.twig');
     }
 }

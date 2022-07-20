@@ -26,27 +26,6 @@ class PostModel
     /**
      * @return array
      */
-    public function getPostsHome() : array
-    {
-        $db = $this->dbConnect();
-        if (null === $db) {
-            return [];
-        }
-        try {
-            $posts = $db->prepare('SELECT  id, title, content, updatedAt, chapo, media  FROM post ORDER BY  id DESC limit 3');
-            $posts->execute();
-
-            return $posts->fetchAll();
-        } catch (PDOException $e) {
-            $ErrorMessage = $e->getMessage();
-        }
-           
-        
-    }
-
-    /**
-     * @return array
-     */
     public function getPosts() : array
     {
         $db = $this->dbConnect();
