@@ -90,7 +90,7 @@ switch (true) {
             $postController->editPostFormular($_POST);
         } elseif ($_SERVER['QUERY_STRING'] == 'editPost') {
 
-            if (isset($_POST['media'])) $media = date("d_m_Y à H_i_s") . '.' . $ext;
+            if (isset($_POST['media'])) $media = date("d_m_Y à H_i_s").'.'.$ext;
             else $media = $_POST['mediaExist'];
             if (isset($_POST['publish'])) $isPublished = boolval($_POST['publish']);
             else $isPublished = boolval($_POST['isPublished']);
