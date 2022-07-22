@@ -37,18 +37,24 @@ class ConnexionController
      */
     public function verifyConnexion(string $pseudo, string $password): void
     {
-        $userModel = new UserModel();
-        $user = $userModel->getUserByPseudo($pseudo);
+        
+        $pass = password_hash("Luna", PASSWORD_DEFAULT);
+        // echo($pass);
 
-        $_SESSION['role'] = $user['role'];
-        $_SESSION['user'] = $user['pseudo'];
-        $_SESSION['userId'] = $user['id'];
-        $_SESSION['isValidate'] = $user['isValidate'];
-        if ($user['password'] == $password  && $_SESSION['isValidate'] == 1) {
+        $userModel = new UserModel();
+        $user = $userModel->VerifyUser($pseudo, $password);
+        if ($user != [] && $_SESSION['isValidate'] == 1)
+        {
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['user'] = $user['pseudo'];
+            $_SESSION['userId'] = $user['id'];
+            $_SESSION['isValidate'] = $user['isValidate'];
+
             header('location: index.php');
         }
+        
         else {
-            echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Vérifiez votre mot de passe. Sinon, réessayez une fois votre compte validé !"]);
+            echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Vérifiez votre mot de passe. Sinon, réessayez une fois votre compte validé !", "pass" => $pass]);
         }
     }
     

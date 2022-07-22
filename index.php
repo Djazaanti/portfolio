@@ -52,7 +52,7 @@ switch (true){
             // traitement formulaire de connexion
             $connexionController = new ConnexionController(TwigService::getInstance());
             $pseudo = trim($_POST['pseudo']);
-            $password = trim($_POST['password']);
+            $password = $_POST['password'];
             $connexionController->verifyConnexion($pseudo, $password);
         }
         elseif (isset($_POST['action']) &&  ($_POST['action']) == 'validComment'){

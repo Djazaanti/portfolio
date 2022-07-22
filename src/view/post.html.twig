@@ -36,9 +36,13 @@
                                                     {% endif %}
                     </p>
                 </div>
-                {% if session.user is defined and session.isValidate == 1 %} {# vérification déjà faite lors de la connexion, nécessaire de la refaire ici quand même ? #}
+                {% if session.user is defined and session.isValidate == 1 %}
                     <div class="d-grid gap-2 col-6 mx-auto">
                         <a class="btn btn-primary" href="index.php?addCommentFormular/{{ contentPost.id }}">Ajouter un commentaire</a>
+                    </div>
+                {% else %}
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <a class="btn btn-primary" href="index.php?connexion">connectez-vous pour ajouter un commentaire</a>
                     </div>
                 {% endif %}
             {% endfor %}
