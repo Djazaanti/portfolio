@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
+use Oc\Blog\model\CommentModel;
+use Oc\Blog\model\PostModel;
+use Oc\Blog\model\UserModel;
 use Oc\Blog\service\TwigService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-
-use Oc\Blog\model\PostModel;
-use Oc\Blog\model\CommentModel;
-use Oc\Blog\model\UserModel;
-
 
 /**
  * @UserController Le controller permettant de gérer l'utilisateur
@@ -29,17 +27,16 @@ class PostController
      */
     public function __construct(TwigService $twig)
     {
-        // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
     }
     
-
     /**
      * @param int $id
      * 
      * @return void
      */
-    public function showPostAndComments(int $id) : void{
+    public function showPostAndComments(int $id) : void
+    {
         $postModel = new PostModel();
         $post = $postModel->getPost($id);
 
@@ -55,14 +52,13 @@ class PostController
     /**
      * @return void
      */
-    public function addPostFormular() : void {
+    public function addPostFormular() : void
+    {
         $userModel = new UserModel();
         $admins = $userModel->getAdmins();
 
         echo $this->twigService->get()->render('admin/addPost.html.twig', ['admins' => $admins]);
-
     }
-
 
     /**
      * @param string $title
@@ -74,8 +70,8 @@ class PostController
      * 
      * @return void
      */
-    public function addPost(string $title, string $content, string $chapo, bool $isPublished, int $userId, string $media) : void {
-        
+    public function addPost(string $title, string $content, string $chapo, bool $isPublished, int $userId, string $media) : void
+    {
         $postModel = new PostModel();
         $postModel->addPost($title, $content, $chapo, $isPublished, $userId, $media);
 
@@ -85,8 +81,6 @@ class PostController
 
     }
 
-   
-    
     /**
      * @param string $ext
      * @param array $allowed
@@ -97,8 +91,8 @@ class PostController
      * 
      * @return void
      */
-    public function downloadFile(string $ext, array $allowed, int $filesize, string $filetype, string $filename, string $file_tmp_name) : void {
-        
+    public function downloadFile(string $ext, array $allowed, int $filesize, string $filetype, string $filename, string $file_tmp_name) : void
+    {        
         if(!array_key_exists($ext, $allowed)) {
             $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
 
@@ -114,7 +108,7 @@ class PostController
         }
         // Vérifie le type MIME du fichier
         if(in_array($filetype, $allowed)){
-                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y à H_i_s").'.'.$ext);
+                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/" . date("d_m_Y à H_i_s"). '.' . $ext);
         }
         $_SESSION['SuccessMessage'] = "Fichier téléchagé";
         
@@ -127,7 +121,8 @@ class PostController
      * 
      * @return void
      */
-    public function editPostFormular(array $postInformations) : void {
+    public function editPostFormular(array $postInformations) : void
+    {
         $userId = intval($postInformations['userId']);
         $userModel = new UserModel();
         $author = $userModel->getUser($userId);
@@ -149,7 +144,8 @@ class PostController
      * 
      * @return void
      */
-    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, string $updatedAt, int $authorId, int $idPost) : void {
+    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, string $updatedAt, int $authorId, int $idPost) : void
+    {
         $postModel = new PostModel();
         $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $authorId, $idPost);
 
@@ -169,7 +165,8 @@ class PostController
      * 
      * @return void
      */
-    public function deletePost(int $idPost) : void {
+    public function deletePost(int $idPost) : void
+    {
         $postModel = new PostModel();
         $post = $postModel->deletePostInBDD($idPost);
         
@@ -188,7 +185,8 @@ class PostController
      * 
      * @return void
      */
-    public function publishPost( int $idPost) : void {
+    public function publishPost( int $idPost) : void
+    {
         $postModel = new PostModel();
         $post = $postModel->updatePublishPost($idPost);
 

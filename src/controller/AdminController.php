@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace OC\Blog\controller;
 
+use Oc\Blog\model\PostModel;
+use Oc\Blog\model\UserModel;
 use OC\Blog\service\TwigService;
 use Twig\error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use Oc\Blog\model\UserModel;
-use Oc\Blog\model\PostModel;
-
-
-class AdminController{
+class AdminController
+{
 
     private TwigService $twigService;
 
@@ -48,13 +47,12 @@ class AdminController{
         $_SESSION["ErrorMessage"] = "";
     }
 
-   
     /**
      * @param int $id
      * 
      * @return void
      */
-    public function adminPostDetails(int $id) : void{
+    public function adminPostDetails(int $id) : void {
         $postModel = new PostModel();
         $post = $postModel->getPost($id);
 

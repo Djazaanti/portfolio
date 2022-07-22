@@ -11,10 +11,9 @@
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php">Accueil</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php?dashboard">Dashboard</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php?adminPosts">Articles</a></li>
-                {# {% if session.page is defined and session.page =='dashboard' %} #}
+                {% if session.page is defined and session.page =='dashboard' %}
                     {{ '<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php?dashboard#comments">Commentaires à valider</a></li>' }}
-                {# {% endif %} #}
-                {# <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php?users">Utilisateurs</a></li> #}
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php?users">Utilisateurs</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="index.php?deconnexion">Déconnnexion</a></li>
 
             </ul>

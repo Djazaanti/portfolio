@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
-use Oc\Blog\service\TwigService;
 use Oc\Blog\controller\UserController;
-
+use Oc\Blog\service\TwigService;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader
 require 'vendor/autoload.php';
@@ -33,7 +32,8 @@ class ContactController
      * 
      * @return string
      */
-    private function validInput(string $data) : string {
+    private function validInput(string $data) : string
+    {
         return htmlspecialchars($data);
     }
 
@@ -69,11 +69,11 @@ class ContactController
         }
 
         $mail->From = $email;
-        $mail->FromName = $name.'.'.$lastname;
+        $mail->FromName = $name . '.' . $lastname;
 
         $mail->Subject = 'Formulaire de contact';
         $mail->WordWrap = 50;
-        $mail->MsgHTML('<div><p>Nom : '.$name.'</p><p>Prénom : '.$lastname.'</p><p>'.'</p><p>Message : '.$message.'</p><p>Répondre à : '.$email.'</p></div>');
+        $mail->MsgHTML('<div><p>Nom : ' . $name . '</p><p>Prénom : ' . $lastname . '</p><p>' . '</p><p>Message : ' . $message . '</p><p>Répondre à : ' . $email . '</p></div>');
         $mail->isHTML(true);
         $mail->addAddress('alidjazaanti1@gmail.com', 'Djazaanti');
 

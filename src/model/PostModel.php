@@ -11,7 +11,7 @@ class PostModel
     /**
      * @return \PDO|null
      */
-    public function dbConnect() : ?\PDO
+    public function dbConnect(): ?\PDO
     {
         try {
             $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
@@ -23,10 +23,11 @@ class PostModel
         }
     }
 
-    /**
+    /*
+     * Get all post ordered by their identifier
      * @return array
      */
-    public function getPosts() : array
+    public function getPosts(): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -40,13 +41,16 @@ class PostModel
         return $posts->fetchAll();
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
     /**
-     * @return array
+     * * Get all post for Admin
+     * @return array empty if not found
      */
-    public function getAdminPosts() : array {
+    public function getAdminPosts() : array
+    {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -59,6 +63,7 @@ class PostModel
             return $posts->fetchAll();
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
 
     }
@@ -68,7 +73,7 @@ class PostModel
      * 
      * @return array
      */
-    public function getPost(mixed $id) : array
+    public function getPost(mixed $id): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -81,11 +86,11 @@ class PostModel
             return $req->fetchAll();
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
 
     }
 
-   
     /**
      * @param string $title
      * @param string $content
@@ -118,14 +123,21 @@ class PostModel
         die;  
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
               
     }
 
-    public function deletePostinBDD(int $idPost) {
+    /**
+     * @param int $idPost
+     * 
+     * @return void
+     */
+    public function deletePostinBDD(int $idPost): void
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return;
         }
 
         try {
@@ -137,8 +149,20 @@ class PostModel
         }
     }
 
-    public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $authorId, int $idPost) {
-
+    /**
+     * @param string $title
+     * @param string $content
+     * @param string $chapo
+     * @param string $media
+     * @param bool $isPublished
+     * @param mixed $updatedAt
+     * @param int $authorId
+     * @param int $idPost
+     * 
+     * @return array
+     */
+    public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $authorId, int $idPost): array|bool
+    { 
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -158,10 +182,16 @@ class PostModel
             )); 
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
-    public function updatePublishPost(int $idPost) {
+    /**
+     * @param int $idPost
+     * 
+     * @return array
+     */
+    public function updatePublishPost(int $idPost): array|bool {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -175,13 +205,14 @@ class PostModel
             ));
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function countPostsToPublish() : int {
+    public function countPostsToPublish() : ?int {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -192,13 +223,14 @@ class PostModel
             return $postsToPublish = $req->rowCount(); 
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return null;
         }
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function countPostsPublished() : int {
+    public function countPostsPublished() : ?int {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -210,6 +242,7 @@ class PostModel
             return $postsPublished = $req->rowCount(); 
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return null;
         }
     }
 

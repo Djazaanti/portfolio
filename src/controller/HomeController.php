@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
+use Oc\Blog\model\PostModel;
 use Oc\Blog\service\TwigService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use Oc\Blog\model\PostModel;
 
 class HomeController
 {

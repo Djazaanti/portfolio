@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace OC\Blog\controller;
 
+use Oc\Blog\model\CommentModel;
+use Oc\Blog\model\PostModel;
+use Oc\Blog\model\UserModel;
 use Oc\Blog\service\TwigService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use Oc\Blog\model\CommentModel;
-use Oc\Blog\model\PostModel;
-use Oc\Blog\model\UserModel;
-
-
-class DashboardController{
+class DashboardController
+{
     /**
      * @var TwigService Twig
      */
@@ -31,7 +30,8 @@ class DashboardController{
     /**
      * @return void
      */
-    public function dashboard() : void {
+    public function dashboard() : void
+    {
 
         $commentModel = new CommentModel();
         $commentsToValid = $commentModel->getCommentsToValid();
@@ -53,33 +53,4 @@ class DashboardController{
         $_SESSION["SuccessMessage"] = "";
         $_SESSION["ErrorMessage"] = "";
     }
-
-
-    /**
-     * @param int $idComment
-     * 
-     * @return void
-     */
-    public function validComment(int $idComment) : void {
-        
-        $commentModel = new CommentModel();
-        $commentModel->updateValidComment($idComment);
-        $_SESSION['SuccessMessage'] = "Commentaire validé";
-        header('location: index.php?dashboard');
-    }
-
-    /**
-     * @param int $idComment
-     * 
-     * @return void
-     */
-    public function deleteComment(int $idComment) : void {
-        $commentModel = new CommentModel();
-        $commentModel->updateDeleteComment($idComment);
-
-        $_SESSION['SuccessMessage'] = "Commentaire supprimé";
-        
-        header('location: index.php?dashboard');
-    }
-
 }

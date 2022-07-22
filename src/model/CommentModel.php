@@ -24,11 +24,11 @@ class CommentModel
     }
 
     /**
-     * @param int $id
+     * @param int $id the post identifier
      * 
      * @return array
      */
-    public function getComments(int $id) : array
+    public function getComments(int $id): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -45,22 +45,22 @@ class CommentModel
         }
     }
 
-   
     /**
      * @param string $comment
-     * @param id $user
-     * @param id $postId
+     * @param int $user
+     * @param int $postId
      * 
-     * @return [type]
+     * @return void
      */
-    public function saveComment(string $comment, int $user, int $postId)  {
+    public function saveComment(string $comment, int $user, int $postId): void
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return;
         }
 
-        $isValidate = 0 ;
-        $createdAt = date("Y-m-d H:i:s"); 
+        $isValidate = 0;
+        $createdAt = date("Y-m-d H:i:s");
         $updatedAt = date("Y-m-d H:i:s");
         
         try {
@@ -75,6 +75,7 @@ class CommentModel
             ));
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            
         }
 
     }
@@ -82,7 +83,7 @@ class CommentModel
     /**
      * @return array
      */
-    public function getCommentsToValid() : array {
+    public function getCommentsToValid(): array {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -100,10 +101,16 @@ class CommentModel
             return $req->fetchAll();
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
-    public function updateValidComment( int $idComment) {
+   /**
+    * @param int $idComment
+    * @return array|false|\PDOStatement
+    */
+    public function updateValidComment(int $idComment): bool|array|\PDOStatement
+    {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
@@ -118,6 +125,7 @@ class CommentModel
             return $req;
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return [];
         }
     }
 
@@ -126,10 +134,11 @@ class CommentModel
      * 
      * @return [type]
      */
-    public function updateDeleteComment(int $idComment) {
+    public  function updateDeleteComment(int $idComment): void
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return;
         }
 
         try {
@@ -143,12 +152,12 @@ class CommentModel
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function countCommentsToValid() : int {
+    public function countCommentsToValid() : ?int {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return null;
         }
 
         try {
@@ -157,6 +166,7 @@ class CommentModel
             return $commentsToValid = $req->rowCount(); 
         } catch (PDOException $e) {
             $ErrorMessage = $e->getMessage();
+            return null;
         }  
     }
 
