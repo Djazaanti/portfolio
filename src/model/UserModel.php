@@ -8,12 +8,10 @@ use PDO;
 
 class UserModel
 {
-    private const ROLE_ADMIN = 'admin';
-
     /**
      * @return \PDO|null
      */
-    public function dbConnect() : ?\PDO
+    public function dbConnect(): ?\PDO
     {
         try {
             $db = new \PDO('mysql:host=127.0.0.1;port=3307;dbname=blog;charset=UTF8', 'root', '');
@@ -24,76 +22,196 @@ class UserModel
             return null;
         }
     }
+
+    /**
+     * @return array
+     */
+    public function getUsers(): array {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+       
+        try { 
+            $req = $db->prepare('SELECT * FROM user');
+            $req->execute();
+    
+            return $req->fetchAll();
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
+        } 
+    }
     
     /**
      * @param int $id
      * 
      * @return array
      */
-    public function getUser(int $id) : array
+    public function getUser(int $id): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
         
-        $req = $db->prepare('SELECT * FROM user where id = ?');
-        $req->execute(array($id));
-
-        return $user = $req->fetch(PDO::FETCH_ASSOC);
-    }
-
-     /**
-     * @return array
-     */
-    public function getUserByPseudo(string $pseudo) : array
-    {
-        $db = $this->dbConnect();
-        if (null === $db) {
+        try {
+            $req = $db->prepare('SELECT * FROM user where id = ?');
+            $req->execute(array($id));
+    
+            return $req->fetchAll();
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
             return [];
-        }
-
-        $req = $db->prepare('SELECT * FROM user where pseudo = ?');
-        $req->execute(array($pseudo));
-
-        return $req->fetch(PDO::FETCH_ASSOC);
+        } 
     }
+
+    // public function updateUser($pseudo, $password){
+    //     $db = $this->dbConnect();
+    //     if (null === $db) {
+    //         return [];
+    //     }
+    //     $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+    //     $req = $db->prepare('UPDATE user SET password =:password WHERE pseudo =:pseudo');
+    //     $req->execute(array('password' => $pass_hash, 'pseudo' => $pseudo));
+    // }
+
 
     /**
-     * @return array
-     */
-    public function getAdmins() : array
-    {
-        $db = $this->dbConnect();
-        if (null == $db) {
-            return [];
-        }
-
-        $req = $db->prepare('SELECT * FROM user where role = "admin" ');
-        $req->execute();
-
-        return $req->fetchAll();
-    }
-
-    /**
-     * @param mixed $id
+     * @param string $pseudo
      * 
      * @return array
      */
-    public function getAuthor(mixed $id) : array {
+    public function getUserByPseudo(string $pseudo): array
+    {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+        try {
+            $req = $db->prepare('SELECT * FROM user where pseudo = ?');
+            $req->execute(array($pseudo));
+            return $req->fetchAll();
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
+            return [];
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdmins(): array
+    {
+        $db = $this->dbConnect();
+        if (null == $db) {
+            return [];
+        }
+
+        try {
+            $req = $db->prepare('SELECT * FROM user where role = "admin" ');
+            $req->execute();
+    
+            return $req->fetchAll();
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
+            return [];
+        }
+    }
+
+
+    /**
+     * @param int $id
+     * 
+     * @return array
+     */
+    public function getAuthor(int $id): array
+    {
         
         $db = $this->dbConnect();
         if (null == $db) {
             return [];
         }
-         $req = $db->prepare('SELECT pseudo 
-                              FROM user
-                              WHERE id = ( SELECT user_id 
-                                           FROM post
-                                           WHERE post.id = ? )');
-         $req->execute(array($id));
- 
-         return $user = $req->fetch(PDO::FETCH_ASSOC);
 
+        try {
+            $req = $db->prepare('SELECT pseudo 
+                                 FROM user
+                                 WHERE id = ( SELECT user_id 
+                                              FROM post
+                                              WHERE post.id = ? )');
+            $req->execute(array($id));
+    
+            return $user = $req->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
+        }
+
+    }
+
+    /**
+     * @return int|null
+     */
+    public function countUsersValidated(): ?int 
+    {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        try {
+            $req = $db->prepare('SELECT id FROM user WHERE isValidate=1');
+            $req->execute();
+            return $users= $req->rowCount();
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
+            return null;
+        }
+    }
+    /**
+     * @return int|null
+     */
+    public function countUsersToValid(): ?int {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+
+        try {
+            $req = $db->prepare('SELECT id FROM user WHERE isValidate=0');
+            $req->execute();
+            return $users= $req->rowCount();
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
+            return null;
+        }
+    }
+
+    /**
+     * @param string $pseudo
+     * @param string $email
+     * @param string $password
+     * 
+     * @return void
+     */
+    public function saveUser(string $pseudo, string $email, string $password): void {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return;
+        }
+
+        try {
+            $password_hashed = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $req = $db->prepare('INSERT INTO user(pseudo, email, role, password, isValidate) VALUES(:pseudo, :email, :role, :password_hashed, :isValidate)');
+            $req->execute(array(
+                'pseudo' => $pseudo, 
+                'email' => $email, 
+                'role' => "user", 
+                'password_hashed' => $password_hashed, 
+                'isValidate' => 0
+            ));
+            die; 
+        } catch (PDOException $e) {
+            $_SESSION['ErrorMessage'] = $e->getMessage();
+            return;
+        }
     }
 }

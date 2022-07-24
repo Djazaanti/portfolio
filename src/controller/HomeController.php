@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
+use Oc\Blog\model\PostModel;
 use Oc\Blog\service\TwigService;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use Oc\Blog\model\PostModel;
 
 class HomeController
 {
@@ -22,7 +22,6 @@ class HomeController
      */
     public function __construct(TwigService $twigService)
     {
-        // Je stock la configuration twig dans notre variable twig du controller
         $this->twigService = $twigService;
     }
 
@@ -35,11 +34,10 @@ class HomeController
     public function showHome() : void
     {
         $twig = $this->twigService->get();
-        $postModel = new PostModel();
 
-        // ceci est mon parcours, pas des articles, je dois les renommer : issue -latest changes
-        $posts = $postModel->getPostsHome();
+        echo $twig->render('home.html.twig');
 
-        echo $twig->render('home.html.twig', ['posts' => $posts]);
+        $_SESSION['flash'] = "";
+        $_SESSION['flash_message'] = "";
     }
 }

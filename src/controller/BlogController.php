@@ -13,7 +13,7 @@ use Oc\Blog\model\PostModel;
 
 
 /**
- * UserController Le controller permettant de gérer l'utilisateur
+ *  BlogController Le controller permettant de gérer les blogs
  */
 class BlogController
 {
@@ -23,8 +23,6 @@ class BlogController
     private TwigService $twigService;
 
     /**
-     * Le constructeur de la classe UserController.
-     * Il attend en paramètre twig pour afficher les vues
      * @param TwigService $twig Le service twig
      */
     public function __construct(TwigService $twig)
@@ -36,7 +34,7 @@ class BlogController
     /**
      * @return void
      */
-    public function showBlog() : void{
+    public function showBlog() : void {
         $postModel = new PostModel();
         $posts = $postModel->getPosts();
         echo $this->twigService->get()->render('blog.html.twig', ['posts' => $posts]); 

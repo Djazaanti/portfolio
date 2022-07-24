@@ -1,6 +1,5 @@
 {% extends "admin/base.html.twig" %}
 
-{# code security : only admin can access in this page #}
 {% block title %} Edit Post {% endblock %}
 
 {% block content %}
@@ -34,60 +33,82 @@
                     </div>
                 {% endif %}
 
-                <form name="edit_post" method="post" action="index.php?formEditPost" accept-charset="UTF-8" enctype="multipart/form-data">
-                    {% for postColumn in post %}
-                        <div class="mb-3 row">
-                            <label for="title" class="col-sm-2 col-form-label">Titre</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" id="title" name="title" value="{{ postColumn.title }}" required="required">
+                <form  method="post" action="index.php?editPost" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return confirm('MODIFIER ce post ?');">
+
+                    <input type="hidden" name="idPost" value="{{ postInformations.idPost }}">
+                    <input type="hidden" name="mediaExist" value="{{ postInformations.media }}">
+                    <input type="hidden" name="isPublished" value="{{ postInformations.isPublished }}">
+
+                    <div class="mb-3 row">
+                        <label for="title" class="col-sm-2 col-form-label">Titre</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="title" name="title" value="{{ postInformations.title }}" required="required">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="chapo" name="chapo" value="{{ postInformations.chapo }}" required="required">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="content" class="col-sm-2 col-form-label">Contenu</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" class="form-control" id="content" name="content" required="required" rows="5">{{ postInformations.content}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="createdAt" class="col-sm-2 col-form-label">Crée le </label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="createdAt" name="createdAt" value="{{ postInformations.createdAt }}" readonly>
+                        </div>
+                    </div>
+
+                    {% if  postInformations.updatedAt is not empty %}
+                        {% if postInformations.createdAt != postInformations.updatedAt  %}
+                            <div class="mb-3 row">
+                                <label for="updatedAt" class="col-sm-2 col-form-label">Dernière mise à jour </label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="updatedAt" name="updatedAt" value="{{ postInformations.updatedAt }}" readonly>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="content" class="col-sm-2 col-form-label">Contenu</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" id="content" name="content" value="{{ postColumn.content}}" required="required">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" id="chapo" name="chapo" value="{{ postColumn.chapo }}" required="required">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="mediaExist" class="col-sm-2 col-form-label">Média existant</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" id="mediaExist" name="mediaExist" value="{{ postColumn.media }}" aria-label="readonly input example" readonly>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="media" class="form-label">Télécharger un autre Média</label>
-                            <input class="form-control form-control-sm" id="media" type="file" name="media">
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="isPublished" class="col-sm-2 col-form-label">Publié ? </label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" id="isPublished" name="isPublished" value="{{ postColumn.isPublished }}" readonly>
-                            </div>
-                        </div>
+                        {% endif %}
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="media" class="form-label">Remplacer le média</label>
+                        <input class="form-control form-control-sm" id="media" type="file" name="media">
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="media" class="col-sm-2 col-form-label">Autheur</label>
+                        <select class="col-sm-2 col-form-label" name="authorId">
+                        {% for authorDetail in author %}
+                            <option value="{{authorDetail.id}}" selected>
+                                    {{authorDetail.pseudo}}
+                            </option>
+                        {% endfor %}
+                        {% for admin in admins %}
+                            <option value="{{ admin.id }}">{{ admin.pseudo }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    
+                    {% if  postInformations.isPublished is not empty and postInformations.isPublished == 0 %}
                         <div class="mb-3 row">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="Publish" id="Publish">
-                                <label class="form-check-label" for="Publish">
-                                    Publier maintenant  ?
+                                <input class="form-check-input" type="checkbox" name="publish" id="publish">
+                                <label class="form-check-label" for="publish">
+                                    Publier ?
                                 </label>
                             </div>
                         </div>
-                        <div class="mb-3 row">
-                            <select name="userId" class="form-select" aria-label="Default select example">
-                                {% for admin in admins %} 
-                                <option selected value="{{ admin.id }}">{{admin.pseudo}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    
-                        <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Mettre à jour</button>
-                    {% endfor %}
+                    {% endif %}
+
+                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Mettre à jour</button>
                 </form>
             </div>
         </div>

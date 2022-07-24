@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace Oc\Blog\controller;
 
-use Oc\Blog\service\TwigService;
 use Oc\Blog\controller\UserController;
-
+use Oc\Blog\service\TwigService;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader
 require 'vendor/autoload.php';
@@ -19,11 +18,6 @@ class ContactController
      * @var TwigService Twig
      */
     private TwigService $twigService;
-
-    /**
-     * @var ContactModel The contact model to make request
-     */
-    private ContactModel $contactModel;
 
     /**
      * @param TwigService $twigService
@@ -38,7 +32,8 @@ class ContactController
      * 
      * @return string
      */
-    private function validInput(string $data) : string {
+    private function validInput(string $data) : string
+    {
         return htmlspecialchars($data);
     }
 
@@ -74,11 +69,11 @@ class ContactController
         }
 
         $mail->From = $email;
-        $mail->FromName = $name.'.'.$lastname;
+        $mail->FromName = $name . '.' . $lastname;
 
         $mail->Subject = 'Formulaire de contact';
         $mail->WordWrap = 50;
-        $mail->MsgHTML('<div><p>Nom : '.$name.'</p><p>Prénom : '.$lastname.'</p><p>'.'</p><p>Message : '.$message.'</p><p>Répondre à : '.$email.'</p></div>');
+        $mail->MsgHTML('<div><p>Nom : ' . $name . '</p><p>Prénom : ' . $lastname . '</p><p>' . '</p><p>Message : ' . $message . '</p><p>Répondre à : ' . $email . '</p></div>');
         $mail->isHTML(true);
         $mail->addAddress('alidjazaanti1@gmail.com', 'Djazaanti');
 
@@ -115,7 +110,6 @@ class ContactController
             $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         }
         
-        header('Location: ../index.php?contact#contact');
-        // Pas très joli mais c'est ce qui fionctionne comme on le souhaitais :/
+        header('Location: index.php#contact');
     }
 }

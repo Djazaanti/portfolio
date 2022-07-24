@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace OC\Blog\controller;
 
+use Oc\Blog\model\PostModel;
+use Oc\Blog\model\UserModel;
 use OC\Blog\service\TwigService;
 use Twig\error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-use Oc\Blog\model\UserModel;
-use Oc\Blog\model\PostModel;
-
-
-class AdminController{
+class AdminController
+{
 
     private TwigService $twigService;
 
+    /**
+     * @param TwigService $twig
+     */
     public function __construct(TwigService $twig){
         // Je stock la configuration du service twig dans notre variable twig du controller
         $this->twigService = $twig;
@@ -40,15 +42,17 @@ class AdminController{
         $posts = $postModel->getAdminPosts();
 
         echo $this->twigService->get()->render('admin/adminPosts.html.twig', ['posts' => $posts]);
+
+        $_SESSION["SuccessMessage"] = "";
+        $_SESSION["ErrorMessage"] = "";
     }
 
-   
     /**
-     * @param mixed $id
+     * @param int $id
      * 
      * @return void
      */
-    public function adminPostDetails($id) : void{
+    public function adminPostDetails(int $id) : void {
         $postModel = new PostModel();
         $post = $postModel->getPost($id);
 
@@ -57,31 +61,8 @@ class AdminController{
 
         echo $this->twigService->get()->render('admin/adminPostDetails.html.twig', ['post' => $post, 'admins' => $admins]);
 
+        $_SESSION["SuccessMessage"] = "";
+        $_SESSION["ErrorMessage"] = "";
     }
 
-    /**
-     * @param mixed $id
-     * 
-     * @return [type]
-     */
-    public function editPost($id) {
-        $postModel = new PostModel();
-        $id = intval($id);
-        $postPublished = $postModel->getPost($id);
-        // var_dump($postPublished);
-
-        $userModel = new UserModel();
-        $admins = $userModel->getAdmins();
-
-        echo $this->twigService->get()->render('admin/editPost.html.twig', ['post' => $postPublished, 'admins' => $admins]);
-
-    }
-
-    public function addPostFormular() : void {
-        $userModel = new UserModel();
-        $admins = $userModel->getAdmins();
-
-        echo $this->twigService->get()->render('admin/addPost.html.twig', ['admins' => $admins]);
-
-    }
 }

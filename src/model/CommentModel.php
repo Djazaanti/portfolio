@@ -24,101 +24,150 @@ class CommentModel
     }
 
     /**
-     * @param int $id
+     * @param int $id the post identifier
      * 
      * @return array
      */
-    public function getComments(int $id) : array
+    public function getComments(int $id): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
 
-        $req = $db->prepare('SELECT id, content, isValidate, updatedAt, user_id, post_id FROM comment WHERE post_id = ?');
-        $req->execute(array($id));
-
-        return $req->fetchAll();
+        try {
+            $req = $db->prepare('SELECT id, content, isValidate, updatedAt, user_id, post_id FROM comment WHERE post_id = ?');
+            $req->execute(array($id));
+    
+            return $req->fetchAll();
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }
     }
 
-   
     /**
      * @param string $comment
-     * @param id $user
-     * @param id $postId
+     * @param int $user
+     * @param int $postId
      * 
-     * @return [type]
+     * @return void
      */
-    public function saveComment(string $comment, int $user, int $postId)  {
+    public function saveComment(string $comment, int $user, int $postId): void
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return;
         }
 
-        $isValidate = 0 ;
-        $createdAt = date("Y-m-d H:i:s"); 
+        $isValidate = 0;
+        $createdAt = date("Y-m-d H:i:s");
         $updatedAt = date("Y-m-d H:i:s");
         
-        $req = $db->prepare('INSERT INTO comment (content, isValidate, createdAt, updatedAt, user_id, post_id) VALUES(:content, :isValidate, :createdAt, :updatedAt, :user_id, :post_id) ');
-        $req->execute(array(
-            "content" => $comment,
-            "isValidate" => $isValidate,
-            "createdAt" => $createdAt,
-            "updatedAt" => $updatedAt,
-            "user_id" => $user,
-            "post_id" => $postId
-        ));
-        die;   
+        try {
+            $req = $db->prepare('INSERT INTO comment (content, isValidate, createdAt, updatedAt, user_id, post_id) VALUES(:content, :isValidate, :createdAt, :updatedAt, :user_id, :post_id) ');
+            $req->execute(array(
+                "content" => $comment,
+                "isValidate" => $isValidate,
+                "createdAt" => $createdAt,
+                "updatedAt" => $updatedAt,
+                "user_id" => $user,
+                "post_id" => $postId
+            ));
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+            
+        }
+
     }
 
     /**
      * @return array
      */
-    public function getCommentairesAValider() : array {
+    public function getCommentsToValid(): array {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
+        try {
+            $req = $db->prepare('SELECT user.pseudo, user.email, comment.user_id, comment.id, comment.content, comment.createdAt, post.title
+                                FROM comment
+                                JOIN user
+                                ON comment.user_id = user.id
+                                JOIN post
+                                ON comment.post_id = post.id
+                                WHERE comment.isValidate = 0');
+            $req->execute();
+    
+            return $req->fetchAll();
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+            return [];
+        }
+    }
 
-        $req = $db->prepare('SELECT user.pseudo, user.email, comment.user_id, comment.id, comment.content, comment.createdAt, post.title
-                            FROM comment
-                            JOIN user
-                            ON comment.user_id = user.id
-                            JOIN post
-                            ON comment.post_id = post.id
-                            WHERE isValidate = 0');
-        $req->execute();
-
-        return $req->fetchAll();
+   /**
+    * @param int $idComment
+    * @return array|false|\PDOStatement
+    */
+    public function updateValidComment(int $idComment): bool|array|\PDOStatement
+    {
+        $db = $this->dbConnect();
+        if (null === $db) {
+            return [];
+        }
+        try {
+            $req = $db->prepare('UPDATE comment SET isValidate=:isValidate WHERE id=:id');
+            $req->execute(array(
+                "isValidate" => 1,
+                "id" => $idComment
+            ));     
+            
+            return $req;
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+            return [];
+        }
     }
 
     /**
-     * @param mixed $idComment
+     * @param int $idComment
      * 
+     * @return [type]
      */
-    public function updateValidComment($idComment) {
+    public  function updateDeleteComment(int $idComment): void
+    {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return;
         }
 
-        $req = $db->prepare('UPDATE comment SET isValidate=:isValidate WHERE id=:id');
-        $req->execute(array(
-            "isValidate" => 1,
-            "id" => $idComment
-        ));       
+        try {
+            $req = $db->prepare('DELETE FROM comment WHERE id=:id');
+            $req->execute(array(
+                "id" => $idComment
+            )); 
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+        }    
     }
 
-    public function updateDeleteComment($idComment) {
+    /**
+     * @return null|int
+     */
+    public function countCommentsToValid() : ?int {
         $db = $this->dbConnect();
         if (null === $db) {
-            return [];
+            return null;
         }
 
-        $req = $db->prepare('DELETE FROM comment WHERE id=:id');
-        $req->execute(array(
-            "id" => $idComment
-        ));       
+        try {
+            $req = $db->prepare('SELECT id FROM comment WHERE isValidate=0');
+            $req->execute();
+            return $commentsToValid = $req->rowCount(); 
+        } catch (PDOException $e) {
+            $ErrorMessage = $e->getMessage();
+            return null;
+        }  
     }
 
 }
