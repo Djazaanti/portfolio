@@ -30,7 +30,8 @@ else {
 switch (true){
     // Manage POST form
     case $_SERVER['REQUEST_METHOD'] == 'POST' :
-        if (isset($_SERVER['PATH_INFO']) && ($_SERVER['PATH_INFO'] == '/contact' || $_SERVER['PATH_INFO'] == '/#contact')){
+        if (isset($_POST['action']) && ($_POST['action']) == 'contact') {
+
             $contactController = new ContactController(TwigService::getInstance());
             // check inputs format
             $name = htmlspecialchars($_POST['name']);
@@ -66,6 +67,7 @@ switch (true){
             $commentController->deleteComment($idComment);
         }  
         elseif (isset($_POST['action']) &&  ($_POST['action']) == 'addPost'){
+
             if (!isset($_POST['isPublished'])){
                 $_POST['isPublished'] = 0;
             }
@@ -87,7 +89,7 @@ switch (true){
                 $chapo = htmlspecialchars($_POST['chapo']);
                 $isPublished = boolval($_POST['isPublished']);
                 $userId =  intval($_POST['userId']);
-                $media = date("d_m_Y à H_i_s") . ' . ' . $ext;
+                $media = date("d_m_Y_H_i_s") .'.'.$ext;
                 $postController->addPost($title, $content, $chapo, $isPublished, $userId, $media);
             }   
         } 
@@ -97,8 +99,26 @@ switch (true){
         }
         elseif ($_SERVER['QUERY_STRING'] == 'editPost'){
             
-            if (isset($_POST['media'])) $media = date("d_m_Y à H_i_s") . ' . ' . $ext;
+            if (isset($_FILES['media']))
+            {
+                // Vérifie si le fichier a été uploadé sans erreur . 
+                if($_FILES["media"]["error"] == 0){
+                    $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+                    $filename = $_FILES["media"]["name"];
+                    $filetype = $_FILES["media"]["type"];
+                    $filesize = $_FILES["media"]["size"];
+                    $file_tmp_name = $_FILES["media"]["tmp_name"];
+                    // Vérifie l'extension du fichier
+                    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+                    $media = date("d_m_Y_H_i_s") .'.'.$ext;
+
+                    $postController = new PostController(TwigService::getInstance());
+                    $postController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
+                }
+            } 
             else $media = $_POST['mediaExist'];
+
             if (isset($_POST['publish'])) $isPublished = boolval($_POST['publish']);
             else $isPublished = boolval($_POST['isPublished']);
 
@@ -106,9 +126,9 @@ switch (true){
             $idPost = intval($_POST['idPost']);
 
             $postController = new PostController(TwigService::getInstance());
-            $postController->editPost($_POST['title'], $_POST['content'], $_POST['chapo'], $media, $isPublished, date("Y-m-d H:i:s"), $authorId, $idPost);
+            $postController->editPost($_POST['title'], $_POST['content'], $_POST['chapo'], $media, $isPublished, $authorId, $idPost);
         }    
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'deletePost'){
+        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'deletePost') {
             $idPost = intval($_POST['idPost']);
 
             $postController = new PostController(TwigService::getInstance());
@@ -176,14 +196,10 @@ switch (true){
         break;
     // If any case is found
     case $_SERVER['QUERY_STRING'] == '/home' :
-        unset($_SESSION['flash']);
-        unset($_SESSION['flash_message']);
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
         break;
     default:
-        unset($_SESSION['flash']);
-        unset($_SESSION['flash_message']);
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
 } 

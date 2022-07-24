@@ -36,7 +36,6 @@
                 <form  method="post" action="index.php?editPost" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return confirm('MODIFIER ce post ?');">
 
                     <input type="hidden" name="idPost" value="{{ postInformations.idPost }}">
-                    {# <input type="hidden" name="idUser" value="{{ userDetail.id }}"> #}
                     <input type="hidden" name="mediaExist" value="{{ postInformations.media }}">
                     <input type="hidden" name="isPublished" value="{{ postInformations.isPublished }}">
 
@@ -80,7 +79,7 @@
                     {% endif %}
                     
                     <div class="mb-3">
-                        <label for="media" class="form-label">Télécharger un Média</label>
+                        <label for="media" class="form-label">Remplacer le média</label>
                         <input class="form-control form-control-sm" id="media" type="file" name="media">
                     </div>
 

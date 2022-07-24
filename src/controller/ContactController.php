@@ -110,6 +110,6 @@ class ContactController
             $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         }
         
-        header('Location: index.php?contact#contact');
+        header('Location: index.php#contact');
     }
 }

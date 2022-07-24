@@ -92,10 +92,14 @@ class PostController
      * @return void
      */
     public function downloadFile(string $ext, array $allowed, int $filesize, string $filetype, string $filename, string $file_tmp_name) : void
-    {        
+    { 
         if(!array_key_exists($ext, $allowed)) {
             $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
 
+            if ($_SESSION['page'] ==  "editPostFormular")
+            {
+                header('location: index.php?editPostFormular'); die;  
+                }
             header('location: index.php?addPostFormular'); die;
         } 
 
@@ -104,14 +108,22 @@ class PostController
         if($filesize > $maxsize) {
             $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
 
-            header('location: index.php?addPostFormular');die;
+            if ($_SESSION['page'] ==  "editPostFormular")
+                {
+                header('location: index.php?editPostFormular'); die;  
+                }
+            header('location: index.php?addPostFormular'); die;
         }
         // Vérifie le type MIME du fichier
         if(in_array($filetype, $allowed)){
-                move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/" . date("d_m_Y à H_i_s"). '.' . $ext);
+            move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y_H_i_s").'.'.$ext);
+            $_SESSION['SuccessMessage'] = "Fichier téléchagé";
         }
-        $_SESSION['SuccessMessage'] = "Fichier téléchagé";
         
+        if ($_SESSION['page'] ==  "editPostFormular")
+            {
+            header('location: index.php?editPostFormular'); die;  
+            }
         header('location: index.php?dashboard');
 
     }
@@ -144,10 +156,10 @@ class PostController
      * 
      * @return void
      */
-    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, string $updatedAt, int $authorId, int $idPost) : void
+    public function editPost(string $title, string $content, string $chapo, string $media, bool $isPublished, int $authorId, int $idPost) : void
     {
         $postModel = new PostModel();
-        $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $updatedAt, $authorId, $idPost);
+        $postModel->updatePost($title, $content, $chapo, $media, $isPublished, $authorId, $idPost);
 
         $_SESSION["SuccessMessage"] = "article mis à jour avec succès";
 

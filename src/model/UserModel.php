@@ -65,23 +65,31 @@ class UserModel
         } 
     }
 
+    // public function updateUser($pseudo, $password){
+    //     $db = $this->dbConnect();
+    //     if (null === $db) {
+    //         return [];
+    //     }
+    //     $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+    //     $req = $db->prepare('UPDATE user SET password =:password WHERE pseudo =:pseudo');
+    //     $req->execute(array('password' => $pass_hash, 'pseudo' => $pseudo));
+    // }
+
+
     /**
      * @param string $pseudo
-     * @param string $password
      * 
      * @return array
      */
-    public function VerifyUser(string $pseudo, string $password): array
+    public function getUserByPseudo(string $pseudo): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
             return [];
         }
-
         try {
-            $password_hashed = password_hash($password, PASSWORD_DEFAULT);
-            $req = $db->prepare('SELECT * FROM user where pseudo =:pseudo AND password =:password_hashed');
-            $req->execute(array('pseudo' => $pseudo, 'password_hashed' => $password_hashed));
+            $req = $db->prepare('SELECT * FROM user where pseudo = ?');
+            $req->execute(array($pseudo));
             return $req->fetchAll();
         } catch (PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();

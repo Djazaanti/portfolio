@@ -116,8 +116,8 @@ class PostModel
                             "chapo" => $chapo,
                             "media" => $media,
                             "isPublished" => $isPublished,
-                            "createdAt" => date("Y-m-d H:i:s"),
-                            "updatedAt" => date("Y-m-d H:i:s"),
+                            "createdAt" => date("Y_m_d_H_i_s"),
+                            "updatedAt" => date("Y_m_d_H_i_s"),
                             "user_id" => $userId
         ));
         die;  
@@ -135,6 +135,7 @@ class PostModel
      */
     public function deletePostinBDD(int $idPost): void
     {
+        // TODO AMELORATION POSSIBLE : DELETE comments ON DELETE post
         $db = $this->dbConnect();
         if (null === $db) {
             return;
@@ -161,7 +162,7 @@ class PostModel
      * 
      * @return array
      */
-    public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, mixed $updatedAt, int $authorId, int $idPost): array|bool
+    public function updatePost(string $title, string $content, string $chapo, string $media, bool $isPublished, int $authorId, int $idPost): array|bool
     { 
         $db = $this->dbConnect();
         if (null === $db) {
@@ -176,7 +177,7 @@ class PostModel
                 'chapo' => $chapo,
                 'media' => $media,
                 'isPublished' => $isPublished,
-                'updatedAt' => $updatedAt,
+                'updatedAt' => date("Y-m-d H:i:s"),
                 'userId' => $authorId,
                 'idPost' => $idPost
             )); 

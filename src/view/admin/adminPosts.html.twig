@@ -5,27 +5,27 @@
 
 {% block content %}
 
- <!-- Messages de retour d'action-->
+    <!-- section articles non publiés -->
+    <section class="page-section portfolio " id="portfolio">
+        <div class="container">
 
-    {% if session.ErrorMessage != "" %}
+        <!-- Messages de retour d'action-->
+        {% if session.ErrorMessage != "" %}
             <div class="d-grid gap-2 col-6 mx-auto">
                 <div class="alert alert-danger" role="alert">
                     {{ session.ErrorMessage }}
                 </div>
             </div>
-    {% endif %}
+        {% endif %}
 
-    {% if session.SuccessMessage != "" %}
+        {% if session.SuccessMessage != "" %}
             <div class="d-grid gap-2 col-6 mx-auto">
                 <div class="alert alert-success" role="alert">
                     {{ session.SuccessMessage}}
                 </div>
             </div>
-    {% endif %}
+        {% endif %}
 
-    <!-- section articles non publiés -->
-    <section class="page-section portfolio " id="portfolio">
-        <div class="container">
             <!-- Portfolio Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Articles non publiés</h2>  
             <!-- Icon Divider-->

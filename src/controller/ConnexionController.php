@@ -37,32 +37,53 @@ class ConnexionController
      */
     public function verifyConnexion(string $pseudo, string $password): void
     {
-        
-        $pass = password_hash("Luna", PASSWORD_DEFAULT);
-        // echo($pass);
-
         $userModel = new UserModel();
-        $user = $userModel->VerifyUser($pseudo, $password);
-        if ($user != [] && $_SESSION['isValidate'] == 1)
-        {
-            $_SESSION['role'] = $user['role'];
-            $_SESSION['user'] = $user['pseudo'];
-            $_SESSION['userId'] = $user['id'];
-            $_SESSION['isValidate'] = $user['isValidate'];
-
-            header('location: index.php');
-        }
+        $user = $userModel->getUserByPseudo($pseudo);
         
-        else {
-            echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Vérifiez votre mot de passe. Sinon, réessayez une fois votre compte validé !", "pass" => $pass]);
+        if (is_array($user))
+        {
+            foreach($user as  $use) {
+                if (password_verify($password, $use['password']) == true)
+                {
+                    if ($use['isValidate'] == 1)
+                    {
+                        $_SESSION['role'] = $use['role'];
+                        $_SESSION['user'] = $use['pseudo'];
+                        $_SESSION['userId'] = $use['id'];
+                        $_SESSION['isValidate'] = $use['isValidate'];
+
+                        header('location: index.php');
+                    }
+                    else {
+                        echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Veuillez attendre la validation de votre compte, Merci !"]);
+                    }
+                }
+                else
+                {
+                    echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Vérifiez votre mot de passe."]);
+                }
+            }
+
+        }
+        else
+        {
+            echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Cet identifiant n'existe pas !"]);
         }
     }
+
+    // public function updatePassword($pseudo, $password) {
+    //     $userModel = new UserModel();
+    //     $user = $userModel->updateUser($pseudo, $password);
+    //     echo $this->twigService->get()->render('formularConnexion.html.twig');
+
+    // }
     
     /**
      * @return void
      */
     public function formularConnexion() : void
     {
+        var_dump($_SESSION['page']);
         echo $this->twigService->get()->render('formularConnexion.html.twig');
     }
 

@@ -6,9 +6,11 @@
     <section class="page-section portfolio">
         <div class="row justify-content-center">
         
-             {% if session.SuccessMessage is defined and session.SuccessMessage != ""  %}
-                <div class="alert alert-success d-grid gap-2 col-6 mx-auto" role="alert">
-                    <p class="btn btn-primary">{{ session.SuccessMessage}} </p>
+            {% if session.SuccessMessage is defined and session.SuccessMessage != ""  %}
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <div class="alert alert-success" role="alert">
+                        {{ session.SuccessMessage}}
+                    </div>
                 </div>
             {% endif %}
 
@@ -49,7 +51,7 @@
         </div>
 
         <!-- section des commentaires -->
-        {% if comments %}
+        {% if comments and comment.isValidate == 1 %}
             <section class="page-section portfolio">
                 <div class="container">
                     <!-- Portfolio Section Heading-->
@@ -84,6 +86,6 @@
             </section>
             </section>
     </section>
-        
+ 
 
 {% endblock %} {# content #}

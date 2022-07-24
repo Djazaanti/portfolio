@@ -36,5 +36,8 @@ class HomeController
         $twig = $this->twigService->get();
 
         echo $twig->render('home.html.twig');
+
+        $_SESSION['flash'] = "";
+        $_SESSION['flash_message'] = "";
     }
 }

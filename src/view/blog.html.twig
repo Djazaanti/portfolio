@@ -15,20 +15,23 @@
             <!-- Portfolio Grid Items-->
             <div class="row justify-content-center">
                 {% for post in posts %}
-                    {# <!-- Portfolio Item {{ post.id }} --> #}
-                    <div class="col-md-6 col-lg-4 mb-5">
-                        <a href="index.php?post/{{ post.id }}" id="post-href">
-                        <div class="portfolio-item mx-auto" data-bs-toggle="modal">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                    {% if post.isPublished == 1 %}
+
+                        {# <!-- Portfolio Item {{ post.id }} --> #}
+                        <div class="col-md-6 col-lg-4 mb-5">
+                            <a href="index.php?post/{{ post.id }}" id="post-href">
+                            <div class="portfolio-item mx-auto" data-bs-toggle="modal">
+                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                    <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="public/assets/img/portfolio/{{ post.media }}" alt="..." height="100%" width="100%" />
                             </div>
-                            <img class="img-fluid" src="public/assets/img/portfolio/{{ post.media }}" alt="..." height="100%" width="100%" />
+                            <strong>{{ post.title }}</strong>
+                            <p>{{ post.chapo }}</p>
+                            <i>{{ post.updatedAt }}</i>
+                            </a>
                         </div>
-                        <strong>{{ post.title }}</strong>
-                        <p>{{ post.chapo }}</p>
-                        <i>{{ post.updatedAt }}</i>
-                        </a>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

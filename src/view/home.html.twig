@@ -36,9 +36,10 @@
         </div>
 
         <!-- Portfolio Grid Items-->
-        {# <!-- Portfolio Item stage --> #}
         <div class="container">
             <div class="row">
+
+                {# <!-- Portfolio Item stage --> #}
                 <div class="portfolio-item mx-auto col-sm" data-bs-toggle="modal" data-bs-target="#stage" >
                     <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                         <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
@@ -214,19 +215,19 @@
             <!-- Contact Section Form-->
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-xl-7">
-                    {% if session.flash == "success" %}
+                    {% if session.flash is defined and  session.flash == "success" %}
                         <div class="alert alert-success" role="alert">
                             {{ session.flash_message }}
                         </div>
                     {% endif %}
 
-                    {% if session.flash == "error" %}
+                    {% if session.flash is defined and  session.flash == "error" %}
                         <div class="alert alert-danger" role="alert">
                             {{ session.flash_message }}
                         </div>
                     {% endif %}
-                    <form method="post" action="index.php/contact">
-
+                    <form name="contact" method="post">
+                        <input type="hidden" name="action" value="contact">
                         <!-- Name input-->
                         <div class="form-floating mb-3">
                             <input class="form-control" name="name" id="name" type="text" placeholder="Dupont" required/>
