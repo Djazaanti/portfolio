@@ -16,6 +16,8 @@
   "require": {
     "twig/twig": "^3.3",
     "ext-pdo": "*",
-    "phpmailer/phpmailer" : "^6.6"
+    "phpmailer/phpmailer" : "^6.6",
+    "symfony/finder": "^6.1",
+    "symfony/http-foundation": "^6.1"
   }
 }

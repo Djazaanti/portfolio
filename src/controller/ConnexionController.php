@@ -83,7 +83,6 @@ class ConnexionController
      */
     public function formularConnexion() : void
     {
-        var_dump($_SESSION['page']);
         echo $this->twigService->get()->render('formularConnexion.html.twig');
     }
 

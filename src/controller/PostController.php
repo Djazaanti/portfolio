@@ -133,9 +133,9 @@ class PostController
      * 
      * @return void
      */
-    public function editPostFormular(array $postInformations) : void
+    public function editPostFormular($postInformations) : void
     {
-        $userId = intval($postInformations['userId']);
+        $userId = intval($postInformations->get('userId'));
         $userModel = new UserModel();
         $author = $userModel->getUser($userId);
         $admins = $userModel->getAdmins();

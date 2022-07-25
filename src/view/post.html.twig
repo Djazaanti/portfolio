@@ -51,7 +51,8 @@
         </div>
 
         <!-- section des commentaires -->
-        {% if comments and comment.isValidate == 1 %}
+
+        {% if comments %}
             <section class="page-section portfolio">
                 <div class="container">
                     <!-- Portfolio Section Heading-->
@@ -65,10 +66,12 @@
                 
                     <!-- commentaires -->
                     {% for comment in comments %}
-                        <div class="col-lg-8 col-xl-7 text-center"> 
-                            <li>{{ comment.content }}</li>
-                            <i>{{ comment.updatedAt }}</i>
-                        </div>
+                        {% if comment.isValidate %}
+                            <div class="col-lg-8 col-xl-7 text-center"> 
+                                <li>{{ comment.content }}</li>
+                                <i>{{ comment.updatedAt }}</i>
+                            </div>
+                        {% endif %}
                     {% endfor %} 
         {% else %}
             <section class="page-section portfolio">

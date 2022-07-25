@@ -15,12 +15,15 @@ use Oc\Blog\controller\PostController;
 use Oc\Blog\controller\UserController;
 
 use Oc\Blog\service\TwigService;
+use Symfony\Component\HttpFoundation\Request;
+
+$request = Request::createFromGlobals();
 
 session_start();
 
 // convert id for URL of post details
-$idString = explode('/', $_SERVER['QUERY_STRING']);
-if (isset($idString[1])){
+$idString = explode('/', $request->server->get('QUERY_STRING'));
+if ($idString[1] !== null){
     $postId = intval($idString[1]);
 }
 else {
@@ -29,85 +32,85 @@ else {
 
 switch (true){
     // Manage POST form
-    case $_SERVER['REQUEST_METHOD'] == 'POST' :
-        if (isset($_POST['action']) && ($_POST['action']) == 'contact') {
+    case $request->server->get('REQUEST_METHOD') == 'POST' :
+        if ($request->request->get('action') !== null && $request->request->get('action') == 'contact') {
 
             $contactController = new ContactController(TwigService::getInstance());
             // check inputs format
-            $name = htmlspecialchars($_POST['name']);
-            $lastname = htmlspecialchars($_POST['lastname']);
-            $email = $_POST['email'];
-            $message = htmlspecialchars($_POST['message']);
+            $name = htmlspecialchars($request->request->get('name'));
+            $lastname = htmlspecialchars($request->request->get('lastname'));
+            $email = $request->request->get('email');
+            $message = htmlspecialchars($request->request->get('message'));
 
             $contactController->submitFormContact($name, $lastname, $email, $message);
         }
-        elseif (isset($_POST['action']) && ($_POST['action']) == 'addComment'){
-            $comment = $_POST['comment'];
+        elseif ($request->request->get('action') !== null && $request->request->get('action') == 'addComment'){
+            $comment = $request->request->get('comment');
             $userId = intval($_SESSION['userId']);
-            $postId = intval($_POST['postId']);
+            $postId = intval($request->request->get('postId'));
 
             $commentController = new CommentController(TwigService::getInstance());
             $commentController->sendComment($comment, $userId, $postId);
         }
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'login'){
+        elseif ($request->request->get('action') !== null &&  $request->request->get('action') == 'login'){
             // traitement formulaire de connexion
             $connexionController = new ConnexionController(TwigService::getInstance());
-            $pseudo = trim($_POST['pseudo']);
-            $password = $_POST['password'];
+            $pseudo = trim($request->request->get('pseudo'));
+            $password = $request->request->get('password');
             $connexionController->verifyConnexion($pseudo, $password);
         }
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'validComment'){
-            $idComment = intval($_POST['idComment']);
+        elseif ($request->request->get('action') !== null &&  $request->request->get('action') == 'validComment'){
+            $idComment = intval($request->request->get('idComment'));
             $commentController = new CommentController(TwigService::getInstance());
             $commentController->validComment($idComment);
         }
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'deleteComment'){
-            $idComment = intval($_POST['idComment']);
+        elseif ($request->request->get('action') !== null &&  $request->request->get('action') == 'deleteComment'){
+            $idComment = intval($request->request->get('idComment'));
             $commentController = new CommentController(TwigService::getInstance());
             $commentController->deleteComment($idComment);
         }  
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'addPost'){
+        elseif ($request->request->get('action') !== null &&  $request->request->get('action') == 'addPost'){
 
-            if (!isset($_POST['isPublished'])){
-                $_POST['isPublished'] = 0;
+            if ($request->request->get('isPublished') == null ) {
+                // $request->request->get('isPublished') = 0;
             }
             // Vérifie si le fichier a été uploadé sans erreur . 
-            if($_FILES["media"]["error"] == 0){
+            if($request->files->get("media")("error") == 0){
                 $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
-                $filename = $_FILES["media"]["name"];
-                $filetype = $_FILES["media"]["type"];
-                $filesize = $_FILES["media"]["size"];
-                $file_tmp_name = $_FILES["media"]["tmp_name"];
+                $filename = $request->files->get("media")("name");
+                $filetype = $request->files->get("media")("type");
+                $filesize = $request->files->get("media")("size");
+                $file_tmp_name = $request->files->get("media")("tmp_name");
                 // Vérifie l'extension du fichier
                 $ext = pathinfo($filename, PATHINFO_EXTENSION);
                 
                 $postController = new PostController(TwigService::getInstance());
                 $postController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
 
-                $title = htmlspecialchars($_POST['title']);
-                $content = htmlspecialchars($_POST['content']);
-                $chapo = htmlspecialchars($_POST['chapo']);
-                $isPublished = boolval($_POST['isPublished']);
-                $userId =  intval($_POST['userId']);
+                $title = htmlspecialchars($request->request->get('title'));
+                $content = htmlspecialchars($request->request->get('content'));
+                $chapo = htmlspecialchars($request->request->get('chapo'));
+                $isPublished = boolval($request->request->get('isPublished'));
+                $userId =  intval($request->request->get('userId'));
                 $media = date("d_m_Y_H_i_s") .'.'.$ext;
                 $postController->addPost($title, $content, $chapo, $isPublished, $userId, $media);
             }   
         } 
-        elseif ($_SERVER['QUERY_STRING'] == 'editPostFormular'){
+        elseif ($request->server->get('QUERY_STRING') == 'editPostFormular'){
             $postController = new PostController(TwigService::getInstance());
-            $postController->editPostFormular($_POST);
+            $postController->editPostFormular($request->request);
         }
-        elseif ($_SERVER['QUERY_STRING'] == 'editPost'){
+        elseif ($request->server->get('QUERY_STRING') == 'editPost'){
             
-            if (isset($_FILES['media']))
+            if ($request->files->get('media') !== null)
             {
                 // Vérifie si le fichier a été uploadé sans erreur . 
-                if($_FILES["media"]["error"] == 0){
+                if($request->files->get("media")("error") == 0){
                     $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
-                    $filename = $_FILES["media"]["name"];
-                    $filetype = $_FILES["media"]["type"];
-                    $filesize = $_FILES["media"]["size"];
-                    $file_tmp_name = $_FILES["media"]["tmp_name"];
+                    $filename = $request->files->get("media")("name");
+                    $filetype = $request->files->get("media")("type");
+                    $filesize = $request->files->get("media")("size");
+                    $file_tmp_name = $request->files->get("media")("tmp_name");
                     // Vérifie l'extension du fichier
                     $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
@@ -117,85 +120,84 @@ switch (true){
                     $postController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
                 }
             } 
-            else $media = $_POST['mediaExist'];
+            else $media = $request->request->get('mediaExist');
 
-            if (isset($_POST['publish'])) $isPublished = boolval($_POST['publish']);
-            else $isPublished = boolval($_POST['isPublished']);
+            if ($request->request->get('publish') !== null ) $isPublished = boolval($request->request->get('publish'));
+            else $isPublished = boolval($request->request->get('isPublished'));
 
-            $authorId = intval($_POST['authorId']);
-            $idPost = intval($_POST['idPost']);
+            $authorId = intval($request->request->get('authorId'));
+            $idPost = intval($request->request->get('idPost'));
 
             $postController = new PostController(TwigService::getInstance());
-            $postController->editPost($_POST['title'], $_POST['content'], $_POST['chapo'], $media, $isPublished, $authorId, $idPost);
+            $postController->editPost($request->request->get('title'), $request->request->get('content'), $request->request->get('chapo'), $media, $isPublished, $authorId, $idPost);
         }    
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'deletePost') {
-            $idPost = intval($_POST['idPost']);
+        elseif ($request->request->get('action') !== null &&  $request->request->get('action') == 'deletePost') {
+            $idPost = intval($request->request->get('idPost'));
 
             $postController = new PostController(TwigService::getInstance());
             $postController->deletePost($idPost);
         } 
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'publishPost'){
-            $idPost = intval($_POST['idPost']);
+        elseif ($request->request->get('action') !== null &&  $request->request->get('action') == 'publishPost'){
+            $idPost = intval($request->request->get('idPost'));
 
             $postController = new PostController(TwigService::getInstance());
             $postController->publishPost($idPost);
         }
-        elseif (isset($_POST['action']) &&  ($_POST['action']) == 'save-user'){
+        elseif ($request->request->get('action') !== null &&  $request->request->get('action') == 'save-user'){
             $userController = new UserController(TwigService::getInstance());
-            $userController->addUser($_POST['pseudo'], $_POST['email'], $_POST['password']);
+            $userController->addUser($request->request->get('pseudo'), $request->request->get('email'), $request->request->get('password'));
         }
         break;
     // once contact formular sent, show succes or error message
-    case $_SERVER['QUERY_STRING'] == 'contact' :
+    case $request->server->get('QUERY_STRING') == 'contact' :
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
         break;
-    case $_SERVER['QUERY_STRING'] == 'blog' :
-
+    case $request->server->get('QUERY_STRING') == 'blog' :
         $blogController = new BlogController(TwigService::getInstance());
         $blogController->showBlog();
         break;
-    case $_SERVER['QUERY_STRING'] == 'post/' . $postId :
+    case $request->server->get('QUERY_STRING') == 'post/' . $postId :
         $postController = new PostController(TwigService::getInstance());
         $postController->showPostAndComments($postId);
         break;
-    case $_SERVER['QUERY_STRING'] == 'addCommentFormular/' . $postId :
+    case $request->server->get('QUERY_STRING') == 'addCommentFormular/' . $postId :
         $commentController = new CommentController(TwigService::getInstance());
         $commentController->addCommentFormular($postId);
         break;
-    case $_SERVER['QUERY_STRING'] == 'connexion' :
+    case $request->server->get('QUERY_STRING') == 'connexion' :
         $connexionController = new ConnexionController(TwigService::getInstance());
         $connexionController->formularConnexion();
         break;
-    case $_SERVER['QUERY_STRING'] == 'logout' :
+    case $request->server->get('QUERY_STRING') == 'logout' :
         $connexionController = new ConnexionController(TwigService::getInstance());
         $connexionController->logout();
         break;
-    case $_SERVER['QUERY_STRING'] == 'dashboard' :
+    case $request->server->get('QUERY_STRING') == 'dashboard' :
         $_SESSION['page'] = 'dashboard';
         $dashboardController = new DashboardController(TwigService::getInstance());
         $dashboardController->dashboard();
         break;
-    case $_SERVER['QUERY_STRING'] == 'adminPosts' :
+    case $request->server->get('QUERY_STRING') == 'adminPosts' :
         $_SESSION['page'] = 'adminPosts';
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPosts();
         break;
-    case $_SERVER['QUERY_STRING'] == 'adminPostDetails/' . $postId :
+    case $request->server->get('QUERY_STRING') == 'adminPostDetails/' . $postId :
         $_SESSION['page'] = 'adminPostDetails';
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPostDetails($postId);
         break;
-    case $_SERVER['QUERY_STRING'] == 'addPostFormular' :
+    case $request->server->get('QUERY_STRING') == 'addPostFormular' :
         $postController = new PostController(TwigService::getInstance());
         $postController->addPostFormular();
         break;
-    case $_SERVER['QUERY_STRING'] == 'addUser' :
+    case $request->server->get('QUERY_STRING') == 'addUser' :
         $userController = new UserController(TwigService::getInstance());
         $userController->addUserFormular();
         break;
     // If any case is found
-    case $_SERVER['QUERY_STRING'] == '/home' :
+    case $request->server->get('QUERY_STRING') == '/home' :
         $homeController = new HomeController(TwigService::getInstance());
         $homeController->showHome();
         break;
