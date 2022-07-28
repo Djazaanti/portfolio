@@ -73,7 +73,7 @@ class CommentModel
                 "user_id" => $user,
                 "post_id" => $postId
             ));
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             
         }
@@ -99,7 +99,7 @@ class CommentModel
             $req->execute();
     
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -123,7 +123,7 @@ class CommentModel
             ));     
             
             return $req;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -132,7 +132,7 @@ class CommentModel
     /**
      * @param int $idComment
      * 
-     * @return [type]
+     * @return void
      */
     public  function updateDeleteComment(int $idComment): void
     {
@@ -146,7 +146,7 @@ class CommentModel
             $req->execute(array(
                 "id" => $idComment
             )); 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
         }    
     }
@@ -164,7 +164,7 @@ class CommentModel
             $req = $db->prepare('SELECT id FROM comment WHERE isValidate=0');
             $req->execute();
             return $commentsToValid = $req->rowCount(); 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return null;
         }  

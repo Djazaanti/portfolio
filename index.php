@@ -93,13 +93,16 @@ switch (true){
                 $postController->addPost($title, $content, $chapo, $isPublished, $userId, $media);
             }   
         } 
-        elseif ($_SERVER['QUERY_STRING'] == 'editPostFormular'){
-            $postController = new PostController(TwigService::getInstance());
-            $postController->editPostFormular($_POST);
-        }
-        elseif ($_SERVER['QUERY_STRING'] == 'editPost'){
-            
-            if (isset($_FILES['media']))
+        elseif ($_SERVER['QUERY_STRING'] == 'editPostFormular/' . $postId){
+
+            $_SESSION['page'] = 'editPostFormular/' . $postId;
+
+            // récupère idPost, media, publication
+            // vérifier si nouveau fichier sélectionné $_FILES non vide
+                // si $_FILES vide, $media = média récupéré
+                // sinon, média = $_FILES['media']['name']
+                // var_dump($_FILES['media']['name']);die;
+            if ($_FILES['media']['name'] != "")
             {
                 // Vérifie si le fichier a été uploadé sans erreur . 
                 if($_FILES["media"]["error"] == 0){
@@ -114,10 +117,12 @@ switch (true){
                     $media = date("d_m_Y_H_i_s") .'.'.$ext;
 
                     $postController = new PostController(TwigService::getInstance());
-                    $postController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name);
+                    $postController->downloadFile($ext, $allowed, $filesize, $filetype, $filename, $file_tmp_name, $postId);
                 }
-            } 
-            else $media = $_POST['mediaExist'];
+            }
+            else {
+                $media = $_POST['mediaExist'];
+            }
 
             if (isset($_POST['publish'])) $isPublished = boolval($_POST['publish']);
             else $isPublished = boolval($_POST['isPublished']);
@@ -182,13 +187,18 @@ switch (true){
         $adminController->adminPosts();
         break;
     case $_SERVER['QUERY_STRING'] == 'adminPostDetails/' . $postId :
-        $_SESSION['page'] = 'adminPostDetails';
+        $_SESSION['page'] = 'adminPostDetails/' . $postId;
         $adminController = new AdminController(TwigService::getInstance());
         $adminController->adminPostDetails($postId);
         break;
     case $_SERVER['QUERY_STRING'] == 'addPostFormular' :
         $postController = new PostController(TwigService::getInstance());
         $postController->addPostFormular();
+        break;
+    case $_SERVER['QUERY_STRING'] == 'editPostFormular/' . $postId :
+        $_SESSION['page'] = 'editPostFormular/' . $postId;
+        $postController = new PostController(TwigService::getInstance());
+        $postController->editPostFormular($postId);
         break;
     case $_SERVER['QUERY_STRING'] == 'addUser' :
         $userController = new UserController(TwigService::getInstance());

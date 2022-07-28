@@ -102,23 +102,9 @@
 
                                 <!-- Modifier un article -->
                                 <td>
-                                    <form  name="editPostFormular" action="index.php?editPostFormular" method="post" accept-charset="UTF-8"> 
-                                        <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
-                                        <input type="hidden" name="title" value="{{ post.title }}">
-                                        <input type="hidden" name="content" value="{{ post.content }}">
-                                        <input type="hidden" name="chapo" value="{{ post.chapo }}">
-                                        <input type="hidden" name="media" value="{{ post.media }}">
-                                        <input type="hidden" name="isPublished" value="{{ post.isPublished }}">
-                                        <input type="hidden" name="createdAt" value="{{ post.createdAt }}">
-                                        <input type="hidden" name="updatedAt" value="{{ post.updatedAt }}">
-                                        <input type="hidden" name="userId" value="{{ post.user_id }}">
-
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="checkEditPost">
-                                                <button type="submit" class="btn btn-light"><img src="public\assets\img\pencil.svg"></button>
-                                            </label>
-                                        </div>
-                                    </form>
+                                    <a href="index.php?editPostFormular/{{post.id}}" class="btn btn-light">
+                                        <img src="public\assets\img\pencil.svg">
+                                    </a>
                                 </td>
 
                                 <!-- Publier un article -->

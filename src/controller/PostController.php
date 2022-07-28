@@ -88,19 +88,22 @@ class PostController
      * @param string $filetype
      * @param string $filename
      * @param string $file_tmp_name
+     * @param int|null $postId
      * 
      * @return void
      */
-    public function downloadFile(string $ext, array $allowed, int $filesize, string $filetype, string $filename, string $file_tmp_name) : void
+    public function downloadFile(string $ext, array $allowed, int $filesize, string $filetype, string $filename, string $file_tmp_name, ?int $postId) : void
     { 
+        // vérifie le format du fichier
         if(!array_key_exists($ext, $allowed)) {
+
             $_SESSION['ErrorMessage'] = "Erreur : Veuillez sélectionner un format de fichier valide.";
 
-            if ($_SESSION['page'] ==  "editPostFormular")
+            if ($_SESSION['page'] ==  "editPostFormular/".$postId )
             {
-                header('location: index.php?editPostFormular'); die;  
-                }
-            header('location: index.php?addPostFormular'); die;
+                header('location: index.php?editPostFormular/' . $postId); 
+            }
+            else header('location: index.php?addPostFormular');
         } 
 
         // Vérifie la taille du fichier - 5Mo maximum
@@ -108,42 +111,37 @@ class PostController
         if($filesize > $maxsize) {
             $_SESSION['ErrorMessage'] = "Erreur: La taille du fichier est supérieure à la limite autorisée.";
 
-            if ($_SESSION['page'] ==  "editPostFormular")
-                {
-                header('location: index.php?editPostFormular'); die;  
-                }
-            header('location: index.php?addPostFormular'); die;
+            if ($_SESSION['page'] ==  "editPostFormular/".$postId )
+            {
+                header('location: index.php?editPostFormular/' . $postId); 
+            }
+            else header('location: index.php?addPostFormular');
         }
         // Vérifie le type MIME du fichier
         if(in_array($filetype, $allowed)){
             move_uploaded_file($file_tmp_name, "public/assets/img/portfolio/".date("d_m_Y_H_i_s").'.'.$ext);
             $_SESSION['SuccessMessage'] = "Fichier téléchagé";
         }
-        
-        if ($_SESSION['page'] ==  "editPostFormular")
-            {
-            header('location: index.php?editPostFormular'); die;  
-            }
-        header('location: index.php?dashboard');
-
     }
 
     /**
-     * @param array $postInformations
+     * @param int $postId
      * 
      * @return void
      */
-    public function editPostFormular(array $postInformations) : void
+    public function editPostFormular(int $postId) : void
     {
-        $userId = intval($postInformations['userId']);
+        $postModel = new PostModel();
+        $post = $postModel->getPost($postId);
+
         $userModel = new UserModel();
-        $author = $userModel->getUser($userId);
+        $author = $userModel->getUser($post['user_id']);
+
         $admins = $userModel->getAdmins();
         
-        echo $this->twigService->get()->render('admin/editPost.html.twig', ['postInformations' => $postInformations, 'author' => $author, 'admins' => $admins]);
+        echo $this->twigService->get()->render('admin/editPost.html.twig', ['post' => $post, 'author' => $author, 'admins' => $admins]);
     }
 
-     
     /**
      * @param string $title
      * @param string $content
@@ -166,7 +164,7 @@ class PostController
         if ($_SESSION['page'] == 'dashboard') {
             header('location: index.php?dashboard');
         }
-        elseif ($_SESSION['page'] == 'adminPosts' || $_SESSION['page'] = 'adminPostDetails') {
+        elseif ($_SESSION['page'] == 'adminPosts' || $_SESSION['page'] = 'adminPostDetails' . $postId) {
             header('location: index.php?adminPosts');
         }
     }

@@ -37,7 +37,7 @@ class UserModel
             $req->execute();
     
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
         } 
     }
@@ -59,23 +59,12 @@ class UserModel
             $req->execute(array($id));
     
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
             return [];
         } 
     }
-
-    // public function updateUser($pseudo, $password){
-    //     $db = $this->dbConnect();
-    //     if (null === $db) {
-    //         return [];
-    //     }
-    //     $pass_hash = password_hash($password, PASSWORD_DEFAULT);
-    //     $req = $db->prepare('UPDATE user SET password =:password WHERE pseudo =:pseudo');
-    //     $req->execute(array('password' => $pass_hash, 'pseudo' => $pseudo));
-    // }
-
-
+    
     /**
      * @param string $pseudo
      * 
@@ -91,7 +80,7 @@ class UserModel
             $req = $db->prepare('SELECT * FROM user where pseudo = ?');
             $req->execute(array($pseudo));
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
             return [];
         }
@@ -103,7 +92,7 @@ class UserModel
     public function getAdmins(): array
     {
         $db = $this->dbConnect();
-        if (null == $db) {
+        if (null === $db) {
             return [];
         }
 
@@ -112,7 +101,7 @@ class UserModel
             $req->execute();
     
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
             return [];
         }
@@ -128,7 +117,7 @@ class UserModel
     {
         
         $db = $this->dbConnect();
-        if (null == $db) {
+        if (null === $db) {
             return [];
         }
 
@@ -141,7 +130,7 @@ class UserModel
             $req->execute(array($id));
     
             return $user = $req->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
         }
 
@@ -161,7 +150,7 @@ class UserModel
             $req = $db->prepare('SELECT id FROM user WHERE isValidate=1');
             $req->execute();
             return $users= $req->rowCount();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
             return null;
         }
@@ -179,7 +168,7 @@ class UserModel
             $req = $db->prepare('SELECT id FROM user WHERE isValidate=0');
             $req->execute();
             return $users= $req->rowCount();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
             return null;
         }
@@ -208,8 +197,7 @@ class UserModel
                 'password_hashed' => $password_hashed, 
                 'isValidate' => 0
             ));
-            die; 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $_SESSION['ErrorMessage'] = $e->getMessage();
             return;
         }

@@ -7,7 +7,6 @@
     <!-- section -->
     <section class="page-section portfolio " id="portfolio">
         <div class="container">
-
             <!-- Portfolio Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Mise à jour d'article</h2>
             
@@ -21,58 +20,57 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-7">
-                {% if errorMessage is defined %}
+                {% if session.ErrorMessage != "" %}
                     <div class="alert alert-danger" role="alert">
-                        {{ errorMessage }}
+                        {{ session.ErrorMessage }}
                     </div>
                 {% endif %}
 
-                {% if successMessage is defined %}
+                {% if session.SuccessMessage != "" %}
                     <div class="alert alert-success" role="alert">
-                        {{ successMessage }}
+                        {{ session.SuccessMessage}}
                     </div>
                 {% endif %}
+                <form  method="post" action="index.php?editPostFormular/{{post.id}}" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return confirm('MODIFIER ce post ?');">
 
-                <form  method="post" action="index.php?editPost" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return confirm('MODIFIER ce post ?');">
-
-                    <input type="hidden" name="idPost" value="{{ postInformations.idPost }}">
-                    <input type="hidden" name="mediaExist" value="{{ postInformations.media }}">
-                    <input type="hidden" name="isPublished" value="{{ postInformations.isPublished }}">
+                    <input type="hidden" name="idPost" value="{{ post.id }}">
+                    <input type="hidden" name="mediaExist" value="{{ post.media }}">
+                    <input type="hidden" name="isPublished" value="{{ post.isPublished }}">
 
                     <div class="mb-3 row">
                         <label for="title" class="col-sm-2 col-form-label">Titre</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="title" name="title" value="{{ postInformations.title }}" required="required">
+                            <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required="required">
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="chapo" class="col-sm-2 col-form-label">Chapô</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="chapo" name="chapo" value="{{ postInformations.chapo }}" required="required">
+                            <input type="text" class="form-control" id="chapo" name="chapo" value="{{ post.chapo }}" required="required">
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="content" class="col-sm-2 col-form-label">Contenu</label>
                         <div class="col-sm-10">
-                            <textarea type="text" class="form-control" id="content" name="content" required="required" rows="5">{{ postInformations.content}}</textarea>
+                            <textarea type="text" class="form-control" id="content" name="content" required="required" rows="5">{{ post.content}}</textarea>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="createdAt" class="col-sm-2 col-form-label">Crée le </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="createdAt" name="createdAt" value="{{ postInformations.createdAt }}" readonly>
+                            <input type="text" class="form-control" id="createdAt" name="createdAt" value="{{ post.createdAt }}" readonly>
                         </div>
                     </div>
 
-                    {% if  postInformations.updatedAt is not empty %}
-                        {% if postInformations.createdAt != postInformations.updatedAt  %}
+                    {% if  post.updatedAt is not empty %}
+                        {% if post.createdAt != post.updatedAt  %}
                             <div class="mb-3 row">
                                 <label for="updatedAt" class="col-sm-2 col-form-label">Dernière mise à jour </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="updatedAt" name="updatedAt" value="{{ postInformations.updatedAt }}" readonly>
+                                    <input type="text" class="form-control" id="updatedAt" name="updatedAt" value="{{ post.updatedAt }}" readonly>
                                 </div>
                             </div>
                         {% endif %}
@@ -97,7 +95,7 @@
                         </select>
                     </div>
                     
-                    {% if  postInformations.isPublished is not empty and postInformations.isPublished == 0 %}
+                    {% if  post.isPublished is not empty and post.isPublished == 0 %}
                         <div class="mb-3 row">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="publish" id="publish">

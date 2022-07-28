@@ -43,7 +43,7 @@ class ConnexionController
         if (is_array($user))
         {
             foreach($user as  $use) {
-                if (password_verify($password, $use['password']) == true)
+                if (password_verify($password, $use['password']) === true)
                 {
                     if ($use['isValidate'] == 1)
                     {
@@ -70,20 +70,12 @@ class ConnexionController
             echo $this->twigService->get()->render('formularConnexion.html.twig',  ['errorMessage' =>"Cet identifiant n'existe pas !"]);
         }
     }
-
-    // public function updatePassword($pseudo, $password) {
-    //     $userModel = new UserModel();
-    //     $user = $userModel->updateUser($pseudo, $password);
-    //     echo $this->twigService->get()->render('formularConnexion.html.twig');
-
-    // }
     
     /**
      * @return void
      */
     public function formularConnexion() : void
     {
-        var_dump($_SESSION['page']);
         echo $this->twigService->get()->render('formularConnexion.html.twig');
     }
 

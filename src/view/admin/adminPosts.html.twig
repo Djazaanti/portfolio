@@ -35,7 +35,7 @@
                 <div class="divider-custom-line"></div>
             </div>
         </div>
-        <table class="table container-sm">
+        <table  class="table container-sm table-dark table-striped-columns">
             <thead>
                 <tr>
                     <th scope="col">Titre</th>
@@ -43,6 +43,7 @@
                     <th scope="col">Détail</th>            
                     <th scope="col">Publié</th>
                     <th scope="col">Créé le</th>
+                    <th  scope="col" colspan="3" align="right">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,23 +63,9 @@
                             <td>{{ post.createdAt }}</td>
                             <!-- Modifier un article -->
                             <td>
-                                <form  name="editPostFormular" action="index.php?editPostFormular" method="post" accept-charset="UTF-8"> 
-                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
-                                    <input type="hidden" name="title" value="{{ post.title }}">
-                                    <input type="hidden" name="content" value="{{ post.content }}">
-                                    <input type="hidden" name="chapo" value="{{ post.chapo }}">
-                                    <input type="hidden" name="media" value="{{ post.media }}">
-                                    <input type="hidden" name="isPublished" value="{{ post.isPublished }}">
-                                    <input type="hidden" name="createdAt" value="{{ post.createdAt }}">
-                                    <input type="hidden" name="updatedAt" value="{{ post.updatedAt }}">
-                                    <input type="hidden" name="userId" value="{{ post.user_id }}">
-
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="checkEditPost">
-                                            <button type="submit" class="btn btn-light"><img src="public\assets\img\pencil.svg"></button>
-                                        </label>
-                                    </div>
-                                </form>
+                                <a href="index.php?editPostFormular/{{post.id}}" class="btn btn-light">
+                                    <img src="public\assets\img\pencil.svg">
+                                </a>
                             </td>
                             <!-- Supprimer un article -->
                             <td>
@@ -123,7 +110,7 @@
                 <div class="divider-custom-line"></div>
             </div>
         </div>
-        <table class="table container-sm">
+        <table class="table container-sm table-dark table-striped-columns">
             <thead>
                 <tr>
                     <th scope="col">Titre</th>
@@ -131,6 +118,7 @@
                     <th scope="col">Détail</th>            
                     <th scope="col">Publié</th>
                     <th scope="col">Créé le</th>
+                    <th  scope="col" colspan="3" align="right">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -150,37 +138,23 @@
                             <td>{{ post.createdAt }}</td>
 
                             <!-- Modifier un article -->
-                            <td>
-                                <form  name="editPostFormular" action="index.php?editPostFormular" method="post" accept-charset="UTF-8"> 
-                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkEditPost">
-                                    <input type="hidden" name="title" value="{{ post.title }}">
-                                    <input type="hidden" name="content" value="{{ post.content }}">
-                                    <input type="hidden" name="chapo" value="{{ post.chapo }}">
-                                    <input type="hidden" name="media" value="{{ post.media }}">
-                                    <input type="hidden" name="isPublished" value="{{ post.isPublished }}">
-                                    <input type="hidden" name="createdAt" value="{{ post.createdAt }}">
-                                    <input type="hidden" name="updatedAt" value="{{ post.updatedAt }}">
-                                    <input type="hidden" name="userId" value="{{ post.user_id }}">
-
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="checkEditPost">
-                                            <button type="submit" class="btn btn-light"><img src="public\assets\img\pencil.svg"></button>
-                                        </label>
-                                    </div>
-                                </form>
+                           <td>
+                                <a href="index.php?editPostFormular/{{post.id}}" class="btn btn-light">
+                                    <img src="public\assets\img\pencil.svg">
+                                </a>
                             </td>
 
                             <!-- Supprimer un article -->
                             <td>
                                 <form action="" method="post" accept-charset="UTF-8" onsubmit="return confirm('SUPPRIMER ce post ?');">
-                                        <input type="hidden" name="action" value="deletePost">
-                                        <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="checkDeletePost">
-                                                <button type="submit" class="btn btn-danger"><img src="public\assets\img\trash.svg"></button>
-                                            </label>
-                                        </div>
-                                    </form>
+                                    <input type="hidden" name="action" value="deletePost">
+                                    <input type="hidden" name="idPost" value="{{ post.id }}" id="checkDeletePost" >
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="checkDeletePost">
+                                            <button type="submit" class="btn btn-danger"><img src="public\assets\img\trash.svg"></button>
+                                        </label>
+                                    </div>
+                                </form>
                             </td>
                         </tr> 
                     {% endif %}    

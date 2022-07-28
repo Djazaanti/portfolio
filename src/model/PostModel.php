@@ -39,7 +39,7 @@ class PostModel
         $posts->execute();
 
         return $posts->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -61,7 +61,7 @@ class PostModel
             $posts->execute();
     
             return $posts->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -69,11 +69,11 @@ class PostModel
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      * 
      * @return array
      */
-    public function getPost(mixed $id): array
+    public function getPost(int $id): array
     {
         $db = $this->dbConnect();
         if (null === $db) {
@@ -83,8 +83,8 @@ class PostModel
             $req = $db->prepare('SELECT * FROM post where id = ?');
             $req->execute(array($id));
     
-            return $req->fetchAll();
-        } catch (PDOException $e) {
+            return $req->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -120,8 +120,7 @@ class PostModel
                             "updatedAt" => date("Y_m_d_H_i_s"),
                             "user_id" => $userId
         ));
-        die;  
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -135,7 +134,6 @@ class PostModel
      */
     public function deletePostinBDD(int $idPost): void
     {
-        // TODO AMELORATION POSSIBLE : DELETE comments ON DELETE post
         $db = $this->dbConnect();
         if (null === $db) {
             return;
@@ -145,7 +143,7 @@ class PostModel
             $req = $db->prepare("DELETE FROM post WHERE id=:idPost");
             $req->execute(array("idPost" => $idPost));
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
         }
     }
@@ -181,7 +179,7 @@ class PostModel
                 'userId' => $authorId,
                 'idPost' => $idPost
             )); 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -204,7 +202,7 @@ class PostModel
             return  $req->execute(array(
                 'idPost' => $idPost
             ));
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return [];
         }
@@ -222,7 +220,7 @@ class PostModel
             $req = $db->prepare('SELECT id FROM post WHERE isPublished=0');
             $req->execute();
             return $postsToPublish = $req->rowCount(); 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return null;
         }
@@ -241,7 +239,7 @@ class PostModel
             $req->execute();
 
             return $postsPublished = $req->rowCount(); 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
             return null;
         }
