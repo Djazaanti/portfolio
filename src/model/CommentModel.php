@@ -40,7 +40,7 @@ class CommentModel
             $req->execute(array($id));
     
             return $req->fetchAll();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $ErrorMessage = $e->getMessage();
         }
     }

@@ -97,11 +97,7 @@ switch (true){
 
             $_SESSION['page'] = 'editPostFormular/' . $postId;
 
-            // récupère idPost, media, publication
             // vérifier si nouveau fichier sélectionné $_FILES non vide
-                // si $_FILES vide, $media = média récupéré
-                // sinon, média = $_FILES['media']['name']
-                // var_dump($_FILES['media']['name']);die;
             if ($_FILES['media']['name'] != "")
             {
                 // Vérifie si le fichier a été uploadé sans erreur . 

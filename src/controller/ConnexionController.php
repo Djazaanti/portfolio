@@ -90,4 +90,3 @@ class ConnexionController
         header('location: index.php');
     }
 }
-    
